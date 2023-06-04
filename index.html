@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="rowcolumn/rowcolumn.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <script src="https://kit.fontawesome.com/4c16e2c23a.js" crossorigin="anonymous"></script>
+    <title>RC</title>
+    <script type="text/javascript" src="prototypeSyntax.js"></script>
+    <style type="text/css">
+        .grid-container>div {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="menu l-tr" onclick="showmenu()" style="display:none;flex-direction: row" >
+         
+        <div class="l-tr" ><img src="logo.png" width="23px"> &ensp; Rows And Columns ></div>
+          &ensp;<span class="badge">v0.3.2</span> &ensp;
+        
+    </div>
+    <div class="menuright l-tl" style="display:none;">
+        <dl>
+            <dt>Getting Started</dt>
+                <dd><a href="#install"> Installation</a></dd>
+            <dt>Introduction</dt>
+                <dd><a href="#why">Why row column</a></dd>
+            <dt>Basics to make columns and rows</dt>
+                <dd><a href="#calling">Calling function</a></dd>
+                <dd><a href="#col">Columns</a></dd>
+                <dd><a href="#row">Rows</a></dd>
+                <dd><a href="#grid">Grid</a></dd>
+            <dt>Customisations</dt>
+                <dd><a href="#rc"> Rows and columns</a></dd>
+                <dd><a href="#wh"> Width and height</a></dd>
+                <dd><a href="#num"> Numbers</a></dd>
+                <dd><a href="#split"> Splitting</a></dd>
+            <dt>Utilities</dt>
+                <dd><a href="#uti">Utility function</a></dd>
+                <dd><a href="#order">order()</a></dd>
+                <dd><a href="#offset">offset()</a></dd>
+                <dd><a href="#property">property()</a></dd>
+                <dd><a href="#childProperty">childProperty()</a></dd>
+                <dd><a href="#breakpoint">breakpoint()</a></dd>
+            <dt>Styling and positioning</dt>
+                <dd><a href="#CSS">CSS</a></dd>
+            <dt>Responsive Design</dt>
+                <dd><a href="#design">Add breakpoints</a></dd>
+                <dd><a href="#layout">Responsive Layout</a></dd>
+            <dt>About</dt>
+            <dd><a href="#about"></dd></a>
+        </dl>       
+    </div>
+    <section>
+        <div class="grid-container" layout="parent.splits((lg).splits(20,80,'perpendicular'),(sm),'parallel',[100,sm]).add(order(),breakpoint('(orientation: portrait)',parent.splits(sm.splits(lg,sm,'parallel'),sm,'parallel',[100,20]).add(property('margin','0px 20px'),order())))">
+            <div class="l-br p-bl">
+                <img src="logo.png" width="73px">
+            </div>
+            <div class="h l-bl p-lc">
+                Rows And Columns 
+            </div>
+            <div class="l-tr p-tl">
+                <a href="prototypeSyntax.js"><i class="fa-solid fa-download"></i></a>&ensp;&ensp;
+                <a href="https://github.com/abhimm5/rowcolumn"><i class="fa-brands fa-github" href=""></i></a>
+            </div>              
+
+    </div>
+    </section><br>
+    <section>
+
+                <div class="grid-container" layout="(100).splits(20,80,'perpendicular',[100,20]).add(order(),breakpoint('(orientation: portrait)',(20).splits(1,20,'parallel',[100,20]).add(property('margin','0px 20px'),order())))">
+
+            <div class="maincolor sticky l-tr l-tar" >
+                <a class="badge2" href="#install">Getting started </a>
+            </div>
+            
+            <div class="con">
+                <h2 id="install">Installation</h2>
+                <p>1. Download from latest release. click here  </p>
+                <p>2. Paste all files in any folder and link them to your document.</p>
+                <p>3. You can link - <code>&ltscript type="module" src="rowcolumn.js"&gt &lt/script&gt</code> - to head of your html file.</p>
+                <p>4. Start making grid websites easily.</p>
+            </div>
+
+        </div>
+    </section><br>
+    <section>
+                <div class="grid-container" layout="(100).splits(20,80,'perpendicular',[100,20]).add(order(),breakpoint('(orientation: portrait)',(20).splits(1,20,'parallel',[100,20]).add(property('margin','0px 20px'),order())))">
+            <div class="maincolor sticky l-tr l-tar">
+                <a class="badge2" href="#why">Introduction </a>
+            </div>
+            <div class="con">
+                <h2 id="why">Why row column</h2>
+                <h3>Two dimensional</h3>
+<p> Rows & columns is a javascript framework based on line placement of CSS grid which gives supercontrol over children <code> &ltdiv&gt </code>. Unlike others, this is completely two dimensional which helps in making grids without using many `<code> &ltdiv&gt </code>`. You can also use this on html besides native coding in javascript which eliminates the excessive use of <code> &ltdiv class='row' &gt </code> or <code> &ltdiv class='column' &gt </code>. It can be very useful for making layouts and reducing the CSS code.</p>
+                <pre class="clean">
+
+    &ltdiv layout="(100).splits(30, (70).splits(30.splits(50, 50, 'parallel'), 70, 'parallel'), 'perpendicular')"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                <p>The above codes make two columns: left column and right column, and two rows each in the right column similar to -</p>
+                <pre class="clean">
+
+    &ltdiv class="col"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv class="row"&gt
+            &ltdiv&gt&lt/div&gt
+            &ltdiv class="row"&gt
+                &ltdiv&gt&lt/div&gt
+                &ltdiv&gt&lt/div&gt
+            &lt/div&gt
+        &lt/div&gt
+    &lt/div&gt
+
+</pre>
+
+            <p>Messy, as you can see no nesting and width-height is required.</p>
+            <h3>Better Designing</h3>
+            <p> Many people don't like to use framework and make custom layouts and design, but sometimes to make a grid becomes headache - the nesting and look for div and section. CSS Grid provides a great alternative to avoid making one dimensional columns and rows and this gives way better management and rediting the HTML. Many people also don't know basic designing  </p>
+            <p>This framework is made to make better design and use minimum efforts as possible.</p> 
+            </div>
+        </div>
+    </section><br>
+    <section>
+        <div class="grid-container" layout="parent.splits(20,80,'perpendicular').add(order(),breakpoint('(orientation: portrait)',parent.splits(1,20,'parallel').add(property('margin','0px 20px'),order())))">
+            <div class="maincolor sticky l-tr l-tar">
+                <a class="badge2" href="#calling">Basics to make columns and rows</a> 
+            </div>
+            <div class="con">
+                <h2 id="calling">Calling function</h2>
+                <h3>Number.splits()</h3>
+                <p>Lets start with making rows columns in `<code> &ltdiv&gt </code>`. On parent `<code> &ltdiv&gt </code>` create a `<code> layout </code>` attribute like this `<code>&ltdiv layout="..."&gt</code>`. The row-column codes will be written inside the layout attribute.</p>
+                <h3>Parameters</h3>
+                <p>Then when someone calls `<code> splits() </code>` function on any number inside the layout attribute which takes currently 3 arguments called left, right and direction like `<code> splits(left, right, direction) </code>`, the first two parameters will divide the number into two parts or a `<code> &ltdiv&gt </code>` into two parts. The last direction parameter takes direction `<code>perpendicular</code>` or `<code>parallel</code>` which basically means divide a line(Number) into two parts vertically or horizontally or arrange two `<code> &ltdiv&gt </code>` in either rows or columns.</p>
+                <h3>Example</h3>
+                <p>You can call this function like the example `<code>(100).splits(60, 40, 'perpendicular')</code>`. Here <code>(100)</code> is divided into two parts of <code>60</code> and <code>40</code>  in <code>perpendicular</code> direction to make columns look the function again to understand. The <code>(100)</code> or parent value defines the width and height of the parent `<code> &ltdiv&gt </code>` which is dividing the rectangle/square into two parts. <code>Number(100)</code> will automatically set the divs width and height to `100%` and `100vh` respectively. <code>Number(100)</code> represents the height and width of the parent <code>&ltdiv&gt</code>(Full screen <code>&ltdiv&gt</code>).</p>
+                <p class="note">Note: You can also set custom width and height</p><br>
+                <p>To divide into three parts, divide any resultent div into two parts - very simple. Example `<code>(100).splits(60, (40).splits(20, 20 ,'perpendicular'), 'perpendicular')"</code>.  Here <code>(100)</code> is divided into two parts of <code>60</code> and <code>40</code> and then again <code>(40)</code> is divided into two parts of <code>20</code> and <code>20</code> in <code>perpendicular</code> direction to make columns. Likewise you can divide any number to as many parts you want in any direction to make columns and rows.</p><br>
+
+                <h2 id="col">Columns</h2>
+                <h3>perpendicular</h3>
+                <p>You can also make any desired number of columns and rows. There is no restriction to make 12 columns.For example to make 10 columns we just have to do like `<code>&ltdiv layout="(100).splits(2, 8, 'perpendicular')"&gt</code>` this will make two columns of 10 divided into 2 and 8. Notice the third parameter `<code>perpendicular</code>` which is passed as a <code>string</code> tells us to divide any number column wise.</p>
+                <pre class="clean">
+
+    &ltdiv layout="(100).splits(2,(8),'perpendicular')"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                <div  layout="(100).splits(2,(8),'perpendicular').add(property('gap','2px'))">
+                    <div class="box" ></div>
+                    <div class="box" ></div>
+                </div>
+                <p>You can also divide the columns further, let's say to divide the number or rectangular display of any `div` further, we do `<code> &ltdiv layout="(100).splits(2, (8).splits(2, (6), 'perpendicular'), 'perpendicular')"&gt</code>`. You can also divide as many columns as we you want.</p>
+                <pre class="clean">
+
+    &ltdiv layout="(100).splits(2, (8).splits(2, (6), 'perpendicular'),'perpendicular')"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+    <div  layout="(100).splits(2, (8).splits(2,(6), 'perpendicular'),'perpendicular').add(property('gap','2px'))">
+                    <div class="box" ></div>
+                    <div class="box" ></div>
+                    <div class="box" ></div>
+                </div>
+                <p>You can also divide as many columns as we you want.</p><br>
+                <h2 id="row">Rows</h2>
+                <h3>parallel</h3>
+                <p>Similary to make rows just change the direction to <code>`parallel`</code> like `<code>&ltdiv layout="(100).splits(2,8,'parallel')"&gt</code>` you can always make as many rows you want</p>
+                <p>Below is the exaple to make three rows of <code>min-height</code> <code>20vh</code>, <code>20vh</code> and <code>60vh</code>, the <code>max-height</code> is always <code>auto</code></p>
+                <pre class="clean">
+
+    &ltdiv layout="(100).splits(2, (8).splits(2, (6), 'parallel'),'parallel')"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+    <div  layout="(100).splits(2, (8).splits(2,6, 'parallel'),'parallel').add(property('gap','2px'))">
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                </div><br>
+                <h2 id="grid">Grid</h2>
+                <h3>Nesting function</h3>
+                <p>Here is the important part of the framework, you can always call nested function in any direction you want which makes the framework 2 dimensional and making grids very easy.</p>
+                <pre class="clean">
+
+    &ltdiv layout="(100).splits(3, (7).splits(3, 7, 'parallel'),'perpendicular')"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                <div  layout="(100).splits(3,(7).splits(3,7,'parallel'),'perpendicular').add(property('gap','2px'))">
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                </div>
+                
+                <p>The above function demonstrates to make grid. But this time we made columns and rows of 10 into 3 and 7 parts.</p>
+                <p>You see this time numbers are changed a litte. Here we divide the children <code>&ltdiv&gt&lt/div&gt</code> by calling <code>splits()</code> function on parent. Then <code>Number(100)</code> is divided into two parts of having leftside 3 and rightside 7 of 100. We have <code>&ltdiv&gt</code> of width <code>30</code> and <code>70</code> with height of <code>100vh</code> again we divide the right <code>&ltdiv&gt</code> into two parts horizontally in ratio of <code>30</code> and <code>70</code> which is same as <code>3</code> and <code>7</code>. Hence right side is being split into two parts.</p>
+
+                <p>So calling <code>&ltdiv layout="(100).splits(30,(70).splits(30,70,'parallel'),'perpendicular')"&gt</code> is same as <code>&ltdiv layout="(100).splits(3, (7).splits(3, 7, 'parallel'), 'perpendicular')"&gt</code></p>
+
+
+
+            </div>     
+    </div>
+    </section><br>
+    <section>
+                <div class="grid-container" layout="parent.splits(20,80,'perpendicular').add(order(),breakpoint('(orientation: portrait)',parent.splits(1,20,'parallel').add(property('margin','0px 20px'),order())))">
+            <div class="maincolor sticky l-tr l-tar">
+                 <a class="badge2" href="#rc">Customisations</a>
+            </div>
+            <div class="con">
+                <h2 id="rc">Rows and columns</h2><br>
+                <p>There is no limit of splitting any div into rows or column. In above example we saw to make columns and rows of 10 spliting into two columns or rows which is on <code>Number(100).splits()</code>.</p>
+                 <h3>Changing arguments</h3>
+                <p>The above example is just for explaination. We can make any number of custom rows and columns. To make columns of 12 we just have to do simple maths. Before doing that first understand the rational division. To divide a number into two equal parts to make two columns we just call it like <code>&ltdiv layout="(100).splits(1/2, (1/2), 'perpendicular')"&gt</code>. And to to make three columns we call recursively <code>&ltdiv layout="(100).splits(1/3,(2/3).splits(1/2, (1/2), 'perpendicular')"&gt</code>. Now make 2 equal columns of 12 like <code>3/12</code>  and <code>9/12</code> </p>
+                <ol>
+                    <li>1.Set the parent <code>&ltdiv&gt</code> width height to 100 by calling <code>Number(100).splits()</code></li><br>
+                    <li>
+                        2.Call it with rational number to divide 100, like 100/12 will divide 100 into 12 parts, also like <code>3/12</code>  and <code>9/12</code> which will give first 3 parts of 12 and second 9 parts of 12.
+                    </li>
+                </ol>
+                <pre class="clean">
+
+    &ltdiv layout="(100).splits(3/12, (9/12), 'perpendicular')"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                
+                <p>We are always dividing a square <code>&ltdiv&gt</code> into either horizontally or vertically in only two parts. Do not forget we can also divide recursively.</p>
+                <h3>Easy recursive</h3>
+                <p>To make 12 equal columns we have to call the function 11 times which is very lengthy therefore we have already designed a function which will call the <code>splits()</code> function 12 times.</p>
+                <pre class="clean">
+
+    &ltdiv layout="(100).splits(1/12, (11/12).splits(1/11, (10/11).splits(1/10, (9/10).splits(1/9, (8/9).splits(1/8, (7/8).splits(1/7, (6/7).splits(1/6, (5/6).splits(1/5, (4/5).splits(1/4, (3/4).splits(1/3, (2/3).splits(1/2, (1/2), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular')"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+    <pre class="clean">
+
+    &ltdiv layout="(100).col(12)"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+    <div  layout="(100).col(12).add(property('gap','2px'))">
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                </div>
+       <h3>Recursive limit</h3>
+      <p>Calling function like <code>(100).col(12)</code> has an end point, this means you cannot further divide the columns anymore.</p><br>
+      <p>In splitting any rational number remember the denominator of child must be same to the numerator of the parent, this is just an exception, but to make perfect column you should follow this. Example:Here `<code>&ltdiv layout="(100).splits(4/10, 6/10, 'perpendicular')"&gt</code>` parent is being split in two parts into left side and right side in perpendicular or vertical direction</p><br>
+      <br>
+      <h2 id="wh">Width and height</h2>
+                 <h3>Changing parent value</h3>
+                <p><code>Number(100)</code> represents the height and width of the parent <code>&ltdiv&gt</code>(Full screen <code>&ltdiv&gt</code>). Now let's try to change to <code>Number(50)</code>. Now the screen will be 1/4 of the parent i.e. 50 in height and width. Each time we call <code>splits()</code> we are locked the to make custom width and height. Let's suppose we don't want make the <code>&ltdiv&gt</code> of same height and width, we just need pass the an array as a forth argument in <code>splits()</code> function like <code>Number.splits(Number, Number, 'direction',[100, 50])</code> here the forth argument is <code>Array</code> and <code>Array[0]</code> is width and <code>Array[1]</code> is height.</p>
+                <pre class="clean">
+
+    &ltdiv layout="(100).splits(50,50,'perpendicular',[100,50])"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                <div  layout="(100).splits(50,50,'perpendicular',[100,50]).add(property('gap','2px'))">
+                    <div class="box"></div>
+                    <div class="box"></div>
+                </div>
+                <br>
+                <h2 id="num">Numbers</h2>
+                 <h3>Predefined numbers</h3>
+                <p>Although youo can use any numbers but there are already predefined number variables which are already proportioned in golden ratio to give modern division. You should definitely use them in making rows and columns. </p>
+                <pre class="clean">
+    &ltscript&gt 
+        const parent = 100
+        const lg = 61.2;
+        const sm = 38.8
+
+        parent.splits(lg, sm, 'perpendicular')
+    &lt/script&gt
+    
+
+</pre>
+<br>
+<pre class="clean">
+
+    &ltdiv layout="(100).splits(lg,sm.splits(lg,sm.splits(sm.splits(sm.splits(lg,sm.splits(lg,sm.splits(sm.splits(sm,lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular'),lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular',[100,61.2])"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+<div  layout="(100).splits(lg,sm.splits(lg,sm.splits(sm.splits(sm.splits(lg,sm.splits(lg,sm.splits(sm.splits(sm,lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular'),lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular',[100,61.2]).add(property('gap','2px'),breakpoint('(orientation: portrait)',(100).splits(lg,sm.splits(lg,sm.splits(sm.splits(sm.splits(lg,sm.splits(lg,sm.splits(sm.splits(sm,lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular'),lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular',[100,30])))">
+                    <div style="border: 2px solid #ddd;border-top-left-radius: 1000px;"></div>
+                    <div style="border: 2px solid #ddd;border-top-right-radius: 1000px"></div>
+                    <div style="border: 2px solid #ddd;border-bottom-right-radius: 1000px"></div>
+                    <div style="border: 2px solid #ddd;border-bottom-left-radius: 1000px"></div>
+                    <div style="border: 2px solid #ddd;border-top-left-radius: 1000px"></div>
+                    <div style="border: 2px solid #ddd;border-top-right-radius: 1000px"></div>
+                    <div style="border: 2px solid #ddd;border-bottom-right-radius: 1000px"></div>
+                    <div style="border: 2px solid #ddd;border-bottom-left-radius: 1000px"></div>
+                    <div style="border: 2px solid #ddd;border-bottom-left-radius: 1000px"></div>
+                </div>
+
+                <br>
+                <h2 id="split">Splitting</h2>
+                <p>You can make as many rows and columns row, but making rows and columns in specific way by using custom numbers will gove more aesthetics to your websites. As this framework is focused on design, without any extra efforts you can use this framework to make attractive layouts with any design principles.</p>
+                <h3>Symmetry</h3>
+            <pre class="clean">
+
+    &ltdiv layout="(100).splits(sm.splits(lg.row(5),sm,'perpendicular'),sm.splits(sm,lg.row(5),'perpendicular'),'perpendicular',[100,sm])"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+    <div  layout="(100).splits(sm.splits(lg.row(5),sm,'perpendicular'),sm.splits(sm,lg.row(5),'perpendicular'),'perpendicular',[100,sm]).add(property('gap','2px'))">
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                </div>
+                <h3>Rhythm Columns</h3>
+            <pre class="clean">
+
+    &ltdiv layout="(100).splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(lg,sm,'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular',[100,sm])"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+    <div  layout="(100).splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(lg,sm,'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular',[100,sm]).add(property('gap','2px'))">
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                </div>
+                <p>Note:Customising width does not make many sence because if you are changing the width it means you want to place any div in right side.</p>
+            </div>
+        </div>
+    </section><br>
+    <section>
+                <div class="grid-container" layout="parent.splits(20,80,'perpendicular').add(order(),breakpoint('(orientation: portrait)',parent.splits(1,20,'parallel').add(property('margin','0px 20px'),order())))">
+            <div class="maincolor sticky l-tr l-tar">
+                 <a class="badge2" href="#uti">Utilities</a>
+            </div>
+            <div class="con">
+                <h2 id="uti">Utility method</h2>
+                <p>Often, we find grids are not arranged in order when calling <code>splits()</code> function recursively this happens because it follows declarative syntax or sometimes we want to offset a <code>&ltdiv&gt</code> or complete removal of <code>&ltdiv&gt</code> without affecting the grid layout. There are total 5 utility functions which help modify the <code>&ltdiv&gt</code> in every aspect. To use this you must know how CSS is applied using javascript.</p>
+                <h3>Number.splits.add()</h3>
+                <p>There is an <code>add()</code> method which takes <code>function()</code> in its arguments. We can simply call it in <code>splits()</code> like <code>(100).splits(lg, sm, 'perpendicular').add()</code> </p><br>
+                <h2 id="order">order()</h2>
+                <p>When we divide the left side like <code>(100).splits(lg.splits(lg, sm, 'perpendicular'), sm, 'perpendicular')</code> we see <code>&ltdiv&gt</code>s are not arranged in order. So <code>order()</code> method can be passed inside the <code>add()</code> to arrange and align all <code>&ltdiv&gt</code> in ascending order.  It can be called like this<code>(100).splits(lg.splits(lg, sm, 'perpendicular'), sm, 'perpendicular')</code></p><br>
+                <p>Before without <code>order()</code></p>
+                <pre class="clean">
+
+    &ltdiv layout="(100).splits(lg.splits(lg, sm, 'perpendicular'), sm, 'perpendicular',[100,10])"&gt
+        &ltdiv&gt1&lt/div&gt
+        &ltdiv&gt2&lt/div&gt
+        &ltdiv&gt3&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                <div  layout="(100).splits(lg.splits(lg, sm, 'perpendicular',[100,10]), sm, 'perpendicular',[100,10]).add(property('gap','2px'))">
+                    <div class="l-cc box">1</div>
+                    <div class="l-cc box">2</div>
+                    <div class="l-cc box">3</div>
+                </div>
+                <br>
+                <p>After with <code>order()</code></p>
+                <pre class="clean">
+
+    &ltdiv layout="(100).splits(lg.splits(lg, sm, 'perpendicular'), sm, 'perpendicular',[100,10]).add(order())"&gt
+        &ltdiv&gt1&lt/div&gt
+        &ltdiv&gt2&lt/div&gt
+        &ltdiv&gt3&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                <div  layout="(100).splits(lg.splits(lg, sm, 'perpendicular'), sm, 'perpendicular',[100,10]).add(property('gap','2px'),order())">
+                    <div class="l-cc box">1</div>
+                    <div class="l-cc box">2</div>
+                    <div class="l-cc box">3</div>
+                </div>
+                <h2 id="offset">offset()</h2>
+                <p><code>offset()</code> method is very useful in layout making can be passed inside the <code>add()</code> to offset from the grid. It has arguments to be passed, to use <code>offset()</code> simply call like  </p>
+                <br>
+                <p>Before</p>
+                    <pre class="clean">
+
+    &ltdiv layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular',[100,50])"&gt
+        &ltdiv&gt1&lt/div&gt
+        &ltdiv&gt2&lt/div&gt
+        &ltdiv&gt3&lt/div&gt
+        &ltdiv&gt4&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                <div  layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular',[100,50]).add(order(),property('gap','2px'))">
+                    <div class="l-cc box">1</div>
+                    <div class="l-cc box">2</div>
+                    <div class="l-cc box">3</div>
+                    <div class="l-cc box">4</div>
+                </div>
+                <br>
+                <p>After</p>
+                    <pre class="clean">
+
+    &ltdiv layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular',[100,50]).add(offset(0, 3),order())"&gt
+        &ltdiv&gt2&lt/div&gt
+        &ltdiv&gt3&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                <div  layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular',[100,50]).add(offset(0, 3),order(),property('gap','2px'))">
+                    
+                    <div class="l-cc box">2</div>
+                    <div class="l-cc box">3</div>
+                </div>
+                <p>Using <code>splits().add(offset(0,3)</code> will remove the first and last div from the above code. Always remember it starts with zero.</p>
+                <h2 id="property">property()</h2>
+                <p>Using property you are able to do everything what CSS does. You can simply add any CSS property to parent like the <code>width</code>, <code>height</code>, <code>font-weight</code>, <code>padding</code>, <code>margin</code> anything which css uses.</p>
+                <p>The best case of using property is to add gap property in the parent div, this will give gap to grid, to use we <code>splits().add(property( 'gap', '10px' ))</code></p>
+                <br>
+                    <pre class="clean">
+
+    &ltdiv layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular').add(property('gap','10px'))"&gt
+        &ltdiv&gt1&lt/div&gt
+        &ltdiv&gt2&lt/div&gt
+        &ltdiv&gt3&lt/div&gt
+        &ltdiv&gt4&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                <div  layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular').add(property('gap','10px'))">
+                    <div class="l-cc box" style="border: 2px dashed #ddd">1</div>
+                    <div class="l-cc box" style="border: 2px dashed #ddd;">2</div>
+                    <div class="l-cc box" style="border: 2px dashed #ddd;">3</div>
+                    <div class="l-cc box" style="border: 2px dashed #ddd;">4</div>
+                </div><br>
+                <p>We can always use multiple utility functions to add multiple properties separated by comma, <code>Number.splits().add(property('gap', '10px'), property('margin', '0px 50px')) </code></p>
+                <h2 id="childProperty">childProperty()</h2>
+                <p>Similar to the <code>property()</code> function we can also apply any CSS property to children <code>&ltdiv&gt</code> which hence gives supercontrol to parent. This function is also very useful. Sometimes we don't want to display a div - surely you can do this through CSS - but there is an option to apply any property to children properties.</p>
+                <p>To use this you have to select a range of <code>&ltdiv&gt</code>s or evn one and apply to any single or every <code>&ltdiv&gt</code> <code>Number.splits().add(childProperty('display', 'none', 3, 8))</code> the last two arguments are range to select from and to. Here we select 3rd to 8th <code>&ltdiv&gt</code> and applying the property <code>display: none</code>. To select only one you can do <code>Number.splits().add(childProperty('display', 'none', 0, 1))</code> from <code>0</code> to <code>1</code> here we have selected only first <code>&ltdiv&gt</code>.</p>
+                <br>
+                    <pre class="clean">
+
+    &ltdiv layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular').add(property('gap','10px'),childProperty('background-color','lightsalmon',3,4))"&gt
+        &ltdiv&gt1&lt/div&gt
+        &ltdiv&gt2&lt/div&gt
+        &ltdiv&gt3&lt/div&gt
+        &ltdiv&gt4&lt/div&gt
+    &lt/div&gt
+
+</pre>
+                <div  layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular').add(property('gap','10px'),childProperty('background-color','lightsalmon',3,4))">
+                    <div class="l-cc box" style="border: 2px dashed #ddd">1</div>
+                    <div class="l-cc box" style="border: 2px dashed #ddd;">2</div>
+                    <div class="l-cc box" style="border: 2px dashed #ddd;">3</div>
+                    <div class="l-cc box" style="border: 2px dashed #ddd;">4</div>
+                </div><br>
+                <h2 id="breakpoint">breakpoint()</h2>
+                <p>This function has two arguments first <code>window.matchMedia</code> can be like <code>(max-wdth: 700px)</code> and second is new layout it can be like <code>(100).splits(3/12, (9/12), 'perpendicular')</code>. You can use this function to make responsive design just target a screen and layout. Remember to pass it always as a string.</p>
+                <p>To use this we just do <code>Number.splits().add(breakpoint('(max-wdth: 700px)', '(100).splits(3/12,(9/12),'perpendicular')'))</code></p><br>
+                <p>JS</p>
+                <pre class="clean">
+    &ltscript&gt             
+    const leftside = lg.splits(sm, lg, 'parallel')
+    const rightside = sm.splits(lg, sm, 'parallel')
+    const layoutMobile = parent.splits(leftside, rightside, 'perpendicular')
+    &lt/script&gt 
+</pre>
+<p>HTML</p>
+<pre class="clean">
+
+    &ltdiv layout="parent.splits(lg, sm, 'perpendicular').add(breakpoint('(max-wdth: 700px)', layoutMobile),childProperty('display','none',2,4))"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+<div  layout="parent.splits(lg, sm, 'perpendicular').add(property('gap','2px'),childProperty('display','none',2,4),breakpoint('(max-width: 700px)', parent.splits(lg.splits(sm, lg, 'parallel'), sm.splits(lg, sm, 'parallel'), 'perpendicular').add(property('gap','2px'))))">
+                    <div class="l-cc box">1</div>
+                    <div class="l-cc box">2</div>
+                    <div class="l-cc box">3</div>
+                    <div class="l-cc box">4</div>
+                </div><br>
+             <br>
+
+             <p>You can always use multiple utility functions inside <code>add()</code></p>
+            </div>
+        </div>
+    </section><br>
+    <section>
+                <div class="grid-container" layout="(100).splits(20,80,'perpendicular',[100,20]).add(order(),breakpoint('(orientation: portrait)',(20).splits(1,20,'parallel',[100,20]).add(property('margin','0px 20px'),order())))">
+            <div class="maincolor sticky l-tr l-tar">
+                 <a class="badge2" href="#CSS">Styling and positioning</a>
+            </div>
+            <div class="con">
+                <h2 id="CSS">CSS </h2>
+                 <h3>Positioning classes</h3>
+                <p>
+                    This framework is just to simplify the layout and positioning so it does not have any UI component like buttons form inputs etc if you know styling then it is okay otherwise css is included in the same folder. It has already display set to flex and has classes. <code>.bl,.tl,.br,.tr,.bc,.tc,.lc,.rc,.cc</code> abbreviation b = bottom, r = right, c = center and t = top can be used in need.
+                </p>
+            </div>
+        </div>
+    </section><br>
+    <section>
+                <div class="grid-container" layout="(100).splits(20,80,'perpendicular',[100,20]).add(order(),breakpoint('(orientation: portrait)',(20).splits(1,20,'parallel',[100,20]).add(property('margin','0px 20px'),order())))">
+            <div class="maincolor sticky l-tr l-tar">
+                 <a class="badge2" href="#design">Responsive Design</a>
+            </div>
+            <div class="con">
+                <h2 id="design">Add any breakpoints</h2>
+                 <h3>Calling breakpoint in utility function</h3>
+                <p>
+                    You can give any breakpoints by calling <code>breakpoint()</code> using ulitity function like <code>Number.splits().add(breakpoint('(max-wdth: 700px)', '(100).splits(3/12, (9/12), 'perpendicular')'))</code> where the function takes two arguments <code>breakpoint(window.matchMedia, newLayout)</code> first <code>window.matchMedia</code> can be like <code>(max-wdth: 700px)</code> and second is new layout it can be like <code>(100).splits(3/12,(9/12),'perpendicular')</code> . As this framework is only designed to create layouts not UI elements, you will have to make buttons forms etc and customise it or you can use any other frameworks' UI like Bootstrap, Material design, Bulma, Ant Design etc.
+                </p>
+                <br>
+                <pre class="clean">
+
+    &ltdiv layout="parent.splits(lg, sm, 'perpendicular').add(childProperty('display','none',2,4),breakpoint('(max-width: 700px)', parent.splits(lg.splits(sm, lg, 'parallel'), sm.splits(lg, sm, 'parallel'), 'perpendicular')))"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+<div  layout="parent.splits(lg, sm, 'perpendicular',[100,50]).add(property('gap','2px'),childProperty('display','none',2,4),breakpoint('(max-width: 700px)', parent.splits(lg.splits(sm, lg, 'parallel'), sm.splits(lg, sm, 'parallel'), 'perpendicular',[100,50]).add(property('gap','2px'))))">
+                    <div class="l-cc box">1</div>
+                    <div class="l-cc box">2</div>
+                    <div class="l-cc box">3</div>
+                    <div class="l-cc box">4</div>
+                </div>
+                <br>
+                <h2 id="layout">Responsive Layout</h2>
+                <p> This framework only has two breakpoints natively are (orientation: portrait) and (orientation: landscape), It is upto you to make any breakpoint.</p>
+                <h3>(orientation: landscape)</h3>
+                <p>There are only few useful classes recommended for layout making and positioning<code>.l-bl,.l-tl,.l-br,.l-tr,.l-bc,.l-tc,.l-lc,.l-rc,.l-cc</code> for landscape mode </p>
+                 <h3>(orientation: portrait)</h3>
+                  <p><code>.p-bl,.p-tl,.p-br,.p-tr,.p-bc,.p-tc,.p-lc,.p-rc,.p-cc</code> for portrait mode.</p>
+                  <br>
+                  <p>abbreviation b = bottom, r = right, c = center and t = top</p> 
+                  <p class="note">Note: You will have to refresh the browser to get the layout if you use orientation</p>
+            </div>
+        </div>
+    </section><br>
+
+    <section>
+                <div class="grid-container" layout="parent.splits((50).splits((10).splits(20,80,'perpendicular'),40,'parallel'),(50),'parallel').add(order(),breakpoint('(orientation: portrait)',parent.splits((50).splits((10).splits(20,80,'parallel'),40,'parallel'),(50),'parallel').add(property('margin','0px 20px'),order())))">
+                    <div class="p-lc l-tr l-tar sticky maincolor"> <a class="badge2" href="#about">About</a></div><div class="con"><h2 id="about"></h2></div>
+            <div class="l-bc p-bc">
+                <img src="logo.png" width="73px">
+            </div>
+            <div class="l-tc p-tc l-tac p-tac">
+                <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"  class="p-tac l-tac">Row column docs is licensed under <a href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY 4.0</a> and code licence under <a href="https://github.com/abhimm5/rowcolumn/blob/main/LICENSE">MIT</a>.<br> <span class="badge">Donate UPI - abhimm5@upi</span> </p>
+         
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="syntaxhighlighter.js"></script>
+</body>
+
+</html>

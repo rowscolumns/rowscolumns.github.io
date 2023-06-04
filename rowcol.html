@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>RC</title>
+    <script type="text/javascript" src="prototypeSyntax.js"></script>
+
+    <style type="text/css">
+        .grid-container>div {
+            border: 1px solid #eee;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="grid-container" layout="parent.splits((5).splits(lg,sm,'perpendicular'),(5).splits(sm,lg,'perpendicular'),'parallel').add(order())">
+            <div class="header" id='title1'>
+                Rows And Columns
+            </div>
+            <div class="subhead" id='title4'>
+                
+            </div>
+            <div id='title2'>
+              
+            </div>
+            <div id='title3'>
+                v0.2.0
+            </div>
+      
+    </div>
+    </section>
+
+    <section>
+        <div class="grid-container" layout="parent.splits(5,(5).splits(sm,lg,'perpendicular'),'parallel').add(order())">
+            <div id='title5'>
+                Grid gives us supercontrol over every nested element.
+            </div>
+            <div class="subhead3">
+                CSS grids are designed to make grids easy. All elements inside the parent can be given perfect layout without doing too much CSS.
+            </div>
+            <div class="subhead4">
+                Line based placements are two dimentional, which does not require nested div or any element
+            </div>
+    
+    </div>
+    </section>
+    <section>
+        <div class="grid-container" layout="parent.splits((5).splits(lg,sm,'parallel'),(5).splits(sm,lg,'perpendicular'),'parallel').add(order())">
+            <div  id='title6'>
+                This framework gives a new method to arrange div. Additionally this framework is based on CSS grid not too much js progamming only 25kb in size
+            </div>
+            <div id="focus">
+                FOCUSES ON DESIGN AND BEAUTINESS
+            </div>
+            <div class="subhead1" id="subhead1">
+                All we do in a web page is <br> Scroll, Slide, Hover and Touch. 
+            </div>
+            <div class="subhead2">
+                Framework extracted from pure <br> javascript and based on golden ratio
+            </div>
+            
+    </div>
+    </section>
+    <section>
+        <div class="grid-container" layout="parent.splits((5).splits(lg,sm,'perpendicular'),(5).splits(sm,lg,'perpendicular'),'parallel').add(order())">
+            <div class="header" id='title'>
+                Rows And Columns
+            </div>
+            <div id="love">
+                Love from India
+            </div>
+            <div>
+                
+            </div>
+            <div id="doc">
+               Read Documentation
+            </div>
+            
+    </div>
+    </section>
+<script type="text/javascript" src="animate.js"></script>
+</body>
+
+</html>
