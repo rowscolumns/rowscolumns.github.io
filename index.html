@@ -325,7 +325,7 @@
                 <br>
                 <h2 id="num">Numbers</h2>
                  <h3>Predefined numbers</h3>
-                <p>Although youo can use any numbers but there are already predefined number variables which are already proportioned in golden ratio to give modern division. You should definitely use them in making rows and columns. </p>
+                <p>Although you can use any numbers but there are already predefined number variables already proportioned in golden ratio to give modern division. You should definitely use them in making rows and columns. </p>
                 <pre class="clean">
     &ltscript&gt 
         const parent = 100
@@ -335,10 +335,42 @@
         parent.splits(lg, sm, 'perpendicular')
     &lt/script&gt
     
-
 </pre>
 <br>
+<h3>Splitting to any depth</h3>
 <pre class="clean">
+
+    &ltdiv layout="(100).splits(lg.splits(lg.splits(lg,sm,"perpendicular"),sm.splits(sm,lg,"perpendicular"),"parallel"), sm.splits(sm.splits(lg,sm,"parallel"),lg.splits(lg.splits(lg,sm,"parallel"),sm,"perpendicular"),"parallel"),'perpendicular',[100,60])"&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+        &ltdiv&gt&lt/div&gt
+    &lt/div&gt
+
+</pre>
+<div  layout="(100).splits(lg.splits(lg.splits(lg,sm,'perpendicular'),sm.splits(sm,lg,'perpendicular'),'parallel'), sm.splits(sm.splits(lg,sm,'parallel'),lg.splits(lg.splits(lg,sm,'parallel'),sm,'perpendicular'),'parallel'),'perpendicular',[100,60]).add(property('gap','2px'))">
+                    <div style="border: 2px solid #ddd"></div>
+                    <div style="border: 2px solid #ddd;"></div>
+                    <div style="border: 2px solid #ddd;"></div>
+                    <div style="border: 2px solid #ddd"></div>
+                    <div style="border: 2px solid #ddd;"></div>
+                    <div style="border: 2px solid #ddd;"></div>
+                    <div style="border: 2px solid #ddd"></div>
+                    <div style="border: 2px solid #ddd;"></div>
+                    <div style="border: 2px solid #ddd;"></div>
+                </div>
+
+
+                <br>
+                <h2 id="split">Splitting</h2>
+                <p>You can make as many rows and columns row, but making rows and columns in specific way by using custom numbers will gove more aesthetics to your websites. As this framework is focused on design, without any extra efforts you can use this framework to make attractive layouts with any design principles.</p>
+                <h3>Golden ratio</h3>
+                <pre class="clean">
 
     &ltdiv layout="(100).splits(lg,sm.splits(lg,sm.splits(sm.splits(sm.splits(lg,sm.splits(lg,sm.splits(sm.splits(sm,lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular'),lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular',[100,61.2])"&gt
         &ltdiv&gt&lt/div&gt
@@ -364,10 +396,7 @@
                     <div style="border: 2px solid #ddd;border-bottom-left-radius: 1000px"></div>
                     <div style="border: 2px solid #ddd;border-bottom-left-radius: 1000px"></div>
                 </div>
-
                 <br>
-                <h2 id="split">Splitting</h2>
-                <p>You can make as many rows and columns row, but making rows and columns in specific way by using custom numbers will gove more aesthetics to your websites. As this framework is focused on design, without any extra efforts you can use this framework to make attractive layouts with any design principles.</p>
                 <h3>Symmetry</h3>
             <pre class="clean">
 
@@ -401,6 +430,7 @@
                     <div class="box"></div>
                     <div class="box"></div>
                 </div>
+                <br>
                 <h3>Rhythm Columns</h3>
             <pre class="clean">
 
