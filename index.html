@@ -84,7 +84,7 @@
                 <h2 id="install">Installation</h2>
                 <p>1. Download from latest release. click here  </p>
                 <p>2. Paste all files in any folder and link them to your document.</p>
-                <p>3. You can link - <code>&ltscript type="module" src="rowcolumn.js"&gt &lt/script&gt</code> - to head of your html file.</p>
+                <p>3. You can link - <code>&ltscript type="module" src="rowcolumn.js"&gt &lt/script&gt</code> - to head of your html file or single file <code>&ltscript type="text/javascript" src="prototypeSyntax.js"&gt &lt/script&gt</code> </p>
                 <p>4. Start making grid websites easily.</p>
             </div>
 
@@ -340,7 +340,7 @@
 <h3>Splitting to any depth</h3>
 <pre class="clean">
 
-    &ltdiv layout="(100).splits(lg.splits(lg.splits(lg,sm,"perpendicular"),sm.splits(sm,lg,"perpendicular"),"parallel"), sm.splits(sm.splits(lg,sm,"parallel"),lg.splits(lg.splits(lg,sm,"parallel"),sm,"perpendicular"),"parallel"),'perpendicular',[100,60])"&gt
+    &ltdiv layout="(100).splits(lg.splits(lg.splits(lg,sm,'perpendicular'),sm.splits(sm,lg,'perpendicular'),'parallel'), sm.splits(sm.splits(lg,sm,'parallel'),lg.splits(lg.splits(lg,sm,'parallel'),sm,'perpendicular'),'parallel'),'perpendicular',[100,60])"&gt
         &ltdiv&gt&lt/div&gt
         &ltdiv&gt&lt/div&gt
         &ltdiv&gt&lt/div&gt
