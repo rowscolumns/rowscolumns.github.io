@@ -11,6 +11,11 @@
         color: #333;
 
     }
+    .container {
+  background-image: url('pie-factory.svg'); /* Replace 'your-svg-image.svg' with the path to your SVG file */
+  background-repeat: repeat;
+   fill: blue;
+}
 
         </style>
             <link rel="stylesheet" href="../style.css">
@@ -20,14 +25,15 @@
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     </head>
-    <body>
-        <div class="grid-container" id="grid-container" layout="(100).splits(lg, sm
+    <body id="container" >
+        <div style="background-color: rgb(252, 252, 252,0.2);" class="grid-container"  id="grid-container" layout="(100).splits(lg, sm
          ,'parallel',[100,97.5])
         .add(
         property('gap','20px'),
         property('margin','20px'),
         property('border-radius','10px',0,3),
         )">
+
             <div id="demo5" style="" class="l-cc p-cc">
                 <div  class="p-tac l-tac">
                     <h1 style="font-size: 90px;" id="demo2">CSS's First</h1>
@@ -35,7 +41,7 @@
                 </div>
             </div>
              <div   class="l-tc l-tac p-cc p-tac">
-                <div id="demo4" >
+                <div id="demo4" style="color: rgb(252, 252, 252,0.99);">
                     <h2>Make</h2>
                     <h1>Complex Grids</h1>
                     <h2  >In just minutes</h3> 
@@ -48,13 +54,66 @@
             </div>
              <div class="l-cc ">
                 <div class="p-tac l-tac">
-                    <h2><a href="https://rowscolumns.github.io/docs.html">Read Documentation </a></h4>
-                    <h3>An Open Sourced Project By @abhimm5 From India</h3> 
+                    <h2><a href="https://rowscolumns.github.io/">Read Documentation </a></h4>
+                    <h3>An Open Sourced Project By From India</h3> 
                 </div>
             </div>
+
         </div>
     </body>
+
   <script>
+    function svg(svgcolor){
+     return "<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill-rule='evenodd'><g fill='"+ svgcolor +"' fill-rule='nonzero'><path d='M29 58.58l7.38-7.39A30.95 30.95 0 0 1 29 37.84a30.95 30.95 0 0 1-7.38 13.36l7.37 7.38zm1.4 1.41l.01.01h-2.84l-7.37-7.38A30.95 30.95 0 0 1 6.84 60H0v-1.02a28.9 28.9 0 0 0 18.79-7.78L0 32.41v-4.84L18.78 8.79A28.9 28.9 0 0 0 0 1.02V0h6.84a30.95 30.95 0 0 1 13.35 7.38L27.57 0h2.84l7.39 7.38A30.95 30.95 0 0 1 51.16 0H60v27.58-.01V60h-8.84a30.95 30.95 0 0 1-13.37-7.4L30.4 60zM29 1.41l-7.4 7.38A30.95 30.95 0 0 1 29 22.16 30.95 30.95 0 0 1 36.38 8.8L29 1.4zM58 1A28.9 28.9 0 0 0 39.2 8.8L58 27.58V1.02zm-20.2 9.2A28.9 28.9 0 0 0 30.02 29h26.56L37.8 10.21zM30.02 31a28.9 28.9 0 0 0 7.77 18.79l18.79-18.79H30.02zm9.18 20.2A28.9 28.9 0 0 0 58 59V32.4L39.2 51.19zm-19-1.4a28.9 28.9 0 0 0 7.78-18.8H1.41l18.8 18.8zm7.78-20.8A28.9 28.9 0 0 0 20.2 10.2L1.41 29h26.57z'/></g></g></svg>"
+    }
+
+    const colorBox = document.getElementById('container');
+
+      const transitionDuration = 1000; // Transition duration in milliseconds
+
+      function gradChange(targetColor,colorBox,styleType) {
+  const currentColor = getComputedStyle(colorBox)[styleType]; // Get the current background color
+  const currentColorArray = extractRGBAValues(currentColor);
+
+  // Calculate the step size for each RGBA component
+  const stepSize = {
+    r: (targetColor.r - currentColorArray[0]) / transitionDuration,
+    g: (targetColor.g - currentColorArray[1]) / transitionDuration,
+    b: (targetColor.b - currentColorArray[2]) / transitionDuration,
+    a: (targetColor.a - currentColorArray[3]) / transitionDuration
+  };
+
+  // Clear any previous transitions
+  colorBox.style.transition = "none";
+
+  // Use requestAnimationFrame to update the color gradually
+  function updateColor(timestamp) {
+    if (!colorBox.transitionStartTime) {
+      colorBox.transitionStartTime = timestamp;
+    }
+
+    const elapsedTime = timestamp - colorBox.transitionStartTime;
+
+    if (elapsedTime < transitionDuration) {
+      const newColor = `rgba(${Math.round(currentColorArray[0] + stepSize.r * elapsedTime)}, ${Math.round(currentColorArray[1] + stepSize.g * elapsedTime)}, ${Math.round(currentColorArray[2] + stepSize.b * elapsedTime)}, ${currentColorArray[3] + stepSize.a * elapsedTime})`;
+      colorBox.style[styleType] = newColor;
+      requestAnimationFrame(updateColor);
+    } else {
+      // Ensure the final color is exactly the target color
+      colorBox.style[styleType] = `rgba(${targetColor.r}, ${targetColor.g}, ${targetColor.b}, ${targetColor.a})`;
+      colorBox.transitionStartTime = null;
+    }
+  }
+
+  requestAnimationFrame(updateColor);
+}
+
+      // Helper function to extract RGB values from a color string
+   function extractRGBAValues(color) {
+  const matches = color.match(/\d+(\.\d+)?/g);
+  return matches ? matches.map(Number) : [0, 0, 0, 0.2];
+}
+
     
     function makeDigit(number){
         return new Array(number).fill(0).join('');
@@ -101,6 +160,20 @@
     }
 }
 
+function hexToRgbObj(hex,alpha) {
+  // Remove the '#' character if present
+  hex = hex.replace(/^#/, '');
+
+  // Parse the hex value into three separate R, G, and B values
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  // Return the RGB value as a string
+  return {r:r,g:g,b:b,a:alpha};
+}
+
+
 function invertHex(hex) {
    let main = hex.slice(1)
    console.log(main)
@@ -114,18 +187,23 @@ function adjust(color, amount) {
 
 
 
-                element.style.color = rancol
-                element2.style.color = invertHex(rancol)
-                
+                element.style.color = rancol, 50
+                element2.style.color = rancol
+                //element3.style.backgroundColor =  hexToRGB(rancol, 0.2);
+
+
                 element.innerHTML = digitLength.fill(stringValue[i],i,i+1).join('')
                 i++
                 if(i == digit.length){
+                    //gradChange(hexToRgbObj(rancol,0.2),element3,"backgroundColor")
                        element2.style.color = "#000"
-                       element3.style.backgroundColor = hexToRGB(rancol, 0.2)
+                       //element3.style.backgroundColor = hexToRGB(rancol, 0.2)
                         //element5.style.backgroundColor = invertHex(rancol)
-                        element4.style.color =  adjust(rancol, -50)
-                        console.log(invertHex(rancol))
-                    clearInterval(animating) 
+                        //element4.style.color =  rancol
+                        gradChange(hexToRgbObj(rancol,0.99),element4,"color")
+                           svgcolor = "blue"
+                   colorBox.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(svg(hexToRGB(rancol, 0.2)))}")`;
+                    clearInterval(animating)
                 }
             },40)
         }
@@ -150,7 +228,7 @@ function adjust(color, amount) {
         }else{
             i++
         }
-    },100)
+    },100)   
 </script>
 </html>
 
