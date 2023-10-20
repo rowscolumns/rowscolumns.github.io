@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style id="dcoder_stylesheet" type="text/css">
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+        </style>
+            <link rel="stylesheet" href="style.css">
+
+         <script src="prototypeSyntax.js"></script>
+         <link rel="stylesheet" type="text/css" href="rowcolumn.css">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="grid-container" id="grid-container" layout="(100).splits(lg, sm
+        .splits(lg,sm ,'parallel') ,'parallel',[100,97.5])
+        .add(
+        property('gap','20px'),
+        property('margin','20px'),
+        childProperty('border-radius','10px',0,3),
+        childProperty('background-color','#f3f3f3',0,2)
+        )">
+            <div style="" class="l-cc p-cc">
+                <div class="p-tac l-tac">
+                    <h1 style="font-size: 90px;">First in Industry</h1>
+                    <h2 id="demo" >Two dimentional compatible layout framework.</h3> 
+                    <br><br>
+                    <h2>Make</h2>
+                    <h1>Complex Grids</h1>
+                    <h2  >In just minutes</h3> 
+                </div>
+                
+            </div>
+             <div style="background-image: url('bea.jpg'); " class="l-cc l-tac p-cc p-tac">
+                <div>
+                    <h1 style="font-size: 40px;color: #000;">Fully Focused</h1>
+                    <h1 style="font-size: 60px;color: #ffffff;">Design</h1>
+                    <h1 style="font-size: 40px;color: #000;">and</h1>
+                    <h1 style="font-size: 60px; color: #ffffff;">Beautiness</h1>
+                </div>
+                
+            </div>
+             <div class="l-cc ">
+                <div class="p-tac l-tac">
+                    <h2><a href="https://rowscolumns.github.io/">Read Documentation </a></h4>
+                    <h3>An Open Sourced Project By From India</h3> 
+                </div>
+            </div>
+        </div>
+    </body>
+  <script>
+    
+    function makeDigit(number){
+        return new Array(number).fill(0).join('');
+    }
+    function changeDigit(digit,number){
+        let count = digit.split('')
+        count.splice(0,1,number)
+        return Number(count.join(''))
+    }
+    const number = new Array;
+    const myPunctuation = ['~!@#$%^&*'].toString().split('')
+    function numberAnimate(value){
+        let digit = value.length
+        let element = document.getElementById('demo');
+        number.push(value);
+        let lastNumber = number.pop();
+        let splitNumber = lastNumber.toString().split('')
+        console.log(digit)
+        //animation function
+        const animate = (digit,value) => {
+            var i = 0;
+            let stringValue = value.toString().split('') 
+            let digitLength = new Array(digit.length)
+            let animating = setInterval(()=>{
+                for(let int =0;int<digit.length;int++){
+                    digitLength.fill(myPunctuation[Math.floor(Math.random() * 10)],digit.length-1)
+                    console.log(value)
+                }
+                element.style.color = "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0")
+                element.innerHTML = digitLength.fill(stringValue[i],i,i+1).join('')
+                i++
+                if(i == digit.length){
+                    clearInterval(animating)
+                }
+            },40)
+        }
+        animate(makeDigit(digit),value)
+    }
+    let phrase = ['Two dimentional compatible layout framework.','Fully Crafted from Grids','Line based Placement System']
+    let i = 0
+    setTimeout(()=>{
+        numberAnimate(phrase[i]);
+        setInterval(()=>{
+        numberAnimate(phrase[i]);
+        if(i==phrase.length-1){
+           i=0
+        }else{
+            i++
+        }
+    },8000)
+        if(i==phrase.length-1){
+           i=0
+        }else{
+            i++
+        }
+    },100)
+</script>
+</html>
+
