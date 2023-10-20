@@ -7,45 +7,48 @@
       margin: 0;
       padding: 0;
     }
+    .lc{
+        color: #333;
+
+    }
+
         </style>
-            <link rel="stylesheet" href="style.css">
+            <link rel="stylesheet" href="../style.css">
 
          <script src="../prototypeSyntax.js"></script>
          <link rel="stylesheet" type="text/css" href="rowcolumn/rowcolumn.css">
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     </head>
     <body>
         <div class="grid-container" id="grid-container" layout="(100).splits(lg, sm
-        .splits(lg,sm ,'parallel') ,'parallel',[100,97.5])
+         ,'parallel',[100,97.5])
         .add(
         property('gap','20px'),
         property('margin','20px'),
-        childProperty('border-radius','10px',0,3),
-        childProperty('background-color','#f3f3f3',0,2)
+        property('border-radius','10px',0,3),
         )">
-            <div style="" class="l-cc p-cc">
-                <div class="p-tac l-tac">
-                    <h1 style="font-size: 90px;">First Ever in CSS</h1>
+            <div id="demo5" style="" class="l-cc p-cc">
+                <div  class="p-tac l-tac">
+                    <h1 style="font-size: 90px;" id="demo2">CSS's First</h1>
                     <h2 id="demo" >Two dimentional compatible layout framework.</h3> 
-                    <br><br>
+                </div>
+            </div>
+             <div   class="l-tc l-tac p-cc p-tac">
+                <div id="demo4" >
                     <h2>Make</h2>
                     <h1>Complex Grids</h1>
                     <h2  >In just minutes</h3> 
-                </div>
-                
-            </div>
-             <div style="background-image: url('../bea.jpg'); " class="l-cc l-tac p-cc p-tac">
-                <div>
-                    <h1 style="font-size: 40px;color: #000;">Fully Focused</h1>
-                    <h1 style="font-size: 60px;color: #ffffff;">Design</h1>
-                    <h1 style="font-size: 40px;color: #000;">and</h1>
-                    <h1 style="font-size: 60px; color: #ffffff;">Beautiness</h1>
+                    <h1 style="font-size: 40px;">Fully Focused</h1>
+                    <h1 style="font-size: 60px;">Design</h1>
+                    <h1 style="font-size: 40px;">and</h1>
+                    <h1 style="font-size: 60px; ">Beautiness</h1>
                 </div>
                 
             </div>
              <div class="l-cc ">
                 <div class="p-tac l-tac">
-                    <h2><a href="https://rowscolumns.github.io/docs.html">Read Documentation </a></h4>
+                    <h2><a href="https://rowscolumns.github.io/">Read Documentation </a></h4>
                     <h3>An Open Sourced Project By From India</h3> 
                 </div>
             </div>
@@ -61,11 +64,16 @@
         count.splice(0,1,number)
         return Number(count.join(''))
     }
+    let element = document.getElementById('demo');
+    let element2 = document.getElementById('demo2');
+    let element3 = document.getElementById('grid-container');
+     let element4 = document.getElementById('demo4');
+      let element5 = document.getElementById('demo5');
     const number = new Array;
     const myPunctuation = ['~!@#$%^&*'].toString().split('')
     function numberAnimate(value){
         let digit = value.length
-        let element = document.getElementById('demo');
+        
         number.push(value);
         let lastNumber = number.pop();
         let splitNumber = lastNumber.toString().split('')
@@ -80,11 +88,44 @@
                     digitLength.fill(myPunctuation[Math.floor(Math.random() * 10)],digit.length-1)
                     console.log(value)
                 }
-                element.style.color = "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0")
+                let rancol = "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0")
+                function hexToRGB(hex, alpha) {
+    var r = parseInt(hex.slice(1, 3), 16),
+        g = parseInt(hex.slice(3, 5), 16),
+        b = parseInt(hex.slice(5, 7), 16);
+
+    if (alpha) {
+        return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+    } else {
+        return "rgb(" + r + ", " + g + ", " + b + ")";
+    }
+}
+
+function invertHex(hex) {
+   let main = hex.slice(1)
+   console.log(main)
+  return '#' + (Number(`0x1${main}`) ^ 0xFFFFFF).toString(16).substr(1).toUpperCase()
+
+}
+function adjust(color, amount) {
+    return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
+}
+; // Returns FF00FF
+
+
+
+                element.style.color = rancol
+                element2.style.color = invertHex(rancol)
+                element3.style.backgroundColor =  hexToRGB(rancol, 0.2);
                 element.innerHTML = digitLength.fill(stringValue[i],i,i+1).join('')
                 i++
                 if(i == digit.length){
-                    clearInterval(animating)
+                       element2.style.color = "#000"
+                       element3.style.backgroundColor = hexToRGB(rancol, 0.2)
+                        //element5.style.backgroundColor = invertHex(rancol)
+                        element4.style.color =  adjust(rancol, -50)
+                        console.log(invertHex(rancol))
+                    clearInterval(animating) 
                 }
             },40)
         }
@@ -96,12 +137,14 @@
         numberAnimate(phrase[i]);
         setInterval(()=>{
         numberAnimate(phrase[i]);
+
         if(i==phrase.length-1){
            i=0
         }else{
             i++
         }
     },8000)
+          element.style.color = "#333"
         if(i==phrase.length-1){
            i=0
         }else{
