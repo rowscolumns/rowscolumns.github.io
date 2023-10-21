@@ -230,5 +230,15 @@ function adjust(color, amount) {
         }
     },100)   
 </script>
+      <script>
+    function handleVisibilityChange() {
+      if (document.visibilityState === 'visible') {
+        // Page is visible, so refresh it
+        location.reload();
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+  </script>
 </html>
 
