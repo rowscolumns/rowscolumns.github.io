@@ -28,6 +28,9 @@
             /* Buttons */
             --btn-text: #000;
             --btn-bg: #fff;
+
+            --wireframe: rgba(255, 255, 255, 0.03);
+    --wireframe-border: #333;
         }
 
         html.light-mode {
@@ -49,6 +52,9 @@
             /* Buttons */
             --btn-text: #fff;
             --btn-bg: #111;
+
+            --wireframe: #f9f9f9;
+    --wireframe-border: #e0e0e0;
         }
 
         /* --- BASE STYLES --- */
@@ -81,7 +87,15 @@
 
         /* Native Grid Override */
         [layout], [layout-md] { display: grid; width: 100%; }
-        @media (max-width: 768px) { h1 { font-size: 2.5rem; } }
+        @media (max-width: 768px) { h1 { font-size: 2.5rem; } 
+
+         [layout] > .demo-box {
+            padding: 0px;
+         }
+         .doc-shell {
+            display: block;
+        }
+        }
 
 
         /* --- BG MESH (Subtle) --- */
@@ -97,7 +111,6 @@
 
         /* --- LAYOUT SHELL --- */
         .doc-shell {
-            display: flex;
             max-width: 1100px;
             margin: 0 auto;
             min-height: 100vh;
@@ -170,18 +183,32 @@
         a:hover { opacity: 0.8; }
 
         /* --- CODE BLOCKS (Dynamic Theme) --- */
-        pre.clean {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            margin: 20px 0;
-            color: var(--code-text);
-        }
-        
+        /* CODE BLOCKS WITH VERTICAL ACCENT */
+/* CODE BLOCKS */
+pre.clean {
+    background: var(--code-bg);
+    color: var(--code-text);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary); /* The vertical accent */
+    border-radius: 6px;
+    padding: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    
+    /* SCROLLING */
+    overflow-x: auto;
+    margin: 20px 0;
+
+    /* FIREFOX SCROLLBAR */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+/* CHROME/EDGE SCROLLBAR STYLING */
+pre.clean::-webkit-scrollbar { height: 6px; }
+pre.clean::-webkit-scrollbar-track { background: transparent; }
+pre.clean::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turns Red on Hover */     
         code {
             font-family: 'JetBrains Mono', monospace;
             background: var(--code-inline-bg);
@@ -205,7 +232,6 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 6px;
-            padding: 20px;
             color: var(--text-muted);
             font-weight: 600;
             display: flex; align-items: center; justify-content: center;
@@ -234,7 +260,17 @@
         @media (max-width: 900px) {
             .sidebar { display: none; }
             .content { padding: 80px 20px; }
+
         }
+
+        @media (min-width: 900px) {
+        .doc-shell {
+            display: flex;
+            max-width: 1100px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+    }
 
   .arc-tl { border-top-left-radius: 1000px !important; min-height:0 !important;padding:0 !important }
   .arc-tr { border-top-right-radius: 1000px !important; min-height:0 !important;padding:0 !important }
@@ -547,8 +583,13 @@
                         <p><em>Result: A centered container taking up only 50% of the width.</em></p>
                         
                         <!-- Live Demo showing width constraint -->
-                        <div class="grid-container" layout="Grid.col(100)" style="border:none; padding:0; background:#fafafa; border:1px dashed #ccc;">
-                             <div layout="Grid.col(50, 50).props({width: '50%', height:'60px', gap:'5px', margin: '0 auto'})" style="border:none; padding:0; background:transparent;">
+                        <!-- FIX: Used var(--wireframe) instead of #fafafa to support Dark Mode -->
+                        <div class="grid-container" 
+                             layout="Grid.col(100)" 
+                             style="border:none; padding:0; background:var(--wireframe); border:1px dashed var(--wireframe-border);">
+                             
+                             <div layout="Grid.col(50, 50).props({width: '50%', height:'60px', gap:'5px', margin: '0 auto'})" 
+                                  style="border:none; padding:0; background:transparent;">
                                 <div class="demo-box filled">50%</div>
                                 <div class="demo-box filled">50%</div>
                             </div>

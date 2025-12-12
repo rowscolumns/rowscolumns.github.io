@@ -36,6 +36,9 @@
             
             /* Input */
             --input-bg: #18181b;
+
+             --wireframe: rgba(255, 255, 255, 0.03);
+    --wireframe-border: #333;
         }
 
         html.light-mode {
@@ -74,6 +77,9 @@
             
             /* Input */
             --input-bg: #fff;
+
+             --wireframe: #f9f9f9;
+    --wireframe-border: #e0e0e0;
         }
 
         /* --- BASE STYLES --- */
