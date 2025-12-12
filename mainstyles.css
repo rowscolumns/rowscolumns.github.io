@@ -1,0 +1,395 @@
+        /* --- THEME VARIABLES --- */
+        :root {
+            /* Dark Mode (Default) */
+            --bg: #050505; 
+            --surface: #111; 
+            --surface-hover: #1a1a1a;
+            --border: #222;
+            --primary: #f0513e; 
+            --text-main: #ededed; 
+            --text-muted: #888;
+            --text-heading: #fff; /* Specific for bold headers */
+            
+            /* Code Editor - Dark */
+            --code-bg: #0d0d0d;
+            --code-header: #1a1a1a;
+            --code-text: #a9b7c6;
+            
+            /* Code Blocks (Dark Mode) */
+            --code-inline-bg: rgba(255, 255, 255, 0.1);
+            --code-inline-text: #fff;
+            
+            /* Syntax Highlighting - Dark */
+            --hl-k: #cc7832; /* Keyword (orange) */
+            --hl-f: #ffc66d; /* Function (yellow) */
+            --hl-s: #6a8759; /* String (green) */
+            --hl-v: #9876aa; /* Variable (purple) */
+            --hl-t: #e8bf6a; /* Tag (gold) */
+            
+            /* Wireframes */
+            --wireframe: rgba(255,255,255,0.03);
+            --wireframe-border: #333;
+            
+            /* Buttons */
+            --btn-text: #000;
+            --btn-bg: #fff;
+            
+            /* Input */
+            --input-bg: #18181b;
+        }
+
+        html.light-mode {
+            /* LIGHT MODE (Overrides) */
+            --bg: #ffffff;
+            --surface: #f4f4f5;
+            --surface-hover: #e9ecef;
+            --border: #e4e4e7;
+            --text-main: #18181b;
+            --text-muted: #52525b;
+            --text-heading: #000;
+            
+            /* Code Editor - Light (White Background) */
+            --code-bg: #ffffff;
+            --code-header: #f4f4f5;
+            --code-text: #24292e;
+            
+            /* Code Blocks (Light Mode - distinct look) */
+            --code-inline-bg: #e9ecef;
+            --code-inline-text: #d63384; /* Pinkish for inline code in light mode */
+
+            /* Syntax Highlighting - Light (Darker Colors) */
+            --hl-k: #d73a49; /* Red */
+            --hl-f: #6f42c1; /* Purple */
+            --hl-s: #032f62; /* Dark Blue */
+            --hl-v: #005cc5; /* Blue */
+            --hl-t: #22863a; /* Green */
+
+            /* Wireframes */
+            --wireframe: #f9fafb;
+            --wireframe-border: #e5e7eb;
+            
+            /* Buttons */
+            --btn-bg: #18181b;
+            --btn-text: #fff;
+            
+            /* Input */
+            --input-bg: #fff;
+        }
+
+        /* --- BASE STYLES --- */
+        * { box-sizing: border-box; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
+        body { background-color: var(--bg); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        a { text-decoration: none; color: inherit; }
+        a:hover { color: var(--primary); }
+
+        /* --- UI ELEMENTS --- */
+        .btn { padding: 12px 24px; border-radius: 6px; font-weight: 500; background: var(--btn-bg); color: var(--btn-text); display: inline-block; border: 1px solid transparent;}
+        .btn:hover { opacity: 0.8; }
+        
+        .code-box { 
+            font-family: 'JetBrains Mono', monospace; 
+            background: var(--code-bg); 
+            padding: 12px; 
+            border-radius: 6px; 
+            border: 1px solid var(--border); 
+            color: var(--code-text); 
+            font-size: 0.85rem; 
+            overflow: hidden;
+        }
+        
+        .card { 
+            background: var(--surface); border: 1px solid var(--border); 
+            border-radius: 12px; padding: 30px; display: flex; flex-direction: column; justify-content: center; 
+            backdrop-filter: blur(10px); 
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-2px); }
+
+        .wireframe-box {
+            background: var(--wireframe); border: 1px dashed var(--wireframe-border);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-muted);
+            padding: 8px 0;
+        }
+        .wireframe-box.fill { background: rgba(240, 81, 62, 0.1); border-color: var(--primary); color: var(--primary); border-style: solid;}
+
+        /* --- TYPOGRAPHY --- */
+        h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 20px 0; line-height: 1.1; background: linear-gradient(to bottom right, var(--text-main), var(--text-muted)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: var(--text-heading); }
+        h2 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 20px 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; color: var(--text-heading); }
+        h3 { font-size: 1.4rem; font-weight: 600; margin-top: 40px; margin-bottom: 15px; color: var(--text-heading); }
+        h4 { font-size: 1rem; font-weight: 600; margin-top: 60px; margin-bottom: 15px; color: var(--primary); }
+        
+        p, li { color: var(--text-muted); margin-bottom: 15px; font-size: 1.05rem; }
+        strong { color: var(--text-heading); }
+        
+        .nav-link { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+        .nav-link:hover { color: var(--primary); }
+        .icon-btn { background: transparent; border: none; color: var(--text-main); border-radius: 6px; cursor: pointer; padding: 6px; display:flex; align-items:center; justify-content:center;}
+        .icon-btn:hover { background: var(--surface); border-color: var(--text-muted); }
+
+        /* Engine Setup */
+        [layout], [layout-sm], [layout-md], [layout-lg] { display: grid; width: 100%; align-content: start; }
+
+        @media (max-width: 768px) { h1 { font-size: 2.5rem; } }
+
+        /* CODE WINDOW STYLES (DYNAMIC) */
+        .terminal { 
+            background: var(--code-bg); 
+            border: 1px solid var(--border); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.1); 
+        }
+        .terminal-header { 
+            background: var(--code-header); 
+            padding: 10px 15px; 
+            display: flex; gap: 6px; 
+            border-bottom: 1px solid var(--border); 
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .terminal-body { 
+            padding: 25px; 
+            color: var(--code-text); 
+            line-height: 1.6; 
+            font-family: 'JetBrains Mono', monospace; 
+            font-size: 0.85rem; 
+        }
+        
+        /* Dynamic Syntax Highlighting */
+        .k { color: var(--hl-k); } 
+        .f { color: var(--hl-f); } 
+        .s { color: var(--hl-s); } 
+        .v { color: var(--hl-v); } 
+        .t { color: var(--hl-t); }
+
+        /* --- BG MESH (Subtle) --- */
+        .bg-mesh {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* --- LAYOUT SHELL --- */
+        .doc-shell {
+            display: flex;
+            max-width: 1100px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 65px; /* Matches Nav Height */
+            height: calc(100vh - 65px);
+            overflow-y: auto;
+            border-right: 1px solid var(--border);
+            padding: 40px 20px;
+            background: var(--bg); /* Ensure solid bg for readability */
+        }
+
+        .toc-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin: 25px 0 10px 10px;
+            font-weight: 700;
+        }
+
+        .toc-link {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 12px;
+            margin-bottom: 2px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .toc-link:hover { background: var(--surface-hover); color: var(--text-main); }
+        .toc-link.active { background: rgba(240, 81, 62, 0.1); color: var(--primary); font-weight: 500;box-shadow:0 0 15px rgba(240, 81, 62, 0.1); }
+
+        /* --- MAIN CONTENT --- */
+        .content {
+            flex-grow: 1;
+            padding: 100px 60px 100px 60px;
+            max-width: 900px;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex; align-items: center; padding: 0 30px;
+            justify-content: space-between;
+        }
+
+        /* --- CODE BLOCKS (Dynamic Theme) --- */
+        pre.clean {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 20px 0;
+            color: var(--code-text);
+        }
+        
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--code-inline-bg);
+            color: var(--code-inline-text);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        pre code { background: none; padding: 0; color: inherit; }
+
+        /* --- GRID DEMO CONTAINERS --- */
+        .grid-container { width: 100%; margin-bottom: 40px; }
+
+        /* The boxes inside the grid demos */
+         [layout] > .demo-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+            min-height: 60px;
+        }
+
+        /* Highlighted demo box */
+        [layout] > .demo-box.filled {
+            background: rgba(240, 81, 62, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* --- TABLE STYLE --- */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { text-align: left; padding: 15px; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+        th { color: var(--text-heading); font-weight: 600; background: var(--surface); }
+        td { color: var(--text-muted); }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .content { padding: 80px 20px; }
+        }
+
+        .arc-tl { border-top-left-radius: 1000px !important; min-height:0 !important;padding:0 !important }
+        .arc-tr { border-top-right-radius: 1000px !important; min-height:0 !important;padding:0 !important }
+        .arc-br { border-bottom-right-radius: 1000px !important; min-height:0 !important;padding:0 !important }
+        .arc-bl { border-bottom-left-radius: 1000px !important; min-height:0 !important;padding:0 !important }
+        .primary-color{
+            color: var(--primary);
+        }
+
+        /* --- NAV --- */
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1rem; }
+
+        /* --- LAYOUT --- */
+        .app { display: flex; flex: 1; height: calc(100vh - 65px); max-width: 1100px; margin: 0 auto;}
+        .canvas-wrapper { 
+            flex: 1; 
+            padding: 40px; 
+            display: flex; 
+            flex-direction: column;
+            background: var(--bg);
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: relative;
+        }
+
+        /* --- EDITOR CONTAINER (THE REAL GRID) --- */
+        #editor-root {
+            flex: 1;
+            /* Controlled by Engine */
+            display: grid; 
+            
+            border: 1px solid var(--border);
+            background: var(--surface);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        
+        #editor-root.manual-mode { pointer-events: none; border-color: var(--primary); }
+
+        /* --- GRID ITEMS (LEAVES) --- */
+        .grid-item {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid rgba(128,128,128,0.1);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+        
+        .grid-item:hover {
+            background: rgba(240, 81, 62, 0.05);
+            box-shadow: inset 0 0 0 1px var(--primary);
+            z-index: 10;
+        }
+
+        /* --- CONTROLS (Injected into Grid Items) --- */
+        .dims { margin-bottom: 10px; font-weight: 600; font-size: 0.8rem; color: var(--text-muted); pointer-events: none; }
+        .controls {
+            display: none;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            flex-direction: column; gap: 8px; z-index: 20;
+            background: var(--bg); padding: 10px; 
+            border-radius: 8px; border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .grid-item:hover .controls { display: flex; }
+
+        .row-btns { display: flex; gap: 5px; }
+        
+        button.ctrl {
+            background: var(--surface); border: 1px solid var(--border); color: var(--text-main);
+            padding: 6px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; white-space: nowrap;
+        }
+        button.ctrl:hover { background: var(--primary); border-color: var(--primary); color: white; }
+        
+        input.weight-inp {
+            background: var(--input-bg); border: 1px solid var(--border); color: var(--text-main);
+            padding: 4px; border-radius: 4px; font-size: 11px; text-align: center; width: 100%;
+        }
+
+        /* --- SIDEBAR (Editor) --- */
+        .sidebar { width: 260px;  display: flex; flex-direction: column; z-index: 20; }
+        .tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); }
+        .tab { flex: 1; padding: 15px; background: transparent; color: var(--text-muted); cursor: pointer; border: none; font-weight: 600; font-size: 0.85rem; border-bottom: 2px solid transparent; }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--surface); }
+        .code-area { flex: 1; padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #a9b7c6; white-space: pre-wrap; overflow-y: auto; line-height: 1.5; background: var(--code-bg); outline:none;}
+        .actions { padding: 20px 0px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+        .big-btn { flex: 1; padding: 12px; background: var(--text-main); color: var(--bg); border: none; border-radius: 4px; font-weight: 600; cursor: pointer; }
+        .big-btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+
+        @media (max-width: 1000px) {
+            .app { flex-direction: column; height: auto; overflow: auto; }
+            .canvas-wrapper { height: 500px; border-bottom: 1px solid var(--border); }
+            .sidebar { width: 100%; height: auto; }
+        }
+        
+        /* INSTRUCTIONS */
+        .instructions { padding: 20px 0px; font-size: 0.8rem; color: var(--text-muted); }
+        .instructions strong { color: var(--text-main); }
+        .tip { background: rgba(240, 81, 62, 0.1); color: var(--primary); padding: 8px; border-radius: 4px; margin-top: 10px; font-size: 0.75rem; }

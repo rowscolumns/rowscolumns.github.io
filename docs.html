@@ -1,691 +1,1072 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="rowcolumn/rowcolumn.css">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <script src="https://kit.fontawesome.com/4c16e2c23a.js" crossorigin="anonymous"></script>
-    <title>RC</title>
-    <script type="text/javascript" src="prototypeSyntax.js"></script>
-    <style type="text/css">
-        .grid-container>div {
-            padding: 10px;
+    <title>Rowscolumns - Recursive Logic</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            /* Dark Mode (Default) */
+            --bg: #050505; 
+            --surface: #111; 
+            --surface-hover: #1a1a1a;
+            --border: #222;
+            --primary: #f0513e; 
+            --text-main: #ededed; 
+            --text-muted: #888;
+            --text-heading: #fff; /* Specific for bold headers */
+            
+            /* Code Blocks (Dark Mode) */
+            --code-bg: #0d0d0d;
+            --code-text: #d4d4d4;
+            --code-inline-bg: rgba(255, 255, 255, 0.1);
+            --code-inline-text: #fff;
+
+            /* Buttons */
+            --btn-text: #000;
+            --btn-bg: #fff;
         }
-    </style>
-</head>
 
-<body>
-    <div class="menu l-tr" onclick="showmenu()" style="display:none;flex-direction: row" >
-         
-        <div class="l-tr" ><img src="logo.png" width="23px"> &ensp; Rows And Columns ></div>
-          &ensp;<span class="badge">v0.3.2</span> &ensp;
+        html.light-mode {
+            /* Light Mode Overrides */
+            --bg: #ffffff;
+            --surface: #f8f9fa; /* Lighter surface */
+            --surface-hover: #e9ecef;
+            --border: #e0e0e0;
+            --text-main: #212529;
+            --text-muted: #555555; /* Darker gray for readability on white */
+            --text-heading: #000;
+
+            /* Code Blocks (Light Mode - distinct look) */
+            --code-bg: #f1f3f5;
+            --code-text: #333;
+            --code-inline-bg: #e9ecef;
+            --code-inline-text: #d63384; /* Pinkish for inline code in light mode */
+
+            /* Buttons */
+            --btn-text: #fff;
+            --btn-bg: #111;
+        }
+
+        /* --- BASE STYLES --- */
+        * { box-sizing: border-box; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
+        body { background-color: var(--bg); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- UI ELEMENTS --- */
+        .btn { padding: 12px 24px; border-radius: 6px; font-weight: 500; background: var(--btn-bg); color: var(--btn-text); display: inline-block; border: 1px solid transparent;}
+        .btn:hover { opacity: 0.8; }
         
-    </div>
-    <div class="menuright l-tl" style="display:none;">
-        <dl>
-            <dt>Getting Started</dt>
-                <dd><a href="#install"> Installation</a></dd>
-            <dt>Introduction</dt>
-                <dd><a href="#why">Why row column</a></dd>
-            <dt>Basics to make columns and rows</dt>
-                <dd><a href="#calling">Calling function</a></dd>
-                <dd><a href="#col">Columns</a></dd>
-                <dd><a href="#row">Rows</a></dd>
-                <dd><a href="#grid">Grid</a></dd>
-            <dt>Customisations</dt>
-                <dd><a href="#rc"> Rows and columns</a></dd>
-                <dd><a href="#wh"> Width and height</a></dd>
-                <dd><a href="#num"> Numbers</a></dd>
-                <dd><a href="#split"> Splitting</a></dd>
-            <dt>Utilities</dt>
-                <dd><a href="#uti">Utility function</a></dd>
-                <dd><a href="#order">order()</a></dd>
-                <dd><a href="#offset">offset()</a></dd>
-                <dd><a href="#property">property()</a></dd>
-                <dd><a href="#childProperty">childProperty()</a></dd>
-                <dd><a href="#breakpoint">breakpoint()</a></dd>
-            <dt>Styling and positioning</dt>
-                <dd><a href="#CSS">CSS</a></dd>
-            <dt>Responsive Design</dt>
-                <dd><a href="#design">Add breakpoints</a></dd>
-                <dd><a href="#layout">Responsive Layout</a></dd>
-            <dt>About</dt>
-            <dd><a href="#about"></dd></a>
-        </dl>       
-    </div>
-    <section>
-        <div class="grid-container" layout="parent.splits((lg).splits(20,80,'perpendicular'),(sm),'parallel',[100,sm]).add(order(),breakpoint('(orientation: portrait)',parent.splits(sm.splits(lg,sm,'parallel'),sm,'parallel',[100,20]).add(property('margin','0px 20px'),order())))">
-            <div class="l-br p-bl">
-                <img src="logo.png" width="73px">
-            </div>
-            <div class="h l-bl p-lc">
-                Rows And Columns 
-            </div>
-            <div class="l-tr p-tl">
-                <a href="prototypeSyntax.js"><i class="fa-solid fa-download"></i></a>&ensp;&ensp;
-                <a href="https://github.com/abhimm5/rowcolumn"><i class="fa-brands fa-github" href=""></i></a>
-            </div>              
+        .code-box { font-family: 'JetBrains Mono'; background: var(--code-bg); padding: 12px; border-radius: 6px; border: 1px solid var(--border); color: var(--code-text); font-size: 0.85rem;}
+        
+        .card { 
+            background: var(--surface); border: 1px solid var(--border); 
+            border-radius: 12px; padding: 30px; display: flex; flex-direction: column; justify-content: center; 
+            backdrop-filter: blur(10px); 
+        }
+        .card:hover { border-color: var(--primary); }
 
-    </div>
-    </section><br>
-    <section>
+        h1 { font-size: 3.5rem; letter-spacing: -0.04em; margin: 0 0 20px 0; background: linear-gradient(to bottom right, var(--text-main), var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        h2 { font-size: 2rem; margin: 0 0 10px 0; color: var(--text-heading); }
+        
+        /* --- NAV SPECIFIC --- */
+        .nav-link { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+        .nav-link:hover { color: var(--primary); }
+        .icon-btn { background: transparent; border: none; color: var(--text-main); border-radius: 6px; cursor: pointer; padding: 6px; display:flex; align-items:center; justify-content:center;}
+        .icon-btn:hover { background: var(--surface); border-color: var(--text-muted); }
 
-                <div class="grid-container" layout="(100).splits(20,80,'perpendicular',[100,20]).add(order(),breakpoint('(orientation: portrait)',(20).splits(1,20,'parallel',[100,20]).add(property('margin','0px 20px'),order())))">
+        /* Native Grid Override */
+        [layout], [layout-md] { display: grid; width: 100%; }
+        @media (max-width: 768px) { h1 { font-size: 2.5rem; } }
 
-            <div class="maincolor sticky l-tr l-tar" >
-                <a class="badge2" href="#install">Getting started </a>
+
+        /* --- BG MESH (Subtle) --- */
+        .bg-mesh {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* --- LAYOUT SHELL --- */
+        .doc-shell {
+            display: flex;
+            max-width: 1100px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 65px; /* Matches Nav Height */
+            height: calc(100vh - 65px);
+            overflow-y: auto;
+            border-right: 1px solid var(--border);
+            padding: 40px 20px;
+            background: var(--bg); /* Ensure solid bg for readability */
+        }
+
+        .toc-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin: 25px 0 10px 10px;
+            font-weight: 700;
+        }
+
+        .toc-link {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 12px;
+            margin-bottom: 2px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .toc-link:hover { background: var(--surface-hover); color: var(--text-main); }
+        .toc-link.active { background: rgba(240, 81, 62, 0.1); color: var(--primary); font-weight: 500;box-shadow:0 0 15px rgba(240, 81, 62, 0.1); }
+
+        /* --- MAIN CONTENT --- */
+        .content {
+            flex-grow: 1;
+            padding: 100px 20px;
+            max-width: 900px;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex; align-items: center; padding: 0 30px;
+            justify-content: space-between;
+        }
+
+        /* --- TYPOGRAPHY FIXES --- */
+        /* Replaced hardcoded #fff and #aaa with variables */
+        h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px; line-height: 1.1; color: var(--text-heading); }
+        h2 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em;  margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; color: var(--text-heading); }
+        h3 { font-size: 1.4rem; font-weight: 600; margin-top: 40px; margin-bottom: 15px; color: var(--text-heading); }
+        h4 { font-size: 1rem; font-weight: 600; margin-top: 60px; margin-bottom: 15px; color: var(--primary); }
+        
+        p, li { color: var(--text-muted); margin-bottom: 15px; font-size: 1.05rem; }
+        strong { color: var(--text-heading); }
+        
+        a {  text-decoration: none; transition: 0.2s; }
+        a:hover { opacity: 0.8; }
+
+        /* --- CODE BLOCKS (Dynamic Theme) --- */
+        pre.clean {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 20px 0;
+            color: var(--code-text);
+        }
+        
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--code-inline-bg);
+            color: var(--code-inline-text);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        pre code { background: none; padding: 0; color: inherit; }
+
+        /* --- GRID DEMO CONTAINERS --- */
+        [layout], [layout-sm], [layout-md], [layout-lg] {
+            display: grid; width: 100%; align-content: start; 
+        }
+
+        .grid-container { width: 100%; margin-bottom: 40px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* The boxes inside the grid demos */
+         [layout] > .demo-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+            min-height: 60px;
+        }
+
+        /* Highlighted demo box */
+        [layout] > .demo-box.filled {
+            background: rgba(240, 81, 62, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .demo-box2{
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        /* --- TABLE STYLE --- */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { text-align: left; padding: 15px; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+        th { color: var(--text-heading); font-weight: 600; background: var(--surface); }
+        td { color: var(--text-muted); }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .content { padding: 80px 20px; }
+        }
+
+  .arc-tl { border-top-left-radius: 1000px !important; min-height:0 !important;padding:0 !important }
+  .arc-tr { border-top-right-radius: 1000px !important; min-height:0 !important;padding:0 !important }
+  .arc-br { border-bottom-right-radius: 1000px !important; min-height:0 !important;padding:0 !important }
+  .arc-bl { border-bottom-left-radius: 1000px !important; min-height:0 !important;padding:0 !important }
+  .primary-color{
+    color: var(--primary);
+  }
+    </style>
+
+    <script type="module">
+        import { Engine, Grid, lg, sm, auto } from 'https://unpkg.com/rowscolumns@1.4.0/dist/index.mjs';
+        window.Grid = Grid; window.Engine = Engine;
+        Engine.init();
+    </script>
+
+    <script>
+    // 1. Run immediately to prevent flash (Restores theme on refresh)
+    (function() {
+        try {
+            const saved = localStorage.getItem('theme');
+            const sysLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            if (saved === 'light' || (!saved && sysLight)) {
+                document.documentElement.classList.add('light-mode');
+            }
+        } catch (e) {}
+    })();
+
+    // 2. Toggle function
+    function toggleTheme() {
+        const html = document.documentElement;
+        html.classList.toggle('light-mode');
+        const isLight = html.classList.contains('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+</script>
+</head>
+<body>
+<div style="display: flex; justify-content: center; padding: 10px 0px; background-color: var(--primary); color: #fff;">
+  <span>To read old documentation v0.3.2</span>
+  <a href="v0.3/index.html" style="margin-left: 5px;">click here</a>
+</div>
+
+
+   <!-- NAV -->
+    <nav style="position: sticky; top: 0; background: var(--bg); border-bottom: 1px solid var(--border); z-index: 100; backdrop-filter: blur(10px); background-color: rgba(var(--bg), 0.8);">
+        <div class="container" layout="Grid.col(auto, auto, auto, auto, 1, auto, auto).props({alignItems:'center', height: '65px',gap:'10px'}).offset([5])">
+            
+            <!-- 1. Logo Image -->
+            <div style="display:flex; align-items:center;"> 
+                <a href="index.html" style="display:flex;"> 
+                    <img src="logo.svg" width="28" height="28" style="display:block; border-radius: 4px;">
+                </a>
             </div>
             
-            <div class="con">
-                <h2 id="install">Installation</h2>
-                <p>1. Download from latest release. click here  </p>
-                <p>2. Paste all files in any folder and link them to your document.</p>
-                <p>3. You can link - <code>&ltscript type="module" src="rowcolumn.js"&gt &lt/script&gt</code> - to head of your html file or single file <code>&ltscript type="text/javascript" src="prototypeSyntax.js"&gt &lt/script&gt</code> </p>
-                <p>4. Start making grid websites easily.</p>
+            <!-- 2. Logo Text -->
+            <div style="font-weight: 700; font-size: 1.05rem;">
+                <a href="index.html" style="text-decoration:none; color: inherit;">Rowscolumns</a>
+            </div>
+            
+            <!-- 3. Docs Link -->
+            <div><a href="docs.html" class="nav-link">Docs</a></div>
+            
+            <!-- 4. Generator Link -->
+            <div><a href="gridgenerator.html" class="nav-link">Grid Generator</a></div>
+            
+            <!-- 5. Spacer (Offset Index 5) -->
+
+            <!-- 6. GitHub Icon (Updated) -->
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <a href="https://github.com/abhimm5/rowscolumns" class="icon-btn" aria-label="GitHub" target="_blank">
+                    <!-- Filled GitHub Icon -->
+                    <svg 
+    width="24" 
+    height="24" 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 
+    3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 
+    0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61 
+    -.546-1.387-1.333-1.757-1.333-1.757-1.087-.744.084-.729.084-.729 
+    1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.807 1.304 
+    3.492.997.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.334-5.466-5.93 
+    0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 
+    0 0 1.005-.322 3.3 1.23a11.52 11.52 0 0 1 3-.404c1.02.004 
+    2.045.138 3 .404 2.28-1.552 3.285-1.23 3.285-1.23 
+    .645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 
+    1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 
+    0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57 
+    C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+</svg>
+
+                </a>
+            </div>
+            
+            <!-- 7. Theme Toggle -->
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
             </div>
 
         </div>
-    </section><br>
-    <section>
-                <div class="grid-container" layout="(100).splits(20,80,'perpendicular',[100,20]).add(order(),breakpoint('(orientation: portrait)',(20).splits(1,20,'parallel',[100,20]).add(property('margin','0px 20px'),order())))">
-            <div class="maincolor sticky l-tr l-tar">
-                <a class="badge2" href="#why">Introduction </a>
-            </div>
-            <div class="con">
-                <h2 id="why">Why row column</h2>
-                <h3>Two dimensional</h3>
-<p> Rows & columns is a javascript framework based on line placement of CSS grid which gives supercontrol over children <code> &ltdiv&gt </code>. Unlike others, this is completely two dimensional which helps in making grids without using many `<code> &ltdiv&gt </code>`. You can also use this on html besides native coding in javascript which eliminates the excessive use of <code> &ltdiv class='row' &gt </code> or <code> &ltdiv class='column' &gt </code>. It can be very useful for making layouts and reducing the CSS code.</p>
-                <pre class="clean">
+    </nav>
 
-    &ltdiv layout="(100).splits(30, (70).splits(30.splits(50, 50, 'parallel'), 70, 'parallel'), 'perpendicular')"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
+    <div class="doc-shell">
+        
+        <!-- SIDEBAR -->
+        <nav class="sidebar">
+            <div class="toc-header">Getting Started</div>
+            <a href="#intro" class="toc-link">Introduction</a>
+            <a href="#install" class="toc-link">Installation</a>
 
-</pre>
-                <p>The above codes make two columns: left column and right column, and two rows each in the right column similar to -</p>
-                <pre class="clean">
+            <div class="toc-header">Core Concepts</div>
+            <a href="#basics" class="toc-link">Basics</a>
+            <a href="#native" class="toc-link">Native Features</a>
+            <a href="#custom" class="toc-link">Customisation</a>
+            <a href="#utils" class="toc-link">Utilities</a>
 
-    &ltdiv class="col"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv class="row"&gt
-            &ltdiv&gt&lt/div&gt
-            &ltdiv class="row"&gt
-                &ltdiv&gt&lt/div&gt
-                &ltdiv&gt&lt/div&gt
-            &lt/div&gt
-        &lt/div&gt
-    &lt/div&gt
+            <div class="toc-header">Layout Examples</div>
+            <a href="#12-col" class="toc-link">12-Column</a>
+            <a href="#mondrian" class="toc-link">Mondrian / Bento</a>
+            <a href="#golden" class="toc-link">Golden Ratio</a>
+            <a href="#symmetry" class="toc-link">Symmetry</a>
+            <a href="#rhythm" class="toc-link">Rhythm</a>
+            <a href="#balance" class="toc-link">Asym. Balance</a>
 
-</pre>
+            <div class="toc-header">Development</div>
+            <a href="#responsive" class="toc-link">Responsive</a>
+            <a href="#frameworks" class="toc-link">React</a>
+        </nav>
 
-            <p>Messy, as you can see no nesting or width-height is required.</p>
-            <h3>Better Designing</h3>
-            <p> Many people don't like to use framework and make custom layouts and design, but sometimes to make a grid becomes headache - the nesting and look for div and section. CSS Grid provides a great alternative to avoid making one dimensional columns and rows and this gives way better management and rediting the HTML. Many people also don't know basic designing  </p>
-            <p>This framework is made to make better design and use minimum efforts as possible.</p> 
-            </div>
-        </div>
-    </section><br>
-    <section>
-        <div class="grid-container" layout="parent.splits(20,80,'perpendicular').add(order(),breakpoint('(orientation: portrait)',parent.splits(1,20,'parallel').add(property('margin','0px 20px'),order())))">
-            <div class="maincolor sticky l-tr l-tar">
-                <a class="badge2" href="#calling">Basics to make columns and rows</a> 
-            </div>
-            <div class="con">
-                <h2 id="calling">Calling function</h2>
-                <h3>Number.splits()</h3>
-                <p>Lets start with making rows columns in `<code> &ltdiv&gt </code>`. On parent `<code> &ltdiv&gt </code>` create a `<code> layout </code>` attribute like this `<code>&ltdiv layout="..."&gt</code>`. The row-column codes will be written inside the layout attribute.</p>
-                <h3>Parameters</h3>
-                <p>Then when someone calls `<code> splits() </code>` function on any number inside the layout attribute which takes currently 3 arguments called left, right and direction like `<code> splits(left, right, direction) </code>`, the first two parameters will divide the number into two parts or a `<code> &ltdiv&gt </code>` into two parts. The last direction parameter takes direction `<code>perpendicular</code>` or `<code>parallel</code>` which basically means divide a line(Number) into two parts vertically or horizontally or arrange two `<code> &ltdiv&gt </code>` in either rows or columns.</p>
-                <h3>Example</h3>
-                <p>You can call this function like the example `<code>(100).splits(60, 40, 'perpendicular')</code>`. Here <code>(100)</code> is divided into two parts of <code>60</code> and <code>40</code>  in <code>perpendicular</code> direction to make columns, look the function again to understand. The <code>(100)</code> or parent value defines the width and height of the parent `<code> &ltdiv&gt </code>` which is dividing the rectangle/square into two parts. <code>Number(100)</code> will automatically set the divs width and height to `100%` and `100vh` respectively. <code>Number(100)</code> represents the height and width of the parent <code>&ltdiv&gt</code>(Full screen <code>&ltdiv&gt</code>).</p>
-                <p class="note">Note: You can also set custom width and height</p><br>
-                <p>To divide into three parts, divide any resultent div into two parts - very simple. Example `<code>(100).splits(60, (40).splits(20, 20 ,'perpendicular'), 'perpendicular')"</code>.  Here <code>(100)</code> is divided into two parts of <code>60</code> and <code>40</code> and then again <code>(40)</code> is divided into two parts of <code>20</code> and <code>20</code> in <code>perpendicular</code> direction to make columns. Likewise you can divide any number to as many parts you want in any direction to make columns and rows.</p><br>
+        <!-- MAIN CONTENT -->
+        <main class="content">
 
-                <h2 id="col">Columns</h2>
-                <h3>perpendicular</h3>
-                <p>You can also make any desired number of columns and rows. There is no restriction to make 12 columns.For example to make 10 columns we just have to do like `<code>&ltdiv layout="(100).splits(2, 8, 'perpendicular')"&gt</code>` this will make two columns of 10 divided into 2 and 8. Notice the third parameter `<code>perpendicular</code>` which is passed as a <code>string</code> tells us to divide any number column wise.</p>
-                <pre class="clean">
+            <!-- INTRO -->
+            <section id="intro">
+                <h1>Introduction</h1>
+                <p class="lead" style="font-size: 1.2rem; margin-bottom: 30px; color: var(--text-heading);">
+                    A robust, native-syntax <strong>two dimensional</strong> layout engine. Write real JavaScript logic directly in your HTML attributes without <code>eval</code> or Regex parsers.
+                </p>
+                <p>
+                    Most grid systems force you to write endless nested <code>&lt;div&gt;</code>s. 
+                    <strong>Rowscolumns</strong> is a recursive layout engine based on geometry. It supports <strong>React</strong>, <strong>Vue</strong>, and <strong>Vanilla HTML</strong> out of the box.
+                </p>
+                <pre class="clean">&lt;div layout="Grid.col(30, 70)"&gt;
+    &lt;div&gt;Sidebar&lt;/div&gt;
+    &lt;div&gt;Content&lt;/div&gt;
+&lt;/div&gt;</pre>
+            </section>
 
-    &ltdiv layout="(100).splits(2,(8),'perpendicular')"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
-                <div  layout="(100).splits(2,(8),'perpendicular').add(property('gap','2px'))">
-                    <div class="box" ></div>
-                    <div class="box" ></div>
-                </div>
-                <p>You can also divide the columns further, let's say to divide the number or rectangular display of any `div` further, we do `<code> &ltdiv layout="(100).splits(2, (8).splits(2, (6), 'perpendicular'), 'perpendicular')"&gt</code>`. You can also divide as many columns as we you want.</p>
-                <pre class="clean">
-
-    &ltdiv layout="(100).splits(2, (8).splits(2, (6), 'perpendicular'),'perpendicular')"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
-    <div  layout="(100).splits(2, (8).splits(2,(6), 'perpendicular'),'perpendicular').add(property('gap','2px'))">
-                    <div class="box" ></div>
-                    <div class="box" ></div>
-                    <div class="box" ></div>
-                </div>
-                <p>You can also divide as many columns as we you want.</p><br>
-                <h2 id="row">Rows</h2>
-                <h3>parallel</h3>
-                <p>Similary to make rows just change the direction to <code>`parallel`</code> like `<code>&ltdiv layout="(100).splits(2,8,'parallel')"&gt</code>` you can always make as many rows you want</p>
-                <p>Below is the exaple to make three rows of <code>min-height</code> <code>20vh</code>, <code>20vh</code> and <code>60vh</code>, the <code>max-height</code> is always <code>auto</code></p>
-                <pre class="clean">
-
-    &ltdiv layout="(100).splits(2, (8).splits(2, (6), 'parallel'),'parallel')"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
-    <div  layout="(100).splits(2, (8).splits(2,6, 'parallel'),'parallel').add(property('gap','2px'))">
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                </div><br>
-                <h2 id="grid">Grid</h2>
-                <h3>Nesting function</h3>
-                <p>Here is the important part of the framework, you can always call nested function in any direction you want which makes the framework 2 dimensional and making grids very easy.</p>
-                <pre class="clean">
-
-    &ltdiv layout="(100).splits(3, (7).splits(3, 7, 'parallel'),'perpendicular')"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
-                <div  layout="(100).splits(3,(7).splits(3,7,'parallel'),'perpendicular').add(property('gap','2px'))">
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                </div>
+            <!-- INSTALLATION -->
+            <section id="install">
+                <h4>GETTING STARTED</h4>
+                <h2>Installation</h2>
+                <p>Zero dependencies. Extremely lightweight (6KB).</p>
                 
-                <p>The above function demonstrates to make grid. But this time we made columns and rows of 10 into 3 and 7 parts.</p>
-                <p>You see this time numbers are changed a litte. Here we divide the children <code>&ltdiv&gt&lt/div&gt</code> by calling <code>splits()</code> function on parent. Then <code>Number(100)</code> is divided into two parts of having leftside 3 and rightside 7 of 100. We have <code>&ltdiv&gt</code> of width <code>30</code> and <code>70</code> with height of <code>100vh</code> again we divide the right <code>&ltdiv&gt</code> into two parts horizontally in ratio of <code>30</code> and <code>70</code> which is same as <code>3</code> and <code>7</code>. Hence right side is being split into two parts.</p>
-
-                <p>So calling <code>&ltdiv layout="(100).splits(30,(70).splits(30,70,'parallel'),'perpendicular')"&gt</code> is same as <code>&ltdiv layout="(100).splits(3, (7).splits(3, 7, 'parallel'), 'perpendicular')"&gt</code></p>
-
-
-
-            </div>     
-    </div>
-    </section><br>
-    <section>
-                <div class="grid-container" layout="parent.splits(20,80,'perpendicular').add(order(),breakpoint('(orientation: portrait)',parent.splits(1,20,'parallel').add(property('margin','0px 20px'),order())))">
-            <div class="maincolor sticky l-tr l-tar">
-                 <a class="badge2" href="#rc">Customisations</a>
-            </div>
-            <div class="con">
-                <h2 id="rc">Rows and columns</h2><br>
-                <p>There is no limit of splitting any div into rows or column. In above example we saw to make columns and rows of 10 spliting into two columns or rows which is on <code>Number(100).splits()</code>.</p>
-                 <h3>Changing arguments</h3>
-                <p>The above example is just for explaination. We can make any number of custom rows and columns. To make columns of 12 we just have to do simple maths. Before doing that first understand the rational division. To divide a number into two equal parts to make two columns we just call it like <code>&ltdiv layout="(100).splits(1/2, (1/2), 'perpendicular')"&gt</code>. And to to make three columns we call recursively <code>&ltdiv layout="(100).splits(1/3,(2/3).splits(1/2, (1/2), 'perpendicular')"&gt</code>. Now make 2 equal columns of 12 like <code>3/12</code>  and <code>9/12</code> </p>
-                <ol>
-                    <li>1.Set the parent <code>&ltdiv&gt</code> width height to 100 by calling <code>Number(100).splits()</code></li><br>
-                    <li>
-                        2.Call it with rational number to divide 100, like 100/12 will divide 100 into 12 parts, also like <code>3/12</code>  and <code>9/12</code> which will give first 3 parts of 12 and second 9 parts of 12.
-                    </li>
-                </ol>
-                <pre class="clean">
-
-    &ltdiv layout="(100).splits(3/12, (9/12), 'perpendicular')"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
+                <h3>1. NPM (Recommended)</h3>
+                <pre class="clean">npm install rowscolumns</pre>
                 
-                <p>We are always dividing a square <code>&ltdiv&gt</code> into either horizontally or vertically in only two parts. Do not forget we can also divide recursively.</p>
-                <h3>Easy recursive</h3>
-                <p>To make 12 equal columns we have to call the function 11 times which is very lengthy therefore we have already designed a function which will call the <code>splits()</code> function 12 times.</p>
-                <pre class="clean">
+                <h3>2. CDN (Vanilla HTML)</h3>
+                <pre class="clean">&lt;script type="module"&gt;
+  import { Engine } from 'https://unpkg.com/rowscolumns';
+  Engine.init();
+&lt;/script&gt;</pre>
+            </section>
 
-    &ltdiv layout="(100).splits(1/12, (11/12).splits(1/11, (10/11).splits(1/10, (9/10).splits(1/9, (8/9).splits(1/8, (7/8).splits(1/7, (6/7).splits(1/6, (5/6).splits(1/5, (4/5).splits(1/4, (3/4).splits(1/3, (2/3).splits(1/2, (1/2), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular'), 'perpendicular')"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
+            <!-- BASICS -->
+            <section id="basics">
+                <h4>CORE CONCEPTS</h4>
+                <h2>Basics: Columns & Rows</h2>
+                <p>The library extends <code>Number.prototype</code>. <code>Grid</code> is a constant for <code>100</code>. You can chain methods from it.</p>
 
-</pre>
-    <pre class="clean">
-
-    &ltdiv layout="(100).col(12)"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
-    <div  layout="(100).col(12).add(property('gap','2px'))">
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                </div>
-       <h3>Recursive limit</h3>
-      <p>Calling function like <code>(100).col(12)</code> has an end point, this means you cannot further divide the columns anymore.</p><br>
-      <p>In splitting any rational number remember the denominator of child must be same to the numerator of the parent, this is just an exception, but to make perfect column you should follow this. Example:Here `<code>&ltdiv layout="(100).splits(4/10, 6/10, 'perpendicular')"&gt</code>` parent is being split in two parts into left side and right side in perpendicular or vertical direction</p><br>
-      <br>
-      <h2 id="wh">Width and height</h2>
-                 <h3>Changing parent value</h3>
-                <p><code>Number(100)</code> represents the height and width of the parent <code>&ltdiv&gt</code>(Full screen <code>&ltdiv&gt</code>). Now let's try to change to <code>Number(50)</code>. Now the screen will be 1/4 of the parent i.e. 50 in height and width. Each time we call <code>splits()</code> we are locked the to make custom width and height. Let's suppose we don't want make the <code>&ltdiv&gt</code> of same height and width, we just need pass the an array as a forth argument in <code>splits()</code> function like <code>Number.splits(Number, Number, 'direction',[100, 50])</code> here the forth argument is <code>Array</code> and <code>Array[0]</code> is width and <code>Array[1]</code> is height.</p>
-                <pre class="clean">
-
-    &ltdiv layout="(100).splits(50,50,'perpendicular',[100,50])"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
-                <div  layout="(100).splits(50,50,'perpendicular',[100,50]).add(property('gap','2px'))">
-                    <div class="box"></div>
-                    <div class="box"></div>
-                </div>
-                <br>
-                <h2 id="num">Numbers</h2>
-                 <h3>Predefined numbers</h3>
-                <p>Although you can use any numbers but there are already predefined number variables already proportioned in golden ratio to give modern division. You should definitely use them in making rows and columns. </p>
-                <pre class="clean">
-    &ltscript&gt 
-        const parent = 100
-        const lg = 61.2;
-        const sm = 38.8
-
-        parent.splits(lg, sm, 'perpendicular')
-    &lt/script&gt
-    
-</pre>
-<br>
-<h3>Splitting to any depth</h3>
-<pre class="clean">
-
-    &ltdiv layout="(100).splits(lg.splits(lg.splits(lg,sm,'perpendicular'),sm.splits(sm,lg,'perpendicular'),'parallel'), sm.splits(sm.splits(lg,sm,'parallel'),lg.splits(lg.splits(lg,sm,'parallel'),sm,'perpendicular'),'parallel'),'perpendicular',[100,60])"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
-<div  layout="(100).splits(lg.splits(lg.splits(lg,sm,'perpendicular'),sm.splits(sm,lg,'perpendicular'),'parallel'), sm.splits(sm.splits(lg,sm,'parallel'),lg.splits(lg.splits(lg,sm,'parallel'),sm,'perpendicular'),'parallel'),'perpendicular',[100,60]).add(property('gap','2px'))">
-                    <div style="border: 2px solid #ddd"></div>
-                    <div style="border: 2px solid #ddd;"></div>
-                    <div style="border: 2px solid #ddd;"></div>
-                    <div style="border: 2px solid #ddd"></div>
-                    <div style="border: 2px solid #ddd;"></div>
-                    <div style="border: 2px solid #ddd;"></div>
-                    <div style="border: 2px solid #ddd"></div>
-                    <div style="border: 2px solid #ddd;"></div>
-                    <div style="border: 2px solid #ddd;"></div>
+                <h3>Making Columns</h3>
+                <p>Use <code>.col(a, b, c...)</code> to split space horizontally.</p>
+                <pre class="clean">&lt;div layout="Grid.col(20, 80)"&gt;
+  &lt;div&gt;20&lt;/div&gt;
+  &lt;div&gt;80&lt;/div&gt;
+&lt;/div&gt;</pre>
+                
+                <div class="grid-container" layout="Grid.col(20, 80).props({gap:'10px'})">
+                    <div class="demo-box">20</div>
+                    <div class="demo-box">80</div>
                 </div>
 
+                <p>Tip : You can make infinite columns <code>Grid.col(10, 10, 10, 10, 10, 10, 10, 10, 10, 10...)</code></p>
 
-                <br>
-                <h2 id="split">Splitting</h2>
-                <p>You can make as many rows and columns row, but making rows and columns in specific way by using custom numbers will gove more aesthetics to your websites. As this framework is focused on design, without any extra efforts you can use this framework to make attractive layouts with any design principles.</p>
-                <h3>Golden ratio</h3>
-                <pre class="clean">
-
-    &ltdiv layout="(100).splits(lg,sm.splits(lg,sm.splits(sm.splits(sm.splits(lg,sm.splits(lg,sm.splits(sm.splits(sm,lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular'),lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular',[100,61.2])"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
-<div  layout="(100).splits(lg,sm.splits(lg,sm.splits(sm.splits(sm.splits(lg,sm.splits(lg,sm.splits(sm.splits(sm,lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular'),lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular',[100,61.2]).add(property('gap','2px'),breakpoint('(orientation: portrait)',(100).splits(lg,sm.splits(lg,sm.splits(sm.splits(sm.splits(lg,sm.splits(lg,sm.splits(sm.splits(sm,lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular'),lg,'parallel'),lg,'perpendicular'),'parallel'),'perpendicular',[100,30])))">
-                    <div style="border: 2px solid #ddd;border-top-left-radius: 1000px;"></div>
-                    <div style="border: 2px solid #ddd;border-top-right-radius: 1000px"></div>
-                    <div style="border: 2px solid #ddd;border-bottom-right-radius: 1000px"></div>
-                    <div style="border: 2px solid #ddd;border-bottom-left-radius: 1000px"></div>
-                    <div style="border: 2px solid #ddd;border-top-left-radius: 1000px"></div>
-                    <div style="border: 2px solid #ddd;border-top-right-radius: 1000px"></div>
-                    <div style="border: 2px solid #ddd;border-bottom-right-radius: 1000px"></div>
-                    <div style="border: 2px solid #ddd;border-top-left-radius: 1000px"></div>
-                    <div style="border: 2px solid #ddd;border-bottom-left-radius: 1000px"></div>
+                <h3>Making Rows</h3>
+                <p>Use <code>.row(a, b, c...)</code> to split space vertically.</p>
+                <pre class="clean">&lt;div layout="Grid.row(30, 70)"&gt;
+  &lt;div&gt;30&lt;/div&gt;
+  &lt;div&gt;70&lt;/div&gt;
+&lt;/div&gt;</pre>
+                
+                <div class="grid-container" layout="Grid.row(30, 70).props({gap:'10px', height:'200px'})">
+                    <div class="demo-box">30</div>
+                    <div class="demo-box">70</div>
                 </div>
-                <br>
-                <h3>Symmetry</h3>
-            <pre class="clean">
 
-    &ltdiv layout="(100).splits(sm.splits(lg.row(5),sm,'perpendicular'),sm.splits(sm,lg.row(5),'perpendicular'),'perpendicular',[100,sm])"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
+                <h3>Making Grid (Recursion)</h3>
+                <p>You can nest rows inside columns infinitely. Here is a 50/50 split, where the right side is split into 3 rows.</p>
+                
+                <pre class="clean">&lt;div layout="Grid.col(50, (50).row(10, 10, 30))"&gt;
+  &lt;div&gt;Left&lt;/div&gt;
+  &lt;div&gt;Right 1&lt;/div&gt;
+  &lt;div&gt;Right 2&lt;/div&gt;
+  &lt;div&gt;Right 3&lt;/div&gt;
+&lt;/div&gt;</pre>
 
-</pre>
-    <div  layout="(100).splits(sm.splits(lg.row(5),sm,'perpendicular'),sm.splits(sm,lg.row(5),'perpendicular'),'perpendicular',[100,sm]).add(property('gap','2px'))">
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
+                <div class="grid-container" layout="Grid.col(50, (50).row(10, 10, 30)).props({gap:'10px', height:'400px'})">
+                    <div class="demo-box">Left</div>
+                    <div class="demo-box filled">Right 1</div>
+                    <div class="demo-box filled">Right 2</div>
+                    <div class="demo-box filled">Right 3</div>
                 </div>
-                <br>
-                <h3>Rhythm Columns</h3>
-            <pre class="clean">
+            </section>
 
-    &ltdiv layout="(100).splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(lg,sm,'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular',[100,sm])"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
+            <!-- NATIVE FEATURES -->
+            <section id="native">
+                <h2>Native Features</h2>
+                <p>Because v1.2.0 uses native execution, you can use math directly. No manual percentages.</p>
 
-</pre>
-    <div  layout="(100).splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(sm,lg.splits(lg,sm,'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular'),'perpendicular',[100,sm]).add(property('gap','2px'))">
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
+                <h3>1. Native Math</h3>
+                <pre class="clean">&lt;div layout="Grid.col(1/3, 1/3, 1/3)"&gt;</pre>
+                <div class="grid-container" layout="Grid.col(1/3, 1/3, 1/3).props({gap:'10px'})">
+                    <div class="demo-box">1/3</div>
+                    <div class="demo-box">1/3</div>
+                    <div class="demo-box">1/3</div>
                 </div>
-                <p>Note:Customising width does not make many sence because if you are changing the width it means you want to place any div in right side.</p>
-            </div>
-        </div>
-    </section><br>
-    <section>
-                <div class="grid-container" layout="parent.splits(20,80,'perpendicular').add(order(),breakpoint('(orientation: portrait)',parent.splits(1,20,'parallel').add(property('margin','0px 20px'),order())))">
-            <div class="maincolor sticky l-tr l-tar">
-                 <a class="badge2" href="#uti">Utilities</a>
-            </div>
-            <div class="con">
-                <h2 id="uti">Utility method</h2>
-                <p>Often, we find grids are not arranged in order when calling <code>splits()</code> function recursively this happens because it follows declarative syntax or sometimes we want to offset a <code>&ltdiv&gt</code> or complete removal of <code>&ltdiv&gt</code> without affecting the grid layout. There are total 5 utility functions which help modify the <code>&ltdiv&gt</code> in every aspect. To use this you must know how CSS is applied using javascript.</p>
-                <h3>Number.splits.add()</h3>
-                <p>There is an <code>add()</code> method which takes <code>function()</code> in its arguments. We can simply call it in <code>splits()</code> like <code>(100).splits(lg, sm, 'perpendicular').add()</code> </p><br>
-                <h2 id="order">order()</h2>
-                <p>When we divide the left side like <code>(100).splits(lg.splits(lg, sm, 'perpendicular'), sm, 'perpendicular')</code> we see <code>&ltdiv&gt</code>s are not arranged in order. So <code>order()</code> method can be passed inside the <code>add()</code> to arrange and align all <code>&ltdiv&gt</code> in ascending order.  It can be called like this<code>(100).splits(lg.splits(lg, sm, 'perpendicular'), sm, 'perpendicular')</code></p><br>
-                <p>Before without <code>order()</code></p>
-                <pre class="clean">
 
-    &ltdiv layout="(100).splits(lg.splits(lg, sm, 'perpendicular'), sm, 'perpendicular',[100,10])"&gt
-        &ltdiv&gt1&lt/div&gt
-        &ltdiv&gt2&lt/div&gt
-        &ltdiv&gt3&lt/div&gt
-    &lt/div&gt
+                <h3>2. Variables (Golden Ratio)</h3>
+                <p>The engine provides built-in variables: <code>lg</code> (61.8) and <code>sm</code> (38.2).</p>
+                <pre class="clean">&lt;div layout="Grid.col(lg, sm)"&gt;</pre>
 
-</pre>
-                <div  layout="(100).splits(lg.splits(lg, sm, 'perpendicular',[100,10]), sm, 'perpendicular',[100,10]).add(property('gap','2px'))">
-                    <div class="l-cc box">1</div>
-                    <div class="l-cc box">2</div>
-                    <div class="l-cc box">3</div>
+                <h3>3. Global Functions</h3>
+                <p>You can define a layout function in your script and call it in HTML.</p>
+                <pre class="clean">&lt;script&gt;
+  window.myLayout = (gap) => Grid.col(50, 50).props({ gap });
+&lt;/script&gt;
+&lt;div layout="myLayout('20px')"&gt; ... &lt;/div&gt;</pre>
+            </section>
+
+           
+
+            <!-- CUSTOMISATION -->
+            <section id="custom">
+                <h2>Customisation</h2>
+                
+                <!-- 1. RATIONAL DIVISION -->
+                        <h3>Rational Division</h3>
+                        <p>To divide a number into two equal parts, we use <code>1/2</code>. To make three columns, we use <code>1/3</code>. You can mix these with fixed numbers.</p>
+                        
+                        <pre class="clean">&lt;div layout="Grid.col(1/3, 1/3, 1/3)"&gt;
+  &lt;div&gt;1/3&lt;/div&gt;
+  &lt;div&gt;1/3&lt;/div&gt;
+  &lt;div&gt;1/3&lt;/div&gt;
+&lt;/div&gt;</pre>
+
+                        <div class="grid-container" layout="Grid.col(1/3, 1/3, 1/3).props({gap:'5px', height:'60px'})" style="border:none; padding:0;">
+                            <div class="demo-box">33.3%</div>
+                            <div class="demo-box">33.3%</div>
+                            <div class="demo-box">33.3%</div>
+                        </div>
+                        
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+
+                        <!-- 2. RECURSIVE LOOPS -->
+                        <h3>Easy Recursive Loops</h3>
+                        <p>To make 12 equal columns manually would be tedious. Because v1.2.0 uses native JS, you can generate arrays dynamically using spread syntax!</p>
+
+                        <pre class="clean">&lt;script&gt;
+  // 1. Generate array of 12 ones: [1, 1, ..., 1]
+  window.twelveCols = Array(12).fill(1); 
+&lt;/script&gt;
+
+&lt;div layout="Grid.col(...twelveCols)"&gt;
+  &lt;div&gt;1&lt;/div&gt; &lt;div&gt;2&lt;/div&gt; &lt;div&gt;3&lt;/div&gt; &lt;div&gt;4&lt;/div&gt;
+  &lt;div&gt;5&lt;/div&gt; &lt;div&gt;6&lt;/div&gt; &lt;div&gt;7&lt;/div&gt; &lt;div&gt;8&lt;/div&gt;
+  &lt;div&gt;9&lt;/div&gt; &lt;div&gt;10&lt;/div&gt; &lt;div&gt;11&lt;/div&gt; &lt;div&gt;12&lt;/div&gt;
+&lt;/div&gt;</pre>
+                        
+                        <div class="grid-container" layout="Grid.col(...Array(12).fill(1)).props({gap:'2px', height:'40px'})" style="border:none; padding:0;">
+                            <div class="demo-box" style="font-size:10px">1</div><div class="demo-box" style="font-size:10px">2</div>
+                            <div class="demo-box" style="font-size:10px">3</div><div class="demo-box" style="font-size:10px">4</div>
+                            <div class="demo-box" style="font-size:10px">5</div><div class="demo-box" style="font-size:10px">6</div>
+                            <div class="demo-box" style="font-size:10px">7</div><div class="demo-box" style="font-size:10px">8</div>
+                            <div class="demo-box" style="font-size:10px">9</div><div class="demo-box" style="font-size:10px">10</div>
+                            <div class="demo-box" style="font-size:10px">11</div><div class="demo-box" style="font-size:10px">12</div>
+                        </div>
+                        
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+
+                        <!-- 3. DIMENSIONS -->
+                        <h3>Controlling Dimensions</h3>
+                        <p>The number <code>Grid</code> (or 100) defines the <strong>ratio weights</strong>, not the actual pixel size. To change dimensions, apply CSS using <code>.props()</code>.</p>
+                        
+                        <pre class="clean">&lt;div layout="Grid.col(50, 50).props({ width: '50%', margin: '0 auto' })"&gt;
+  &lt;div&gt;Left&lt;/div&gt;
+  &lt;div&gt;Right&lt;/div&gt;
+&lt;/div&gt;</pre>
+                        
+                        <p><em>Result: A centered container taking up only 50% of the width.</em></p>
+                        
+                        <!-- Live Demo showing width constraint -->
+                        <div class="grid-container" layout="Grid.col(100)" style="border:none; padding:0; background:#fafafa; border:1px dashed #ccc;">
+                             <div layout="Grid.col(50, 50).props({width: '50%', height:'60px', gap:'5px', margin: '0 auto'})" style="border:none; padding:0; background:transparent;">
+                                <div class="demo-box filled">50%</div>
+                                <div class="demo-box filled">50%</div>
+                            </div>
+                        </div>
+
+
+
+            </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- UTILITIES -->
+            <section id="utils">
+                <h2>Styling & Utilities</h2>
+                
+                <h3>.props({ styles })</h3>
+                <p>Apply CSS to the grid container (like gap, padding, margins).</p>
+                <pre class="clean">Grid.col(50, 50).props({ gap: '20px', padding: '10px' })</pre>
+
+                <h3>.childProps({ styles }, [indices])</h3>
+                <p>Apply CSS to specific children. Indices are 1-based.</p>
+                <pre class="clean">Grid.col(30, 30, 30).childProps({ background: 'salmon' }, [2])</pre>
+                
+                <div class="grid-container" layout="Grid.col(30, 30, 30).childProps({ background: '#f0513e', color: 'white', border:'none' }, [2]).props({gap:'10px', height:'60px'})">
+                    <div class="demo-box">1</div>
+                    <div class="demo-box">2 (Styled)</div>
+                    <div class="demo-box">3</div>
                 </div>
-                <br>
-                <p>After with <code>order()</code></p>
-                <pre class="clean">
 
-    &ltdiv layout="(100).splits(lg.splits(lg, sm, 'perpendicular'), sm, 'perpendicular',[100,10]).add(order())"&gt
-        &ltdiv&gt1&lt/div&gt
-        &ltdiv&gt2&lt/div&gt
-        &ltdiv&gt3&lt/div&gt
-    &lt/div&gt
+                <h3>.offset([indices])</h3>
+                <p>Creates "Ghost" slots. Useful for creating gaps. In this demo, we skip the middle slot (Index 2), forcing the 2nd Box to jump to the 3rd slot.</p>
 
-</pre>
-                <div  layout="(100).splits(lg.splits(lg, sm, 'perpendicular'), sm, 'perpendicular',[100,10]).add(property('gap','2px'),order())">
-                    <div class="l-cc box">1</div>
-                    <div class="l-cc box">2</div>
-                    <div class="l-cc box">3</div>
-                </div>
-                <h2 id="offset">offset()</h2>
-                <p><code>offset()</code> method is very useful in layout making can be passed inside the <code>add()</code> to offset from the grid. It has arguments to be passed, to use <code>offset()</code> simply call like  </p>
-                <br>
-                <p>Before</p>
-                    <pre class="clean">
-
-    &ltdiv layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular',[100,50])"&gt
-        &ltdiv&gt1&lt/div&gt
-        &ltdiv&gt2&lt/div&gt
-        &ltdiv&gt3&lt/div&gt
-        &ltdiv&gt4&lt/div&gt
-    &lt/div&gt
-
-</pre>
-                <div  layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular',[100,50]).add(order(),property('gap','2px'))">
-                    <div class="l-cc box">1</div>
-                    <div class="l-cc box">2</div>
-                    <div class="l-cc box">3</div>
-                    <div class="l-cc box">4</div>
-                </div>
-                <br>
-                <p>After</p>
-                    <pre class="clean">
-
-    &ltdiv layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular',[100,50]).add(offset(0, 3),order())"&gt
-        &ltdiv&gt2&lt/div&gt
-        &ltdiv&gt3&lt/div&gt
-    &lt/div&gt
-
-</pre>
-                <div  layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular',[100,50]).add(offset(0, 3),order(),property('gap','2px'))">
+                <div style="position: relative;">
+                    <!-- Code Block -->
+                    <pre class="clean" id="offset-code">Grid.col(33, 33, 33)</pre>
                     
-                    <div class="l-cc box">2</div>
-                    <div class="l-cc box">3</div>
+                    <!-- Toggle Button -->
+                    <button onclick="toggleOffsetDemo()" style="position: absolute; top: 15px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
+                        Toggle Effect
+                    </button>
                 </div>
-                <p>Using <code>splits().add(offset(0,3)</code> will remove the first and last div from the above code. Always remember it starts with zero.</p>
-                <h2 id="property">property()</h2>
-                <p>Using property you are able to do everything what CSS does. You can simply add any CSS property to parent like the <code>width</code>, <code>height</code>, <code>font-weight</code>, <code>padding</code>, <code>margin</code> anything which css uses.</p>
-                <p>The best case of using property is to add gap property in the parent div, this will give gap to grid, to use we <code>splits().add(property( 'gap', '10px' ))</code></p>
-                <br>
-                    <pre class="clean">
 
-    &ltdiv layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular').add(property('gap','10px'))"&gt
-        &ltdiv&gt1&lt/div&gt
-        &ltdiv&gt2&lt/div&gt
-        &ltdiv&gt3&lt/div&gt
-        &ltdiv&gt4&lt/div&gt
-    &lt/div&gt
 
-</pre>
-                <div  layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular').add(property('gap','10px'))">
-                    <div class="l-cc box" style="border: 2px dashed #ddd">1</div>
-                    <div class="l-cc box" style="border: 2px dashed #ddd;">2</div>
-                    <div class="l-cc box" style="border: 2px dashed #ddd;">3</div>
-                    <div class="l-cc box" style="border: 2px dashed #ddd;">4</div>
-                </div><br>
-                <p>We can always use multiple utility functions to add multiple properties separated by comma, <code>Number.splits().add(property('gap', '10px'), property('margin', '0px 50px')) </code></p>
-                <h2 id="childProperty">childProperty()</h2>
-                <p>Similar to the <code>property()</code> function we can also apply any CSS property to children <code>&ltdiv&gt</code> which hence gives supercontrol to parent. This function is also very useful. Sometimes we don't want to display a div - surely you can do this through CSS - but there is an option to apply any property to children properties.</p>
-                <p>To use this you have to select a range of <code>&ltdiv&gt</code>s or evn one and apply to any single or every <code>&ltdiv&gt</code> <code>Number.splits().add(childProperty('display', 'none', 3, 8))</code> the last two arguments are range to select from and to. Here we select 3rd to 8th <code>&ltdiv&gt</code> and applying the property <code>display: none</code>. To select only one you can do <code>Number.splits().add(childProperty('display', 'none', 0, 1))</code> from <code>0</code> to <code>1</code> here we have selected only first <code>&ltdiv&gt</code>.</p>
-                <br>
-                    <pre class="clean">
-
-    &ltdiv layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular').add(property('gap','10px'),childProperty('background-color','lightsalmon',3,4))"&gt
-        &ltdiv&gt1&lt/div&gt
-        &ltdiv&gt2&lt/div&gt
-        &ltdiv&gt3&lt/div&gt
-        &ltdiv&gt4&lt/div&gt
-    &lt/div&gt
-
-</pre>
-                <div  layout="parent.splits(lg.splits(sm, lg, 'parallel'),sm.splits(lg, sm, 'parallel'), 'perpendicular').add(property('gap','10px'),childProperty('background-color','lightsalmon',3,4))">
-                    <div class="l-cc box" style="border: 2px dashed #ddd">1</div>
-                    <div class="l-cc box" style="border: 2px dashed #ddd;">2</div>
-                    <div class="l-cc box" style="border: 2px dashed #ddd;">3</div>
-                    <div class="l-cc box" style="border: 2px dashed #ddd;">4</div>
-                </div><br>
-                <h2 id="breakpoint">breakpoint()</h2>
-                <p>This function has two arguments first <code>window.matchMedia</code> can be like <code>(max-wdth: 700px)</code> and second is new layout it can be like <code>(100).splits(3/12, (9/12), 'perpendicular')</code>. You can use this function to make responsive design just target a screen and layout. Remember to pass it always as a string.</p>
-                <p>To use this we just do <code>Number.splits().add(breakpoint('(max-wdth: 700px)', '(100).splits(3/12,(9/12),'perpendicular')'))</code></p><br>
-                <p>JS</p>
-                <pre class="clean">
-    &ltscript&gt             
-    const leftside = lg.splits(sm, lg, 'parallel')
-    const rightside = sm.splits(lg, sm, 'parallel')
-    const layoutMobile = parent.splits(leftside, rightside, 'perpendicular')
-    &lt/script&gt 
-</pre>
-<p>HTML</p>
-<pre class="clean">
-
-    &ltdiv layout="parent.splits(lg, sm, 'perpendicular').add(breakpoint('(max-wdth: 700px)', layoutMobile),childProperty('display','none',2,4))"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
-<div  layout="parent.splits(lg, sm, 'perpendicular').add(property('gap','2px'),childProperty('display','none',2,4),breakpoint('(max-width: 700px)', parent.splits(lg.splits(sm, lg, 'parallel'), sm.splits(lg, sm, 'parallel'), 'perpendicular').add(property('gap','2px'))))">
-                    <div class="l-cc box">1</div>
-                    <div class="l-cc box">2</div>
-                    <div class="l-cc box">3</div>
-                    <div class="l-cc box">4</div>
-                </div><br>
-             <br>
-
-             <p>You can always use multiple utility functions inside <code>add()</code></p>
-            </div>
-        </div>
-    </section><br>
-    <section>
-                <div class="grid-container" layout="(100).splits(20,80,'perpendicular',[100,20]).add(order(),breakpoint('(orientation: portrait)',(20).splits(1,20,'parallel',[100,20]).add(property('margin','0px 20px'),order())))">
-            <div class="maincolor sticky l-tr l-tar">
-                 <a class="badge2" href="#CSS">Styling and positioning</a>
-            </div>
-            <div class="con">
-                <h2 id="CSS">CSS </h2>
-                 <h3>Positioning classes</h3>
-                <p>
-                    This framework is just to simplify the layout and positioning so it does not have any UI component like buttons form inputs etc if you know styling then it is okay otherwise css is included in the same folder. It has already display set to flex and has classes. <code>.bl,.tl,.br,.tr,.bc,.tc,.lc,.rc,.cc</code> abbreviation b = bottom, r = right, c = center and t = top can be used in need.
-                </p>
-            </div>
-        </div>
-    </section><br>
-    <section>
-                <div class="grid-container" layout="(100).splits(20,80,'perpendicular',[100,20]).add(order(),breakpoint('(orientation: portrait)',(20).splits(1,20,'parallel',[100,20]).add(property('margin','0px 20px'),order())))">
-            <div class="maincolor sticky l-tr l-tar">
-                 <a class="badge2" href="#design">Responsive Design</a>
-            </div>
-            <div class="con">
-                <h2 id="design">Add any breakpoints</h2>
-                 <h3>Calling breakpoint in utility function</h3>
-                <p>
-                    You can give any breakpoints by calling <code>breakpoint()</code> using ulitity function like <code>Number.splits().add(breakpoint('(max-wdth: 700px)', '(100).splits(3/12, (9/12), 'perpendicular')'))</code> where the function takes two arguments <code>breakpoint(window.matchMedia, newLayout)</code> first <code>window.matchMedia</code> can be like <code>(max-wdth: 700px)</code> and second is new layout it can be like <code>(100).splits(3/12,(9/12),'perpendicular')</code> . As this framework is only designed to create layouts not UI elements, you will have to make buttons forms etc and customise it or you can use any other frameworks' UI like Bootstrap, Material design, Bulma, Ant Design etc.
-                </p>
-                <br>
-                <pre class="clean">
-
-    &ltdiv layout="parent.splits(lg, sm, 'perpendicular').add(childProperty('display','none',2,4),breakpoint('(max-width: 700px)', parent.splits(lg.splits(sm, lg, 'parallel'), sm.splits(lg, sm, 'parallel'), 'perpendicular')))"&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-        &ltdiv&gt&lt/div&gt
-    &lt/div&gt
-
-</pre>
-<div  layout="parent.splits(lg, sm, 'perpendicular',[100,50]).add(property('gap','2px'),childProperty('display','none',2,4),breakpoint('(max-width: 700px)', parent.splits(lg.splits(sm, lg, 'parallel'), sm.splits(lg, sm, 'parallel'), 'perpendicular',[100,50]).add(property('gap','2px'))))">
-                    <div class="l-cc box">1</div>
-                    <div class="l-cc box">2</div>
-                    <div class="l-cc box">3</div>
-                    <div class="l-cc box">4</div>
+                
+                <!-- Visual Demo -->
+                <div id="offset-demo" 
+                     layout="Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})" 
+                     style="border:none; padding:0;">
+                    
+                    <div class="demo-box">1</div>
+                    <div class="demo-box" id="off-box-2">2</div>
+                    <div class="demo-box" id="off-box-3">3</div>
+                    
                 </div>
-                <br>
-                <h2 id="layout">Responsive Layout</h2>
-                <p> This framework only has two breakpoints natively are (orientation: portrait) and (orientation: landscape), It is upto you to make any breakpoint.</p>
-                <h3>(orientation: landscape)</h3>
-                <p>There are only few useful classes recommended for layout making and positioning<code>.l-bl,.l-tl,.l-br,.l-tr,.l-bc,.l-tc,.l-lc,.l-rc,.l-cc</code> for landscape mode </p>
-                 <h3>(orientation: portrait)</h3>
-                  <p><code>.p-bl,.p-tl,.p-br,.p-tr,.p-bc,.p-tc,.p-lc,.p-rc,.p-cc</code> for portrait mode.</p>
-                  <br>
-                  <p>abbreviation b = bottom, r = right, c = center and t = top</p> 
-                  <p class="note">Note: You will have to refresh the browser to get the layout if you use orientation</p>
-            </div>
-        </div>
-    </section><br>
 
-    <section>
-                <div class="grid-container" layout="parent.splits((50).splits((10).splits(20,80,'perpendicular'),40,'parallel'),(50),'parallel').add(order(),breakpoint('(orientation: portrait)',parent.splits((50).splits((10).splits(20,80,'parallel'),40,'parallel'),(50),'parallel').add(property('margin','0px 20px'),order())))">
-                    <div class="p-lc l-tr l-tar sticky maincolor"> <a class="badge2" href="#about">About</a></div><div class="con"><h2 id="about"></h2></div>
-            <div class="l-bc p-bc">
-                <img src="logo.png" width="73px">
-            </div>
-            <div class="l-tc p-tc l-tac p-tac">
-                <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"  class="p-tac l-tac">Row column docs is licensed under <a href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY 4.0</a> and code licence under <a href="https://github.com/abhimm5/rowcolumn/blob/main/LICENSE">MIT</a>.<br> <span class="badge">Donate UPI - abhimm5@upi</span> </p>
-         
-            </div>
-        </div>
-    </section>
-    <script type="text/javascript" src="script.js"></script>
-    <script type="text/javascript" src="syntaxhighlighter.js"></script>
+                <p>Tip : You can also use it directly on the element <code>Grid.col(33, (33).offset(), 33)</code></p>
+
+                <!-- Logic for Offset Toggle -->
+                <script>
+                    let isOffsetMode = false;
+
+                    function toggleOffsetDemo() {
+                        const el = document.getElementById('offset-demo');
+                        const code = document.getElementById('offset-code');
+                        const box2 = document.getElementById('off-box-2');
+
+                        if (!isOffsetMode) {
+                            // --- ENABLE OFFSET ---
+                            // 1. Apply Layout
+                            el.setAttribute('layout', "Grid.col(33, 33, 33).offset([2]).props({gap:'5px', height:'60px'})");
+                            code.innerText = "Grid.col(33, 33, 33).offset([2])";
+                            
+                            // 2. Remove Box 3 (So Box 2 is the last one)
+                            const box3 = document.getElementById('off-box-3');
+                            if(box3) box3.remove();
+                            
+                            // 3. Highlight Box 2 to show movement
+                            box2.innerText = "3";
+                            
+                            isOffsetMode = true;
+                        } else {
+                            // --- DISABLE OFFSET ---
+                            // 1. Reset Layout
+                            el.setAttribute('layout', "Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})");
+                            code.innerText = "Grid.col(33, 33, 33)";
+                            
+                            // 2. Reset Box 2
+                            box2.innerText = "2";
+                            box2.classList.remove('filled');
+                            
+                            // 3. Restore Box 3
+                            if(!document.getElementById('off-box-3')) {
+                                const newBox3 = document.createElement('div');
+                                newBox3.className = 'demo-box';
+                                newBox3.id = 'off-box-3';
+                                newBox3.innerText = '3';
+                                el.appendChild(newBox3);
+                            }
+                            
+                            isOffsetMode = false;
+                        }
+
+                        // Trigger Engine Re-render
+                        if(window.Engine) window.Engine.render(el);
+                    }
+                </script>
+                <h3>.spread(['dir'], [indices])</h3>
+                <p>Expands an item across multiple tracks (Spanning). Directions: <code>t</code> (top), <code>r</code> (right), <code>b</code> (bottom), <code>l</code> (left).</p>
+                
+                <div style="position: relative;">
+                    <!-- Code Block -->
+                    <pre class="clean" id="spread-code">Grid.col(33, 33, 33)</pre>
+                    
+                    <!-- Toggle Button -->
+                    <button onclick="toggleSpreadDemo()" style="position: absolute; top: 15px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
+                        Toggle Effect
+                    </button>
+                </div>
+
+                <!-- Visual Demo -->
+                <div id="spread-demo" 
+                     layout="Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})" 
+                     style="border:none; padding:0;">
+                    <div class="demo-box" id="box-1">1</div>
+                    <div class="demo-box" id="box-2">2</div>
+                    <div class="demo-box" id="box-3">3</div>
+                </div>
+
+                <!-- Logic for the Toggle Button -->
+                <script>
+                    let isSpreadMode = false;
+                    
+                    function toggleSpreadDemo() {
+                        const el = document.getElementById('spread-demo');
+                        const code = document.getElementById('spread-code');
+                        const box1 = document.getElementById('box-1');
+                        
+                        if (!isSpreadMode) {
+                            // --- ENABLE SPREAD ---
+                            // 1. Apply Layout
+                            el.setAttribute('layout', "Grid.col(33, 33, 33).spread(['r1'], [1]).props({gap:'5px', height:'60px'}).offset([2])");
+                            code.innerText = "Grid.col(33, 33, 33).offset([2]).spread(['r1'], [1])";
+                            
+                            // 2. Remove Box 3 (Because Box 1 now takes 2 slots)
+                            const box3 = document.getElementById('box-3');
+                            if(box3) box3.remove();
+
+                            // 3. Highlight Box 1
+                            box1.innerText = "1 (Spanned)";
+                            box1.classList.add('filled');
+                            
+                            isSpreadMode = true;
+                        } else {
+                            // --- DISABLE SPREAD (Reset) ---
+                            // 1. Reset Layout
+                            el.setAttribute('layout', "Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})");
+                            code.innerText = "Grid.col(33, 33, 33)";
+                            
+                            // 2. Reset Box 1
+                            box1.innerText = "1";
+                            box1.classList.remove('filled');
+
+                            // 3. Restore Box 3
+                            if(!document.getElementById('box-3')) {
+                                const newBox3 = document.createElement('div');
+                                newBox3.className = 'demo-box';
+                                newBox3.id = 'box-3';
+                                newBox3.innerText = '3';
+                                el.appendChild(newBox3);
+                            }
+                            
+                            isSpreadMode = false;
+                        }
+
+                        // Trigger Engine Re-render
+                        if(window.Engine) window.Engine.render(el);
+                    }
+                </script>
+            </section>
+
+
+
+
+
+
+<!-- LAYOUTS -->
+
+                <section id="12-col">
+                    <h4>LAYOUTS</h4>
+                <h2>Advanced Layout Patterns</h2>
+                
+                <!-- UPDATED: HOLY GRAIL USING 12-COLUMN LOGIC -->
+                <h3 id="holy-grail">The "Holy Grail" (12-Column Style)</h3>
+                <p>Instead of arbitrary percentages, you can use the classic 12-column system fractions. Here, we create a layout with a Header, a 3-column Sidebar, a 9-column Content area, and a Footer.</p>
+                
+                <pre class="clean">&lt;div layout="Grid.row(
+  2/12,                           // Header (Fixed height relative to flex)
+  (8/12).col(3/12, 5/12),         // Body: Sidebar (3/12) + Content (5/12)
+  2/12                           // Footer
+)"&gt;</pre>
+                
+                <div class="grid-container" layout="Grid.row(2/12, (8/12).col(3/12, 5/12), 2/12).props({gap:'5px', height:'250px'})">
+                    <div class="demo-box filled">Header (Span 12)</div>
+                    <div class="demo-box">Sidebar (Span 3)</div>
+                    <div class="demo-box">Main Content (Span 9)</div>
+                    <div class="demo-box filled">Footer (Span 12)</div>
+                </div>
+
+</section>
+<section id="mondrian">
+                <h3>Deep Recursion (Mondrian Style)</h3>
+                <pre class="clean">&lt;div layout="Grid.col(50, (50).row(50, (50).col(50, 50)))"&gt;</pre>
+                
+                <div class="grid-container" layout="Grid.col(50, (50).row(50, (50).col(50, 50))).props({gap:'5px', height:'200px'})">
+                    <div class="demo-box filled">Left</div>
+                    <div class="demo-box">Top</div>
+                    <div class="demo-box">Btm Left</div>
+                    <div class="demo-box">Btm Right</div>
+                </div>
+            </section>
+
+<section id="golden">
+                <h3>Golden Ratio</h3>
+<p>You can create a golden-ratio layout (Fibonacci spiral) using the built-in <code>lg</code> and <code>sm</code> variables (<code>lg = 61.8</code>, <code>sm = 38.2</code>).</p>
+
+<p>Each split rotates the layout, and the smaller section becomes the container for the next split, producing a centered spiral:</p>
+
+<pre class="clean">&lt;div layout="Grid.col(
+  lg,
+  sm.row(
+    lg,
+    sm.col(
+      sm.row(
+        sm.col(
+          lg,
+          sm.row(
+            lg,
+            sm.col(
+              sm.row(
+                sm.col(lg, sm)
+              , lg)
+            , lg)
+          )
+        , lg)
+      , lg)
+    , lg)
+  )
+)"&gt;</pre>
+
+
+
+<div class="grid-container" layout="Grid.col(lg,sm.row(lg,sm.col(sm.row(sm.col(lg,sm.row(lg,sm.col(sm.row(sm.col(lg,sm) ,lg),lg))) ,lg),lg)))" style="height:490px">
+  <div class="arc-tl demo-box" ></div>
+  <div class="arc-tr demo-box" ></div>
+  <div class="arc-tl demo-box" ></div>
+  <div class="arc-tr demo-box" ></div>
+  <div class="arc-tl demo-box" ></div>
+  <div class="arc-tr demo-box" ></div>
+  <div class="arc-bl demo-box" ></div>
+  <div class="arc-br demo-box" ></div>
+  <div class="arc-bl demo-box" ></div>
+  <div class="arc-br demo-box" ></div>
+
+</div>
+
+<p>For a more visual effect, you can also add rounded corners to the children to create the spiral curve:</p>
+</section>
+
+
+<section id="symmetry">
+    <h3>Complex Symmetry</h3>
+                <p>Creating a symmetrical 23-element layout in standard HTML requires complex nesting or manual percentage calculations. With Rowscolumns, you just mirror the layout string.</p>
+                <p><strong>Comparison:</strong> In standard CSS, you would need to calculate <code>width: 4.34%</code>, <code>width: 8.69%</code>, etc., or use complex Flexbox nesting. Here, it is one line of logic.</p>
+                
+                <pre class="clean">&lt;div layout="Grid.col( 
+  (10).row(1,1,1,1,1,1,1,1),  // Left Wing (8 rows)
+  (20).row(1,1,1),            // Inner Left (3 rows)
+  40,                         // Center (1 big col)
+  (20).row(1,1,1),            // Inner Right (3 rows)
+  (10).row(1,1,1,1,1,1,1,1)   // Right Wing (8 rows)
+)"&gt;</pre>
+                
+                <div class="grid-container" 
+                     layout="Grid.col((10).row(1,1,1,1,1,1,1,1).props({gap:'2px'}), (20).row(1,1,1).props({gap:'5px'}), 40, (20).row(1,1,1).props({gap:'5px'}), (10).row(1,1,1,1,1,1,1,1).props({gap:'2px'})).props({gap:'10px'})" 
+                     style="border:none; padding:0;"
+                     id="symmetry-demo">
+                     <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                </div>
+                </section>
+
+
+<section id="rhythm">
+    <!-- 5. RHYTHM -->
+                <h3 >Massive Rhythm (20 Columns)</h3>
+                <p>Handling 20+ columns in native CSS Grid often involves tedious <code>repeat()</code> syntax or manual fractional math. Rowscolumns handles the math for any number of elements instantly.</p>
+                <p>This example generates <strong>20 columns</strong> that progressively grow larger, creating a visual rhythm.</p>
+                
+                <pre class="clean">&lt;div layout="Grid.col(1, 2, 3, 4, 5, 6, 7 ... 20)"&gt;</pre>
+                
+                <div class="grid-container" 
+                     layout="Grid.col(1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5).props({gap:'2px', height:'100px'})" 
+                     style="border:none; padding:0;"
+                     id="rhythm-demo">
+                     <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                    <div class="demo-box2"></div>
+                </div>
+                
+</section>
+
+
+<section id="balance">
+
+<h3>Asymmetrical Balance</h3>
+                <p>Standard grids often feel rigid. By using a 6-column base and the <code>.spread()</code> method, elements can cross the center axis, creating dynamic, asymmetrical balance.</p>
+                <p>This layout uses <code>.offset()</code> to create negative space and <code>.spread()</code> to bridge columns.</p>
+
+                <pre class="clean">&lt;div layout="Grid.col(
+  (1).row(1,1,1,3).spread(['r1'],[3,4]),
+  (1).row(2,1,3).spread(['r1'],[1]).offset([2,3]),
+  (1).row(2,2,1,1).offset([1]).spread(['r1'],[1]),
+  (1).row(1,1,2,2).offset([3]).spread(['r1'],[3]),
+  (1).row(3,1,2).offset([3]).spread(['r1'],[2,1]),
+  (1).row(3,1,1,1).offset([1,2])
+).props({gap:'5px'})"&gt;</pre>
+
+                <div class="grid-container" 
+                     style=" padding: 0; border: none; height: 400px; width: 400px; gap: 5px;"
+                     layout="Grid.col(
+                     (1).row(1,1,1,3).spread(['r1'],[3,4]),
+                     (1).row(2,1,3).spread(['r1'],[1]).offset([2,3]),
+                     (1).row(2,2,1,1).offset([1]).spread(['r1'],[1]),
+                     (1).row(1,1,2,2).offset([3]).spread(['r1'],[3]),
+                     (1).row(3,1,2).offset([3]).spread(['r1'],[2,1]),
+                     (1).row(3,1,1,1).offset([1,2])
+                     )
+                     .childProps({borderRadius:'50%'},[1,7,10,15])
+                     "
+                >
+                    <!-- 15 Grey Shapes -->
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                </div>
+            </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- RESPONSIVE -->
+            <section id="responsive">
+                <h4>DEVELOPMENT</h4>
+                <h2>Responsive Design</h2>
+                <p>Rowscolumns uses specific attributes for breakpoints.</p>
+                <table>
+                    <thead>
+                        <tr><th>Attribute</th><th>Breakpoint</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>layout</code></td><td>Default / Mobile</td></tr>
+                        <tr><td><code>layout-sm</code></td><td>≥ 576px</td></tr>
+                        <tr><td><code>layout-md</code></td><td>≥ 768px</td></tr>
+                        <tr><td><code>layout-lg</code></td><td>≥ 992px</td></tr>
+                        <tr><td><code>layout-xl</code></td><td>≥ 1200px</td></tr>
+                    </tbody>
+                </table>
+                <br>
+                <pre class="clean">&lt;div 
+  layout="Grid.col(100)"             // Mobile: Stacked
+  layout-md="Grid.col(50, 50)"       // Tablet: 2 Cols
+  layout-xl="Grid.col(33, 33, 33)"   // Desktop: 3 Cols
+&gt;</pre>
+            </section>
+
+            <!-- FRAMEWORKS -->
+            <section id="frameworks">
+                <h2>React & TypeScript</h2>
+                <p>Rowscolumns ships with a dedicated React wrapper and full TypeScript definitions.</p>
+                
+                <h3>1. The Setup</h3>
+                <pre class="clean">import React from 'react';
+import { Layout, Grid, lg, sm } from 'rowscolumns/react';</pre>
+
+                <h3>2. Native Syntax (Recommended)</h3>
+                <p>Pass real JavaScript objects to the <code>layout</code> prop. No quotes needed.</p>
+                <pre class="clean">export const App = () => {
+  const sidebar = 250; 
+  
+  return (
+    &lt;Layout layout={Grid.col(sidebar, 'auto')} &gt;
+       &lt;div&gt;Fixed Sidebar&lt;/div&gt;
+       &lt;div&gt;Fluid Content&lt;/div&gt;
+    &lt;/Layout&gt;
+  );
+};</pre>
+            </section>
+
+
+
+ 
+
+
+            <!-- FOOTER -->
+            <footer style="margin-top: 100px; padding-top: 40px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.9rem;">
+                <p>&copy; 2024 Rowscolumns Framework. Released under MIT License.</p>
+                <p>
+                    <a href="https://github.com/abhimm5/rowscolumns">GitHub</a> • 
+                    <a href="https://npmjs.com/package/rowscolumns">NPM</a>
+                </p>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- SCROLL TRACKER SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const link = document.querySelector(`.toc-link[href="#${id}"]`);
+                    
+                    if (entry.isIntersecting && link) {
+                        document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+                        link.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            document.querySelectorAll('section[id]').forEach((section) => {
+                observer.observe(section);
+            });
+        });
+    </script>
+
 </body>
-
 </html>

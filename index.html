@@ -1,244 +1,363 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <style id="dcoder_stylesheet" type="text/css">
-
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    .lc{
-        color: #333;
-
-    }
-    .container {
-  background-image: url('pie-factory.svg'); /* Replace 'your-svg-image.svg' with the path to your SVG file */
-  background-repeat: repeat;
-   fill: blue;
-}
-
-        </style>
-            <link rel="stylesheet" href="../style.css">
-
-         <script src="../prototypeSyntax.js"></script>
-         <link rel="stylesheet" type="text/css" href="rowcolumn/rowcolumn.css">
-         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rowscolumns - The Logical Layout Engine</title>
     
-    </head>
-    <body id="container" >
-        <div style="background-color: rgb(252, 252, 252,0.2);" class="grid-container"  id="grid-container" layout="(100).splits(lg, sm
-         ,'parallel',[100,97.5])
-        .add(
-        property('gap','20px'),
-        property('margin','20px'),
-        property('border-radius','10px',0,3),
-        )">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        // --- THEME PERSISTENCE LOGIC ---
+        // Runs immediately to prevent flash of wrong theme
+        (function() {
+            try {
+                const localTheme = localStorage.getItem('theme');
+                const sysTheme = window.matchMedia('(prefers-color-scheme: light)').matches;
+                if (localTheme === 'light' || (!localTheme && sysTheme)) {
+                    document.documentElement.classList.add('light-mode');
+                }
+            } catch (e) {}
+        })();
+    </script>
 
-            <div id="demo5" style="" class="l-cc p-cc">
-                <div  class="p-tac l-tac">
-                    <h1 style="font-size: 90px;" id="demo2">CSS's First</h1>
-                    <h2 id="demo" >Two dimentional compatible layout framework.</h3> 
-                </div>
+    <link rel="stylesheet" type="text/css" href="mainstyles.css">
+
+    <script type="module">
+        import { Engine, Grid, lg, sm, auto } from 'https://unpkg.com/rowscolumns@1.3.0/dist/index.mjs';
+        window.Grid = Grid; window.Engine = Engine; 
+        window.lg = lg; window.sm = sm; window.auto = auto;
+        window.paddingForWireBox = {height:'130px'};
+        Engine.init();
+    </script>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.classList.toggle('light-mode');
+            
+            // Save to localStorage
+            const isLight = html.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+    </script>
+    <style>
+    .box {
+      background: var(--primary);
+      padding: 8px 0;
+      color: white;
+      text-align: center;
+      border-radius: 3px;
+    }
+    [layout]{
+        display: grid;
+        gap: 10px;
+    }
+  </style>
+</head>
+<body>
+<div style="display: flex; justify-content: center; padding: 10px 0px; background-color: var(--primary); color: #fff;">
+  <span>To read old documentation v0.3.2</span>
+  <a href="v0.3/index.html" style="margin-left: 5px;">click here</a>
+</div>
+    <!-- NAV -->
+    <nav style="position: sticky; top: 0; background: var(--bg); border-bottom: 1px solid var(--border); z-index: 100; backdrop-filter: blur(10px); background-color: rgba(var(--bg), 0.8);">
+        <div class="container" layout="Grid.col(auto, auto, auto, auto, 1, auto, auto).props({alignItems:'center', height: '65px',gap:'10px'}).offset([5])">
+            
+            <!-- 1. Logo Image -->
+            <div style="display:flex; align-items:center;"> 
+                <a href="index.html" style="display:flex;"> 
+                    <img src="logo.svg" width="28" height="28" style="display:block; border-radius: 4px;">
+                </a>
             </div>
-             <div   class="l-tc l-tac p-cc p-tac">
-                <div id="demo4" style="color: rgb(252, 252, 252,0.99);">
-                    <h2>Make</h2>
-                    <h1>Complex Grids</h1>
-                    <h2  >In just minutes</h3> 
-                    <h1 style="font-size: 40px;">Fully Focused</h1>
-                    <h1 style="font-size: 60px;">Design</h1>
-                    <h1 style="font-size: 40px;">and</h1>
-                    <h1 style="font-size: 60px; ">Beautiness</h1>
-                </div>
-                
+            
+            <!-- 2. Logo Text -->
+            <div style="font-weight: 700; font-size: 1.05rem;">
+                <a href="index.html" style="text-decoration:none; color: inherit;">Rowscolumns</a>
             </div>
-             <div class="l-cc ">
-                <div class="p-tac l-tac">
-                    <h2><a href="https://rowscolumns.github.io/docs.html">Read Documentation </a></h4>
-                    <h3>An Open Sourced Project By From India</h3> 
-                </div>
+            
+            <!-- 3. Docs Link -->
+            <div><a href="docs.html" class="nav-link">Docs</a></div>
+            
+            <!-- 4. Generator Link -->
+            <div><a href="gridgenerator.html" class="nav-link">Grid Generator</a></div>
+            
+            <!-- 5. Spacer (Offset Index 5) -->
+
+            <!-- 6. GitHub Icon (Updated) -->
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <a href="https://github.com/abhimm5/rowscolumns" class="icon-btn" aria-label="GitHub" target="_blank">
+                    <!-- Filled GitHub Icon -->
+                    <svg 
+    width="24" 
+    height="24" 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 
+    3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 
+    0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61 
+    -.546-1.387-1.333-1.757-1.333-1.757-1.087-.744.084-.729.084-.729 
+    1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.807 1.304 
+    3.492.997.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.334-5.466-5.93 
+    0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 
+    0 0 1.005-.322 3.3 1.23a11.52 11.52 0 0 1 3-.404c1.02.004 
+    2.045.138 3 .404 2.28-1.552 3.285-1.23 3.285-1.23 
+    .645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 
+    1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 
+    0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57 
+    C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+</svg>
+
+                </a>
+            </div>
+            
+            <!-- 7. Theme Toggle -->
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
             </div>
 
         </div>
-    </body>
+    </nav>
 
-  <script>
-    function svg(svgcolor){
-     return "<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill-rule='evenodd'><g fill='"+ svgcolor +"' fill-rule='nonzero'><path d='M29 58.58l7.38-7.39A30.95 30.95 0 0 1 29 37.84a30.95 30.95 0 0 1-7.38 13.36l7.37 7.38zm1.4 1.41l.01.01h-2.84l-7.37-7.38A30.95 30.95 0 0 1 6.84 60H0v-1.02a28.9 28.9 0 0 0 18.79-7.78L0 32.41v-4.84L18.78 8.79A28.9 28.9 0 0 0 0 1.02V0h6.84a30.95 30.95 0 0 1 13.35 7.38L27.57 0h2.84l7.39 7.38A30.95 30.95 0 0 1 51.16 0H60v27.58-.01V60h-8.84a30.95 30.95 0 0 1-13.37-7.4L30.4 60zM29 1.41l-7.4 7.38A30.95 30.95 0 0 1 29 22.16 30.95 30.95 0 0 1 36.38 8.8L29 1.4zM58 1A28.9 28.9 0 0 0 39.2 8.8L58 27.58V1.02zm-20.2 9.2A28.9 28.9 0 0 0 30.02 29h26.56L37.8 10.21zM30.02 31a28.9 28.9 0 0 0 7.77 18.79l18.79-18.79H30.02zm9.18 20.2A28.9 28.9 0 0 0 58 59V32.4L39.2 51.19zm-19-1.4a28.9 28.9 0 0 0 7.78-18.8H1.41l18.8 18.8zm7.78-20.8A28.9 28.9 0 0 0 20.2 10.2L1.41 29h26.57z'/></g></g></svg>"
-    }
+    <!-- MAIN LAYOUT -->
+    <main class="container" 
+          
+          /* 1. MOBILE LAYOUT: Everything Stacked (1 Column) with spacing */
+          layout="Grid.row(
+              (auto), /* 1. Hero (Left Text / Right Code) */
+              auto,
+              auto,                                            /* 2. Title */
+              ('400px').col(40, (60).row(1, 1)),               /* 3. Bento Grid */
+              auto,                                            /* 4. Visualizer Title */
+              ('400px').col(25, (50).row(30, 70), 25),         /* 5. Visualizer Demo */
+              auto,  auto.row(
+(1).col(8,8,8).offset([2]),
+(1).col(6,6,6,6).offset([1,3]),
+(1).col(6,12,6).offset([1,3])
+),                                          /* 6. Features Title */
+              (auto).row(25, 25, 25, 25),                      /* 7. Features Grid */
+              auto,                                             /* 8. Footer */
+              auto, 
+          ).props({gap: '20px', paddingTop: '80px', paddingBottom: '40px'}).childProps({paddingTop:'50px'},[3,7,12])
+          .childProps(paddingForWireBox,[8])"
 
-    const colorBox = document.getElementById('container');
+          /* 2. DESKTOP LAYOUT (LG): The complex recursive structure */
+          layout-lg="Grid.row(
+              (auto).col(lg, sm).props({alignItems:'center'}), /* 1. Hero (Left Text / Right Code) */
+              auto,                                            /* 2. Title */
+              ('400px').col(sm, (lg).row(1, 1)),               /* 3. Bento Grid */
+              auto,                                            /* 4. Visualizer Title */
+              ('400px').col(25, (50).row(30, 70), 25),         /* 5. Visualizer Demo */
+              auto,  auto.row(
+(1).col(8,8,8).offset([2]),
+(1).col(6,6,6,6).offset([1,3]),
+(1).col(6,12,6).offset([1,3])
+),                                          /* 6. Features Title */
+              (auto),                      /* 7. Features Grid */
+              auto,                                             /* 8. Footer */
+              auto, 
+          ).props({gap: '20px', paddingTop: '80px', paddingBottom: '40px'}).childProps({padding:'80px 0px'},[3,7,12])
+          .childProps(paddingForWireBox,[8])"
+         >
 
-      const transitionDuration = 1000; // Transition duration in milliseconds
-
-      function gradChange(targetColor,colorBox,styleType) {
-  const currentColor = getComputedStyle(colorBox)[styleType]; // Get the current background color
-  const currentColorArray = extractRGBAValues(currentColor);
-
-  // Calculate the step size for each RGBA component
-  const stepSize = {
-    r: (targetColor.r - currentColorArray[0]) / transitionDuration,
-    g: (targetColor.g - currentColorArray[1]) / transitionDuration,
-    b: (targetColor.b - currentColorArray[2]) / transitionDuration,
-    a: (targetColor.a - currentColorArray[3]) / transitionDuration
-  };
-
-  // Clear any previous transitions
-  colorBox.style.transition = "none";
-
-  // Use requestAnimationFrame to update the color gradually
-  function updateColor(timestamp) {
-    if (!colorBox.transitionStartTime) {
-      colorBox.transitionStartTime = timestamp;
-    }
-
-    const elapsedTime = timestamp - colorBox.transitionStartTime;
-
-    if (elapsedTime < transitionDuration) {
-      const newColor = `rgba(${Math.round(currentColorArray[0] + stepSize.r * elapsedTime)}, ${Math.round(currentColorArray[1] + stepSize.g * elapsedTime)}, ${Math.round(currentColorArray[2] + stepSize.b * elapsedTime)}, ${currentColorArray[3] + stepSize.a * elapsedTime})`;
-      colorBox.style[styleType] = newColor;
-      requestAnimationFrame(updateColor);
-    } else {
-      // Ensure the final color is exactly the target color
-      colorBox.style[styleType] = `rgba(${targetColor.r}, ${targetColor.g}, ${targetColor.b}, ${targetColor.a})`;
-      colorBox.transitionStartTime = null;
-    }
-  }
-
-  requestAnimationFrame(updateColor);
-}
-
-      // Helper function to extract RGB values from a color string
-   function extractRGBAValues(color) {
-  const matches = color.match(/\d+(\.\d+)?/g);
-  return matches ? matches.map(Number) : [0, 0, 0, 0.2];
-}
-
-    
-    function makeDigit(number){
-        return new Array(number).fill(0).join('');
-    }
-    function changeDigit(digit,number){
-        let count = digit.split('')
-        count.splice(0,1,number)
-        return Number(count.join(''))
-    }
-    let element = document.getElementById('demo');
-    let element2 = document.getElementById('demo2');
-    let element3 = document.getElementById('grid-container');
-     let element4 = document.getElementById('demo4');
-      let element5 = document.getElementById('demo5');
-    const number = new Array;
-    const myPunctuation = ['~!@#$%^&*'].toString().split('')
-    function numberAnimate(value){
-        let digit = value.length
+        <!-- 1. HERO -->
+        <div >
+            <div style="color: var(--primary); letter-spacing: 2px; font-weight: 700; margin-bottom: 20px;">NATIVE LAYOUT ENGINE</div>
+            <h1>The Best And Smart<br> Javascript Layouting System.</h1>
+            <p style="color:var(--text-muted); margin-bottom: 30px; font-size: 1.1rem;">A recursive, zero-dependency layout engine. Write geometry using native JavaScript logic.</p>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <a href="docs.html" class="btn">Get Started</a>
+                <div class="code-box" style="user-select: all; cursor: pointer;">npm install rowscolumns</div>
+            </div>
+        </div>
         
-        number.push(value);
-        let lastNumber = number.pop();
-        let splitNumber = lastNumber.toString().split('')
-        console.log(digit)
-        //animation function
-        const animate = (digit,value) => {
-            var i = 0;
-            let stringValue = value.toString().split('') 
-            let digitLength = new Array(digit.length)
-            let animating = setInterval(()=>{
-                for(let int =0;int<digit.length;int++){
-                    digitLength.fill(myPunctuation[Math.floor(Math.random() * 10)],digit.length-1)
-                    console.log(value)
-                }
-                let rancol = "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0")
-                function hexToRGB(hex, alpha) {
-    var r = parseInt(hex.slice(1, 3), 16),
-        g = parseInt(hex.slice(3, 5), 16),
-        b = parseInt(hex.slice(5, 7), 16);
+        <!-- Hero Code Visual -->
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="dot" style="background:#ff5f56"></div>
+                <div class="dot" style="background:#ffbd2e"></div>
+                <div class="dot" style="background:#27c93f"></div>
+                <div style="margin-left: auto; color: var(--text-muted); font-size: 10px;">App.jsx</div>
+            </div>
+            <div class="terminal-body">
+                <div><span class="k">import</span> { <span class="v">Layout</span>, <span class="v">Grid</span> } <span class="k">from</span> <span class="s">'rowscolumns/react'</span>;</div>
+                <br>
+                <div><span class="k">export default</span> <span class="k">function</span> <span class="f">Dashboard</span>() {</div>
+                <div style="padding-left: 20px;"><span class="k">return</span> (</div>
+                <div style="padding-left: 40px;">&lt;<span class="t">Layout</span></div>
+                <div style="padding-left: 60px;">layout={Grid.col(lg, sm)}</div>
+                <div style="padding-left: 60px;">layout-md={Grid.row(50, 50)}</div>
+                <div style="padding-left: 40px;">&gt;</div>
+                <div style="padding-left: 60px;">&lt;<span class="t">div</span>&gt; Sidebar &lt;/<span class="t">div</span>&gt;</div>
+                <div style="padding-left: 60px;">&lt;<span class="t">div</span>&gt; Main Content &lt;/<span class="t">div</span>&gt;</div>
+                <div style="padding-left: 40px;">&lt;/<span class="t">Layout</span>&gt;</div>
+                <div style="padding-left: 20px;">);</div>
+                <div>}</div>
+            </div>
+        </div>
 
-    if (alpha) {
-        return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-    } else {
-        return "rgb(" + r + ", " + g + ", " + b + ")";
-    }
-}
+        <!-- 2. TITLE -->
+        <div style="text-align: center;">
+            <h2>Built with Logic</h2>
+            <p>The layout below is generated recursively.</p>
+            <code style="color: var(--primary); border:1px solid var(--border); padding: 4px 8px; border-radius:4px;">Grid.col(40, (60).row(50, 50))</code>
+        </div>
 
-function hexToRgbObj(hex,alpha) {
-  // Remove the '#' character if present
-  hex = hex.replace(/^#/, '');
+        <!-- 3. BENTO GRID -->
+        <div class="card">
+            <div style="font-size: 2rem; margin-bottom:10px;">⚡</div>
+            <h3>Native Speed</h3>
+            <p style="margin:0; font-size: 0.9rem; color: var(--text-muted);">Runs on the browser's JS engine. No regex parsing overhead.</p>
+        </div>
+        <div class="card">
+            <div style="font-size: 2rem; margin-bottom:10px;">📐</div>
+            <h3>Recursive Geometry</h3>
+            <p style="margin:0; font-size: 0.9rem; color: var(--text-muted);">Nest rows inside columns infinitely. Just like math.</p>
+        </div>
+        <div class="card">
+            <div style="font-size: 2rem; margin-bottom:10px;">👻</div>
+            <h3>Ghost Offsets</h3>
+            <p style="margin:0; font-size: 0.9rem; color: var(--text-muted);">Use <code>.offset()</code> to skip grid slots mathematically.</p>
+        </div>
 
-  // Parse the hex value into three separate R, G, and B values
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
+        <!-- 4. 2D VISUALIZER TITLE -->
+        <div style="text-align: center;">
+            <h2>True 2D Layouts</h2>
+            <p>Define complex dashboards in a single line. Visualised below.</p>
+            <code style="color: var(--primary); border:1px solid var(--border); padding: 4px 8px; border-radius:4px;">Grid.col(25, (50).row(30, 70), 25)</code>
+        </div>
 
-  // Return the RGB value as a string
-  return {r:r,g:g,b:b,a:alpha};
-}
+        <!-- 5. 2D VISUALIZER DEMO -->
+        <div class="wireframe-box fill" >Sidebar (25%)</div>
+        <div class="wireframe-box" >Header (30%)</div>
+        <div class="wireframe-box" >Content Body (70%)</div>
+        <div class="wireframe-box fill" >Widget Panel (25%)</div>
 
+        <div style="text-align: center;">
 
-function invertHex(hex) {
-   let main = hex.slice(1)
-   console.log(main)
-  return '#' + (Number(`0x1${main}`) ^ 0xFFFFFF).toString(16).substr(1).toUpperCase()
-
-}
-function adjust(color, amount) {
-    return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
-}
-; // Returns FF00FF
-
-
-
-                element.style.color = rancol, 50
-                element2.style.color = rancol
-                //element3.style.backgroundColor =  hexToRGB(rancol, 0.2);
+            <p>One more example. Visualised below.</p>
+            <code style="color: var(--primary); border:1px solid var(--border); padding: 4px 8px; border-radius:4px;">Grid.row(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(1).col(8,8,8).offset([2]),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(1).col(6,6,6,6).offset([1,3]),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(1).col(6,12,6).offset([1,3])<br>
+&nbsp;)</code>
+        </div>
 
 
-                element.innerHTML = digitLength.fill(stringValue[i],i,i+1).join('')
-                i++
-                if(i == digit.length){
-                    //gradChange(hexToRgbObj(rancol,0.2),element3,"backgroundColor")
-                       element2.style.color = "#000"
-                       //element3.style.backgroundColor = hexToRGB(rancol, 0.2)
-                        //element5.style.backgroundColor = invertHex(rancol)
-                        //element4.style.color =  rancol
-                        gradChange(hexToRgbObj(rancol,0.99),element4,"color")
-                           svgcolor = "blue"
-                   colorBox.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(svg(hexToRGB(rancol, 0.2)))}")`;
-                    clearInterval(animating)
-                }
-            },40)
-        }
-        animate(makeDigit(digit),value)
-    }
-    let phrase = ['Two dimentional compatible layout framework.','Fully Crafted from Grids','Line based Placement System']
-    let i = 0
-    setTimeout(()=>{
-        numberAnimate(phrase[i]);
-        setInterval(()=>{
-        numberAnimate(phrase[i]);
 
-        if(i==phrase.length-1){
-           i=0
-        }else{
-            i++
-        }
-    },8000)
-          element.style.color = "#333"
-        if(i==phrase.length-1){
-           i=0
-        }else{
-            i++
-        }
-    },100)   
-</script>
-      <script>
-    function handleVisibilityChange() {
-      if (document.visibilityState === 'visible') {
-        // Page is visible, so refresh it
-        location.reload();
-      }
-    }
+  <div class="wireframe-box">col-8</div>
+  <div class="wireframe-box">col-8</div>
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-  </script>
+<div class="wireframe-box">col-6 </div>
+  <div class="wireframe-box">col-6 </div>
+
+<div class="wireframe-box">col-12 </div>
+
+
+        <div style="text-align: center; margin-bottom: 60px;">
+            <h2>Clean & Semantic</h2>
+            <p style="color: var(--text-muted);">Build complex components with flat HTML. No "Div Soup".</p>
+        </div>
+
+        <div layout-md="Grid.col(50, 50).props({gap:'60px'})" layout="Grid.col(100).props({gap:'40px'})">
+
+            <!-- LEFT: VISUAL RESULT -->
+            <div>
+                <div style="margin-bottom: 15px; font-size: 0.8rem; color: var(--primary); letter-spacing: 1px; font-weight: 700;">THE RESULT</div>
+                
+                <!-- 
+                   THE SEMANTIC DEMO 
+                   1 Parent. 6 Children. Complex Layout.
+                   Row 1: Image (200px)
+                   Row 2: Title & Price (Split Col)
+                   Row 3: Description (Auto)
+                   Row 4: Buttons (Split Col)
+                -->
+                <div layout="Grid.row(
+                        200, 
+                        (auto).col(1, auto), 
+                        auto, 
+                        (auto).col(1, 1)
+                     ).props({
+                        gap:'15px', 
+                        padding:'25px', 
+                        background:'var(--surface)', 
+                        border:'1px solid var(--border)', 
+                        borderRadius:'16px'
+                     })">
+                    
+                    <!-- Child 1: Image -->
+                    <div style="background: linear-gradient(135deg, #222, #111); border-radius: 8px; display:flex; align-items:center; justify-content:center; color:#555; font-size:0.8rem;">Product Image</div>
+
+                    <!-- Child 2 & 3: Header Row -->
+                    <h3 style="margin:0; font-size:1.4rem; color:#fff;">Neon Chair</h3>
+                    <span style="color:var(--primary); font-weight:bold; font-size:1.2rem;">$299</span>
+
+                    <!-- Child 4: Body -->
+                    <p style="margin:0; font-size:0.9rem; line-height:1.4;">Ergonomic design with luminescent mesh backing for late night coding sessions.</p>
+
+                    <!-- Child 5 & 6: Footer Row -->
+                    <button class="btn" style="width:100%;">Buy Now</button>
+                    <button class="btn" style="width:100%; background:transparent; border:1px solid var(--border); color:var(--text-main);">Details</button>
+                </div>
+            </div>
+
+            <!-- RIGHT: THE CODE -->
+            <div>
+                 <div style="margin-bottom: 15px; font-size: 0.8rem; color: var(--primary); letter-spacing: 1px; font-weight: 700;">THE CODE</div>
+                 <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="dot" style="background:#ff5f56"></div><div class="dot" style="background:#ffbd2e"></div><div class="dot" style="background:#27c93f"></div>
+                        <span style="margin-left:auto; color:#555; font-size: 10px;">card.html</span>
+                    </div>
+                    <div class="terminal-body">
+                        &lt;<span class="t">div</span> <span class="v">layout</span>="<span class="s">Grid.row(
+  200,
+  (auto).col(1, auto),
+  auto,
+  (auto).col(1, 1)
+)</span>"&gt;<br>
+                        <br>
+                        &nbsp;&nbsp;&lt;!-- Flat Siblings (No wrappers!) --&gt;<br>
+                        &nbsp;&nbsp;&lt;<span class="t">img</span> src="..." /&gt;<br>
+                        &nbsp;&nbsp;&lt;<span class="t">h3</span>&gt;Neon Chair&lt;/<span class="t">h3</span>&gt;<br>
+                        &nbsp;&nbsp;&lt;<span class="t">span</span>&gt;$299&lt;/<span class="t">span</span>&gt;<br>
+                        &nbsp;&nbsp;&lt;<span class="t">p</span>&gt;Ergonomic...&lt;/<span class="t">p</span>&gt;<br>
+                        &nbsp;&nbsp;&lt;<span class="t">button</span>&gt;Buy&lt;/<span class="t">button</span>&gt;<br>
+                        &nbsp;&nbsp;&lt;<span class="t">button</span>&gt;Details&lt;/<span class="t">button</span>&gt;<br>
+                        <br>
+                        &lt;/<span class="t">div</span>&gt;
+                    </div>
+                 </div>
+            </div>
+
+        </div>
+
+
+
+       
+
+        <!-- 8. FOOTER -->
+        <div style="border-top: 1px solid var(--border); padding-top: 30px; text-align: center;">
+             <div style="font-weight: 700; margin-bottom: 10px;">Rowscolumns</div>
+             <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">The logical layout engine for the modern web.</p>
+             <div style="font-size: 0.8rem; opacity: 0.5;">© 2025 MIT License</div>
+        </div>
+
+    </main>
+
+
+
+
+</body>
 </html>
-

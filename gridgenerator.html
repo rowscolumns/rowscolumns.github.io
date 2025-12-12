@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- 1. SEO META TAGS -->
+    <title>CSS Grid Generator - Recursive Layout Builder | Rowscolumns</title>
+    <meta name="description" content="A visual CSS Grid Generator and Layout Builder. Create complex, recursive web layouts instantly and export to Native HTML, React, or CSS Grid code.">
+    <meta name="keywords" content="css grid generator, layout builder, grid layout tool, html generator, rowscolumns, web design tool, recursive grid">
+    <meta name="author" content="Rowscolumns">
+    <link rel="canonical" href="https://rowscolumns.github.io/generator.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rowscolumns.github.io/generator.html">
+    <meta property="og:title" content="CSS Grid Generator - Rowscolumns">
+    <meta property="og:description" content="Build complex 2D layouts instantly using native JavaScript logic. Export to React, Vue, or clean HTML.">
+    <meta property="og:image" content="https://rowscolumns.github.io/preview-card.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://rowscolumns.github.io/generator.html">
+    <meta property="twitter:title" content="CSS Grid Generator - Rowscolumns">
+    <meta property="twitter:description" content="Build complex 2D layouts instantly using native JavaScript logic. Export to React, Vue, or clean HTML.">
+    <meta property="twitter:image" content="https://rowscolumns.github.io/preview-card.png">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Rowscolumns Grid Generator",
+      "url": "https://rowscolumns.github.io/generator.html",
+      "description": "A recursive CSS Grid layout generator for React, Vue, and Native HTML.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <!-- LOAD ENGINE -->
+    <script type="module">
+        import { Engine, Grid } from 'https://unpkg.com/rowscolumns@1.4.0/dist/index.mjs';
+        window.Engine = Engine; window.Grid = Grid;
+        Engine.init();
+    </script>
+
+    <script>
+        // Theme Init
+        (function() {
+            try {
+                const l = localStorage.getItem('theme');
+                const s = window.matchMedia('(prefers-color-scheme: light)').matches;
+                if (l === 'light' || (!l && s)) document.documentElement.classList.add('light-mode');
+            } catch (e) {}
+        })();
+        function toggleTheme() {
+            document.documentElement.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.documentElement.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+    </script>
+     <link rel="stylesheet" type="text/css" href="mainstyles.css">
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav style="position: sticky; top: 0; background: var(--bg); border-bottom: 1px solid var(--border); z-index: 100; backdrop-filter: blur(10px); background-color: rgba(var(--bg), 0.8);">
+        <div class="container" layout="Grid.col(auto, auto, auto, auto, 1, auto, auto).props({alignItems:'center', height: '65px',gap:'10px'}).offset([5])">
+            
+            <!-- 1. Logo Image -->
+            <div style="display:flex; align-items:center;"> 
+                <a href="index.html" style="display:flex;"> 
+                    <img src="logo.svg" width="28" height="28" style="display:block; border-radius: 4px;">
+                </a>
+            </div>
+            
+            <!-- 2. Logo Text -->
+            <div style="font-weight: 700; font-size: 1.05rem;">
+                <a href="index.html" style="text-decoration:none; color: inherit;">Rowscolumns</a>
+            </div>
+            
+            <!-- 3. Docs Link -->
+            <div><a href="docs.html" class="nav-link">Docs</a></div>
+            
+            <!-- 4. Generator Link -->
+            <div><a href="gridgenerator.html" class="nav-link">Grid Generator</a></div>
+            
+            <!-- 5. Spacer (Offset Index 5) -->
+
+            <!-- 6. GitHub Icon (Updated) -->
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <a href="https://github.com/abhimm5/rowscolumns" class="icon-btn" aria-label="GitHub" target="_blank">
+                    <!-- Filled GitHub Icon -->
+                    <svg 
+    width="24" 
+    height="24" 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 
+    3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 
+    0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61 
+    -.546-1.387-1.333-1.757-1.333-1.757-1.087-.744.084-.729.084-.729 
+    1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.807 1.304 
+    3.492.997.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.334-5.466-5.93 
+    0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 
+    0 0 1.005-.322 3.3 1.23a11.52 11.52 0 0 1 3-.404c1.02.004 
+    2.045.138 3 .404 2.28-1.552 3.285-1.23 3.285-1.23 
+    .645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 
+    1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 
+    0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57 
+    C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+</svg>
+
+                </a>
+            </div>
+            
+            <!-- 7. Theme Toggle -->
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="app">
+       
+        <aside class="sidebar">
+            <div class="tabs">
+                <div class="tabs">
+    <button class="tab active" onclick="setTab('html')">Native HTML</button>
+    <button class="tab" onclick="setTab('rc')">RC</button>
+    <button class="tab" onclick="setTab('react')">React</button>
+</div>
+                
+            </div>
+            <div class="code-area" id="code-output" contenteditable="true" spellcheck="false"></div>
+            <div class="actions">
+                <button class="big-btn" onclick="copyCode()">Copy Code</button>
+                <button class="big-btn secondary" onclick="reset()">Reset</button>
+            </div>
+            <!-- INSTRUCTIONS -->
+            <div class="instructions">
+                <p style="margin:0 0 5px 0;"><strong>How to use:</strong></p>
+                <ul style="padding-left: 20px; margin: 0;">
+                    <li>Hover over a box to <strong>Split</strong> it.</li>
+                    <li>Click Col or Rows to make grid</li>
+                    <li>Change the number to adjust <strong>Ratio</strong>.</li>
+                    <li>Click <strong>Delete</strong> to remove a section.</li>
+                </ul>
+                <div class="tip">
+                    <strong>Live Edit:</strong> Type directly in the code box above to update the grid! (Only RC)
+                </div>
+            </div>
+        </aside>
+         <main class="canvas-wrapper">
+            <div id="editor-root"></div>
+        </main>
+
+    </div>
+
+    <!-- Virtual DOM -->
+    <div id="virtual-dom" style="display:none;"></div>
+
+    <script>
+        // --- DATA STRUCTURE ---
+        class Node {
+            constructor(parent = null, weight = 100) {
+                this.id = Math.random().toString(36).substr(2, 5);
+                this.type = 'leaf'; // leaf | col | row
+                this.weight = weight;
+                this.children = [];
+                this.parent = parent;
+            }
+        }
+
+        let root = new Node(null, 100);
+        let currentTab = 'html';
+        let isManualMode = false;
+
+        // --- RENDER LOGIC ---
+        function render() {
+            const container = document.getElementById('editor-root');
+            
+            // 1. Skip Visual Build if Manual Mode
+            if (isManualMode) {
+                 container.classList.add('manual-mode');
+                 return;
+            }
+            container.classList.remove('manual-mode');
+
+            // 2. Generate Layout String from Tree
+            let layoutStr = buildLayoutString(root, true);
+            if (root.type === 'leaf') layoutStr = 'Grid.col(100)';
+            
+            // 3. Flatten Tree to get Leaves (for controls)
+            const leaves = getLeaves(root);
+
+            // 4. Setup DOM for Engine
+            // We create empty divs that the Engine will place into the grid
+            container.innerHTML = '';
+            leaves.forEach(node => {
+                const el = document.createElement('div');
+                el.className = 'grid-item';
+                // Attach reference to node for controls
+                el.dataset.nodeId = node.id;
+                
+                // Content (Dims)
+                const dims = document.createElement('div');
+                dims.className = 'dims';
+                dims.innerText = '...'; 
+                node.dimEl = dims; // Store ref
+                
+                // Controls
+                const controls = document.createElement('div');
+                controls.className = 'controls';
+                
+                const inp = document.createElement('input');
+                inp.className = 'weight-inp';
+                inp.value = node.weight;
+                inp.onchange = (e) => { node.weight = Number(e.target.value) || 1; render(); };
+                inp.onclick = (e) => e.stopPropagation();
+
+                const rowBtns = document.createElement('div');
+                rowBtns.className = 'row-btns';
+                
+                const btnCol = document.createElement('button');
+                btnCol.className = 'ctrl';
+                btnCol.innerHTML = '|| Col';
+                btnCol.title = "Split vertically into columns"; // Accessibility
+                btnCol.onclick = (e) => { e.stopPropagation(); split(node, 'col'); };
+
+                const btnRow = document.createElement('button');
+                btnRow.className = 'ctrl';
+                btnRow.innerHTML = '= Row';
+                btnRow.title = "Split horizontally into rows"; // Accessibility
+               btnRow.onclick = (e) => { e.stopPropagation(); split(node, 'row'); };
+
+                rowBtns.append(btnCol, btnRow);
+                controls.append(inp, rowBtns);
+
+                if (node.parent) {
+                    const btnDel = document.createElement('button');
+                    btnDel.className = 'ctrl';
+                    btnDel.innerText = 'Delete';
+                    btnDel.style.cssText = "color:#f0513e; border-color:#f0513e; margin-top:5px;";
+                    btnDel.onclick = (e) => { e.stopPropagation(); remove(node); };
+                    controls.appendChild(btnDel);
+                }
+
+                el.append(dims, controls);
+                container.appendChild(el);
+                node.domEl = el;
+            });
+
+            // 5. RUN ENGINE (This applies the Grid CSS)
+            container.setAttribute('layout', layoutStr);
+            if(window.Engine) window.Engine.render(container);
+
+            // 6. Update Visual Dims & Code
+            requestAnimationFrame(updateDimensions);
+            generateCode(layoutStr, leaves.length);
+        }
+
+        // --- TREE HELPERS ---
+        function getLeaves(node, list = []) {
+            if (node.type === 'leaf') list.push(node);
+            else node.children.forEach(c => getLeaves(c, list));
+            return list;
+        }
+
+        function buildLayoutString(n, isRoot) {
+            if (n.type === 'leaf') return n.weight;
+            const args = n.children.map(c => buildLayoutString(c, false)).join(', ');
+            if (isRoot) return `Grid.${n.type}(${args})`;
+            return `(${n.weight}).${n.type}(${args})`;
+        }
+
+        function updateDimensions() {
+            // Traverse tree to calculate LOGIC dimensions recursively
+            // Logic: Parent Size * (Child Weight / Total Weight)
+            const calcLogic = (n, w, h) => {
+                if (n.type === 'leaf') {
+                    if (n.dimEl) n.dimEl.innerText = `${Math.round(w*10)/10} x ${Math.round(h*10)/10}`;
+                } else {
+                    const total = n.children.reduce((acc,c) => acc+c.weight, 0);
+                    n.children.forEach(c => {
+                        let nw = w, nh = h;
+                        if(n.type==='col') nw = w * (c.weight/total);
+                        else nh = h * (c.weight/total);
+                        calcLogic(c, nw, nh);
+                    });
+                }
+            };
+            calcLogic(root, 100, 100);
+        }
+
+        // --- ACTIONS ---
+        function split(node, type) {
+            node.type = type;
+            node.children = [new Node(node, 50), new Node(node, 50)];
+            render();
+        }
+
+        function remove(node) {
+            if (!node.parent) return;
+            const parent = node.parent;
+            parent.children = parent.children.filter(c => c !== node);
+            if (parent.children.length === 0) parent.type = 'leaf';
+            else if (parent.children.length === 1) {
+                // Unwrap
+                const survivor = parent.children[0];
+                parent.type = survivor.type;
+                parent.children = survivor.children;
+                if(parent.children.length > 0) parent.children.forEach(c => c.parent = parent);
+            }
+            render();
+        }
+
+        function reset() {
+            root = new Node(null, 100);
+            isManualMode = false;
+            document.getElementById('code-output').blur();
+            render();
+        }
+
+        // --- CODE GEN ---
+        function generateCode(layoutStr, divCount) {
+            const out = document.getElementById('code-output');
+            if (document.activeElement === out) return; 
+
+            let result = '';
+            if (currentTab === 'rc') {
+                result = `<!-- RC v1.2.0 -->\n`;
+                result += `<div layout="${layoutStr}">\n`;
+                for(let i=1; i<=divCount; i++) result += `  <div>Box ${i}</div>\n`;
+                result += `</div>`;
+            } 
+            else if (currentTab === 'react') {
+                result = `import { Layout, Grid } from 'rowscolumns/react';\n`;
+                result += `<Layout\n  layout={${layoutStr}}\n>\n`;
+                for(let i=1; i<=divCount; i++) result += `  <div>Box ${i}</div>\n`;
+                result += `</Layout>`;
+            }
+            else {
+                // Native CSS Output
+                if(window.Engine) {
+                    const vDom = document.getElementById('virtual-dom');
+                    vDom.innerHTML = '';
+                    for(let i=1; i<=divCount; i++) vDom.appendChild(document.createElement('div'));
+                    
+                    vDom.setAttribute('layout', layoutStr);
+                    window.Engine.render(vDom);
+                    
+                    const style = vDom.style;
+                    // Format Output
+                    result = `<div style="display: grid; width: 100%; height: 100%;\n`;
+                    result += `  grid-template-columns: ${style.gridTemplateColumns || '100%'};\n`;
+                    result += `  grid-template-rows: ${style.gridTemplateRows || '100%'};">\n\n`;
+
+                    Array.from(vDom.children).forEach((c, i) => {
+                        // gridColumn is "start / end"
+                        // gridRow is "start / end"
+                        const col = c.style.gridColumn;
+                        const row = c.style.gridRow;
+                        const rs = row.split('/')[0]?.trim() || 'auto';
+                        const re = row.split('/')[1]?.trim() || 'auto';
+                        const cs = col.split('/')[0]?.trim() || 'auto';
+                        const ce = col.split('/')[1]?.trim() || 'auto';
+                        
+                        const area = `${rs} / ${cs} / ${re} / ${ce}`;
+                        result += `  <div style="grid-area: ${area};">Box ${i+1}</div>\n`;
+                    });
+
+                    result += `</div>`;
+                }
+            }
+            out.innerText = result;
+        }
+
+        // --- LIVE EDITING ---
+        document.getElementById('code-output').addEventListener('input', (e) => {
+            if (currentTab !== 'rc') return;
+            const text = e.target.innerText;
+            const match = text.match(/layout="([^"]+)"/);
+            
+            if (match && match[1]) {
+                isManualMode = true;
+                const canvas = document.getElementById('editor-root');
+                canvas.innerHTML = '';
+                canvas.classList.add('manual-mode');
+                
+                const count = (text.match(/<div/g) || []).length - 1;
+                for(let i=0; i<count; i++) {
+                    const d = document.createElement('div');
+                    d.className = 'grid-item leaf'; 
+                    d.style.display='flex'; d.style.alignItems='center'; d.style.justifyContent='center';
+                    d.style.border='1px solid #333';
+                    d.innerText = `Box ${i+1}`;
+                    canvas.appendChild(d);
+                }
+                
+                canvas.setAttribute('layout', match[1]);
+                if(window.Engine) window.Engine.render(canvas);
+            }
+        });
+
+        function setTab(t) {
+            currentTab = t;
+            document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (!isManualMode) {
+                let layoutStr = buildLayoutString(root, true);
+                if (root.type === 'leaf') layoutStr = 'Grid.col(100)';
+                const leaves = getLeaves(root);
+                generateCode(layoutStr, leaves.length);
+            }
+        }
+
+        function copyCode() {
+            const text = document.getElementById('code-output').innerText;
+            navigator.clipboard.writeText(text);
+            const btn = document.querySelector('.actions .big-btn');
+            const orig = btn.innerText;
+            btn.innerText = "Copied!";
+            setTimeout(() => btn.innerText = orig, 1000);
+        }
+
+        // Init
+        render();
+        window.addEventListener('resize', () => { 
+            // Re-render only to update pixels if needed, but logic stays
+            // render(); 
+        });
+    </script>
+</body>
+</html>
