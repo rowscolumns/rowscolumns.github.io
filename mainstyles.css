@@ -400,3 +400,21 @@
         .instructions { padding: 20px 0px; font-size: 0.8rem; color: var(--text-muted); }
         .instructions strong { color: var(--text-main); }
         .tip { background: rgba(240, 81, 62, 0.1); color: var(--primary); padding: 8px; border-radius: 4px; margin-top: 10px; font-size: 0.75rem; }
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+    /* 1. Hide Logo Text to save space */
+    .logo-text {
+        display: none;
+    }
+    
+    /* 2. Fix Horizontal Scroll issues */
+    body, .doc-shell, .content {
+        overflow-x: hidden;
+        width: 100%;
+    }
+    
+    /* Ensure containers don't force width */
+    .grid-container {
+        max-width: 100%;
+    }
+}

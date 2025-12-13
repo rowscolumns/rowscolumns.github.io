@@ -979,7 +979,11 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 )"&gt;</pre>
                 
                 <div class="grid-container" 
-                     layout="Grid.col((10).row(1,1,1,1,1,1,1,1).props({gap:'2px'}), (20).row(1,1,1).props({gap:'5px'}), 40, (20).row(1,1,1).props({gap:'5px'}), (10).row(1,1,1,1,1,1,1,1).props({gap:'2px'})).props({gap:'10px'})" 
+                     layout="Grid.col((10).row(1,1,1,1,1,1,1,1).props({gap:'2px'}), (20).row(1,1,1).props({gap:'5px'}), 40, (20).row(1,1,1).props({gap:'5px'}), (10).row(1,1,1,1,1,1,1,1).props({gap:'2px'})).props({gap:'10px'}).props({
+                        gap: '5px', 
+                        aspectRatio: '1 / 1', 
+                        height: 'auto'
+                     })" 
                      style="border:none; padding:0;"
                      id="symmetry-demo">
                      <div class="demo-box"></div>
@@ -1071,6 +1075,11 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                      (1).row(3,1,2).offset([3]).spread(['r1'],[2,1]),
                      (1).row(3,1,1,1).offset([1,2])
                      )
+                     .props({
+                        gap: '5px', 
+                        aspectRatio: '1 / 1', 
+                        height: 'auto'
+                     })
                      .childProps({borderRadius:'50%'},[1,7,10,15])
                      "
                 >

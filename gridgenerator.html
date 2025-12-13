@@ -143,8 +143,8 @@
         <aside class="sidebar">
             <div class="tabs">
                 <div class="tabs">
-    <button class="tab active" onclick="setTab('html')">Native HTML</button>
-    <button class="tab" onclick="setTab('rc')">RC</button>
+    <button class="tab " onclick="setTab('html')">Native HTML</button>
+    <button class="tab active" onclick="setTab('rc')">RC</button>
     <button class="tab" onclick="setTab('react')">React</button>
 </div>
                 
@@ -190,7 +190,7 @@
         }
 
         let root = new Node(null, 100);
-        let currentTab = 'html';
+        let currentTab = 'rc';
         let isManualMode = false;
 
         // --- RENDER LOGIC ---
