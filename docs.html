@@ -278,6 +278,39 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
   .primary-color{
     color: var(--primary);
   }
+
+  /* --- ADD THIS TO YOUR CSS --- */
+
+/* Wrapper for code blocks with buttons */
+.code-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Ensure code text doesn't go under the absolute button */
+.code-wrapper pre.clean {
+    padding-right: 110px; /* Space for the "Toggle Effect" button */
+    margin: 0;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+    /* 1. Hide Logo Text to save space */
+    .logo-text {
+        display: none;
+    }
+    
+    /* 2. Fix Horizontal Scroll issues */
+    body, .doc-shell, .content {
+        overflow-x: hidden;
+        width: 100%;
+    }
+    
+    /* Ensure containers don't force width */
+    .grid-container {
+        max-width: 100%;
+    }
+}
     </style>
 
     <script type="module">
@@ -326,7 +359,7 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
             </div>
             
             <!-- 2. Logo Text -->
-            <div style="font-weight: 700; font-size: 1.05rem;">
+            <div class="logo-text" style="font-weight: 700; font-size: 1.05rem;">
                 <a href="index.html" style="text-decoration:none; color: inherit;">Rowscolumns</a>
             </div>
             
@@ -414,20 +447,67 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
         <main class="content">
 
             <!-- INTRO -->
+            <!-- INTRO -->
             <section id="intro">
                 <h1>Introduction</h1>
-                <p class="lead" style="font-size: 1.2rem; margin-bottom: 30px; color: var(--text-heading);">
-                    A robust, native-syntax <strong>two dimensional</strong> layout engine. Write real JavaScript logic directly in your HTML attributes without <code>eval</code> or Regex parsers.
+                
+                <p class="lead" style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 25px;">
+                    Rows & columns is a javascript framework based on line placement of CSS grid which gives supercontrol over children <code>&lt;div&gt;</code>.
                 </p>
                 <p>
-                    Most grid systems force you to write endless nested <code>&lt;div&gt;</code>s. 
-                    <strong>Rowscolumns</strong> is a recursive layout engine based on geometry. It supports <strong>React</strong>, <strong>Vue</strong>, and <strong>Vanilla HTML</strong> out of the box.
+                    Unlike others, this is completely <strong>two dimensional</strong> which helps in making grids without using many <code>&lt;div&gt;</code> wrappers. You can also use this on HTML besides native coding in javascript which eliminates the excessive use of <code>&lt;div class='row'&gt;</code> or <code>&lt;div class='column'&gt;</code>. It can be very useful for making layouts and reducing the CSS code.
                 </p>
-                <pre class="clean">&lt;div layout="Grid.col(30, 70)"&gt;
-    &lt;div&gt;Sidebar&lt;/div&gt;
-    &lt;div&gt;Content&lt;/div&gt;
+
+                <br>
+
+                <!-- COMPARISON BLOCKS -->
+                <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 30px;">
+                    
+                    <!-- 1. THE PROBLEM -->
+                    <div style="flex: 1; min-width: 300px;">
+                        <h4 style="margin:0 0 10px 0; color: var(--text-muted); font-size: 0.9rem; letter-spacing: 1px;">THE OLD WAY (DIV SOUP)</h4>
+                        <p style="font-size: 0.9rem;">To split the right column into two rows, standard frameworks force you to add a wrapper div.</p>
+                        <pre class="clean" style="margin-top:0; border-color: var(--border);">
+&lt;div class="row"&gt;
+  &lt;div class="col-4"&gt;Sidebar&lt;/div&gt;
+  &lt;div class="col-8"&gt;
+    &lt;!-- Wrapper needed for vertical split --&gt;
+    &lt;div class="column"&gt;
+      &lt;div&gt;Top Content&lt;/div&gt;
+      &lt;div&gt;Bottom Content&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
 &lt;/div&gt;</pre>
+                    </div>
+
+                    <!-- 2. THE SOLUTION -->
+                    <div style="flex: 1; min-width: 300px;">
+                        <h4 style="margin:0 0 10px 0; color: var(--primary); font-size: 0.9rem; letter-spacing: 1px;">THE ROWSCOLUMNS WAY</h4>
+                        <p style="font-size: 0.9rem;">No wrappers. The layout logic defines the geometry. The HTML remains flat and semantic.</p>
+                        <pre class="clean" style="margin-top:0; border-color: var(--primary);">
+&lt;div layout="Grid.col(30, (70).row(50, 50))"&gt;
+  &lt;div&gt;Sidebar&lt;/div&gt;
+  &lt;div&gt;Top Content&lt;/div&gt;
+  &lt;div&gt;Bottom Content&lt;/div&gt;
+&lt;/div&gt;</pre>
+                    </div>
+                </div>
+
+                <h3>Live Result</h3>
+                <p>The engine automatically calculates the math to place the siblings into the recursive grid.</p>
+
+                <!-- Live Visual Demo -->
+                <div class="grid-container" 
+                     layout="Grid.col(30, (70).row(50, 50)).props({gap:'10px', height:'200px'})" 
+                     style="border:none; padding:0;">
+                    <div class="demo-box filled">Sidebar</div>
+                    <div class="demo-box">Top Content</div>
+                    <div class="demo-box">Bottom Content</div>
+                </div>
             </section>
+
+
+
 
             <!-- INSTALLATION -->
             <section id="install">
@@ -647,12 +727,12 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 
                 <div style="position: relative;">
                     <!-- Code Block -->
-                    <pre class="clean" id="offset-code">Grid.col(33, 33, 33)</pre>
-                    
-                    <!-- Toggle Button -->
-                    <button onclick="toggleOffsetDemo()" style="position: absolute; top: 15px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
-                        Toggle Effect
-                    </button>
+                   <div class="code-wrapper">
+    <pre class="clean" id="offset-code">Grid.col(30, 30, 30)</pre>
+    <button onclick="toggleOffsetDemo()" style="position: absolute; top: 20px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
+        Toggle Effect
+    </button>
+</div>
                 </div>
 
 
@@ -724,12 +804,11 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                 
                 <div style="position: relative;">
                     <!-- Code Block -->
-                    <pre class="clean" id="spread-code">Grid.col(33, 33, 33)</pre>
-                    
-                    <!-- Toggle Button -->
-                    <button onclick="toggleSpreadDemo()" style="position: absolute; top: 15px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
-                        Toggle Effect
-                    </button>
+                    <div class="code-wrapper">
+    <pre class="clean" id="spread-code">Grid.col(33, 33, 33)</pre>
+    <button onclick="toggleSpreadDemo()" style="position: absolute; top: 20px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
+        Toggle Effect
+    </button>
                 </div>
 
                 <!-- Visual Demo -->
@@ -864,7 +943,11 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 
 
 
-<div class="grid-container" layout="Grid.col(lg,sm.row(lg,sm.col(sm.row(sm.col(lg,sm.row(lg,sm.col(sm.row(sm.col(lg,sm) ,lg),lg))) ,lg),lg)))" style="height:490px">
+<div class="grid-container" layout="Grid.col(lg,sm.row(lg,sm.col(sm.row(sm.col(lg,sm.row(lg,sm.col(sm.row(sm.col(lg,sm) ,lg),lg))) ,lg),lg))) .props({
+                        gap: '0px', 
+                        aspectRatio: '1.618 / 1', 
+                        height: 'auto'
+                     })" style="height:490px">
   <div class="arc-tl demo-box" ></div>
   <div class="arc-tr demo-box" ></div>
   <div class="arc-tl demo-box" ></div>
