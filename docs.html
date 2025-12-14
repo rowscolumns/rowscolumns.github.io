@@ -449,25 +449,26 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
             <!-- INTRO -->
             <!-- INTRO -->
             <section id="intro">
-                <h1>Introduction</h1>
-                
-                <p class="lead" style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 25px;">
-                    Rows & columns is a javascript framework based on line placement of CSS grid which gives supercontrol over children <code>&lt;div&gt;</code>.
-                </p>
-                <p>
-                    Unlike others, this is completely <strong>two dimensional</strong> which helps in making grids without using many <code>&lt;div&gt;</code> wrappers. You can also use this on HTML besides native coding in javascript which eliminates the excessive use of <code>&lt;div class='row'&gt;</code> or <code>&lt;div class='column'&gt;</code>. It can be very useful for making layouts and reducing the CSS code.
-                </p>
+    <h1>Introduction</h1>
 
-                <br>
+    <p class="lead" style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 20px;">
+        <strong>Rows & Columns</strong> is a JavaScript layout engine for CSS Grid that works by <strong>placing elements directly on grid lines</strong>. 
+        This gives precise two-dimensional control over child <code>&lt;div&gt;</code> placement without extra wrapper elements.
+    </p>
 
-                <!-- COMPARISON BLOCKS -->
-                <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 30px;">
-                    
-                    <!-- 1. THE PROBLEM -->
-                    <div style="flex: 1; min-width: 300px;">
-                        <h4 style="margin:0 0 10px 0; color: var(--text-muted); font-size: 0.9rem; letter-spacing: 1px;">THE OLD WAY (DIV SOUP)</h4>
-                        <p style="font-size: 0.9rem;">To split the right column into two rows, standard frameworks force you to add a wrapper div.</p>
-                        <pre class="clean" style="margin-top:0; border-color: var(--border);">
+    <p style="margin-bottom: 25px;">
+        Unlike traditional frameworks, Rows & Columns lets you define layouts in HTML or JavaScript while keeping your markup flat and semantic.  
+        You no longer need excessive <code>&lt;div class='row'&gt;</code> or <code>&lt;div class='column'&gt;</code> wrappers, and CSS code is greatly simplified.
+    </p>
+
+    <!-- COMPARISON BLOCKS -->
+    <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 30px;">
+        
+        <!-- 1. THE PROBLEM -->
+        <div style="flex: 1; min-width: 300px;">
+            <h4 style="margin:0 0 10px 0; color: var(--text-muted); font-size: 0.9rem; letter-spacing: 1px;">THE OLD WAY (DIV SOUP)</h4>
+            <p style="font-size: 0.9rem;">To split a column into two rows, most frameworks require an extra wrapper div.</p>
+            <pre class="clean" style="margin-top:0; border-color: var(--border);">
 &lt;div class="row"&gt;
   &lt;div class="col-4"&gt;Sidebar&lt;/div&gt;
   &lt;div class="col-8"&gt;
@@ -477,34 +478,37 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
       &lt;div&gt;Bottom Content&lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;</pre>
-                    </div>
+&lt;/div&gt;
+            </pre>
+        </div>
 
-                    <!-- 2. THE SOLUTION -->
-                    <div style="flex: 1; min-width: 300px;">
-                        <h4 style="margin:0 0 10px 0; color: var(--primary); font-size: 0.9rem; letter-spacing: 1px;">THE ROWSCOLUMNS WAY</h4>
-                        <p style="font-size: 0.9rem;">No wrappers. The layout logic defines the geometry. The HTML remains flat and semantic.</p>
-                        <pre class="clean" style="margin-top:0; border-color: var(--primary);">
+        <!-- 2. THE ROWSCOLUMNS WAY -->
+        <div style="flex: 1; min-width: 300px;">
+            <h4 style="margin:0 0 10px 0; color: var(--primary); font-size: 0.9rem; letter-spacing: 1px;">THE ROWSCOLUMNS WAY</h4>
+            <p style="font-size: 0.9rem;">No wrappers needed. Layout is defined by <strong>grid line placement</strong>, keeping HTML flat and semantic.</p>
+            <pre class="clean" style="margin-top:0; border-color: var(--primary);">
 &lt;div layout="Grid.col(30, (70).row(50, 50))"&gt;
   &lt;div&gt;Sidebar&lt;/div&gt;
   &lt;div&gt;Top Content&lt;/div&gt;
   &lt;div&gt;Bottom Content&lt;/div&gt;
-&lt;/div&gt;</pre>
-                    </div>
-                </div>
+&lt;/div&gt;
+            </pre>
+        </div>
+    </div>
 
-                <h3>Live Result</h3>
-                <p>The engine automatically calculates the math to place the siblings into the recursive grid.</p>
+    <h3>Live Result</h3>
+    <p>The engine automatically calculates positions and sizes using <strong>line placement</strong> to fit elements into a recursive grid:</p>
 
-                <!-- Live Visual Demo -->
-                <div class="grid-container" 
-                     layout="Grid.col(30, (70).row(50, 50)).props({gap:'10px', height:'200px'})" 
-                     style="border:none; padding:0;">
-                    <div class="demo-box filled">Sidebar</div>
-                    <div class="demo-box">Top Content</div>
-                    <div class="demo-box">Bottom Content</div>
-                </div>
-            </section>
+    <!-- Live Visual Demo -->
+    <div class="grid-container" 
+         layout="Grid.col(30, (70).row(50, 50)).props({gap:'10px', height:'200px'})" 
+         style="border:none; padding:0;">
+        <div class="demo-box filled">Sidebar</div>
+        <div class="demo-box">Top Content</div>
+        <div class="demo-box">Bottom Content</div>
+    </div>
+</section>
+
 
 
 
@@ -721,6 +725,8 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                     <div class="demo-box">2 (Styled)</div>
                     <div class="demo-box">3</div>
                 </div>
+
+                <p>Tip : You can select multiple children always.<code>.childProps({ background: 'salmon' }, [1, 3])</code> This will apply to 1st and 3rd children.</p>
 
                 <h3>.offset([indices])</h3>
                 <p>Creates "Ghost" slots. Useful for creating gaps. In this demo, we skip the middle slot (Index 2), forcing the 2nd Box to jump to the 3rd slot.</p>
@@ -1146,7 +1152,7 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                 
                 <h3>1. The Setup</h3>
                 <pre class="clean">import React from 'react';
-import { Layout, Grid, lg, sm } from 'rowscolumns/react';</pre>
+import { Layout } from 'rowscolumns/react';</pre>
 
                 <h3>2. Native Syntax (Recommended)</h3>
                 <p>Pass real JavaScript objects to the <code>layout</code> prop. No quotes needed.</p>
@@ -1163,18 +1169,43 @@ import { Layout, Grid, lg, sm } from 'rowscolumns/react';</pre>
             </section>
 
 
+<section id="support">
+  <h2>Support Rows & Columns</h2>
+  <p>If you find Rows & Columns useful and want to support its development, your contribution helps add new features, and improve the framework.</p>
+
+  <h3>Global Support</h3>
+  <ul>
+    <li>
+      <a href="https://github.com/sponsors/abhimm5" target="_blank">GitHub Sponsors</a> – one-time or recurring contributions
+    </li>
+    <li>
+      <a href="https://www.buymeacoffee.com/YOUR_BMAC_ID" target="_blank">Buy Me a Coffee</a> – micro-donations and subscriptions
+    </li>
+  </ul>
+
+  <h3>Support from India</h3>
+  <ul>
+    <li>UPI / Google Pay / PhonePe / Paytm: <strong>abhimm5@upi</strong></li>
+  </ul>
+
+  <p >
+    Even if you cannot donate, sharing the project, starring it on GitHub, or contributing feedback helps a lot!
+  </p>
+</section>
 
  
 
 
             <!-- FOOTER -->
-            <footer style="margin-top: 100px; padding-top: 40px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.9rem;">
+            <footer style="margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.9rem;">
                 <p>&copy; 2024 Rowscolumns Framework. Released under MIT License.</p>
                 <p>
-                    <a href="https://github.com/abhimm5/rowscolumns">GitHub</a> • 
+                    <a href="https://github.com/abhimm5/rowcolumn">GitHub</a> • 
                     <a href="https://npmjs.com/package/rowscolumns">NPM</a>
                 </p>
             </footer>
+
+
 
         </main>
     </div>
