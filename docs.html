@@ -20,7 +20,7 @@
             --text-heading: #fff; /* Specific for bold headers */
             
             /* Code Blocks (Dark Mode) */
-            --code-bg: #0d0d0d;
+            --code-bg: #f1f3f5;
             --code-text: #d4d4d4;
             --code-inline-bg: rgba(255, 255, 255, 0.1);
             --code-inline-text: #fff;
@@ -67,7 +67,7 @@
         .btn { padding: 12px 24px; border-radius: 6px; font-weight: 500; background: var(--btn-bg); color: var(--btn-text); display: inline-block; border: 1px solid transparent;}
         .btn:hover { opacity: 0.8; }
         
-        .code-box { font-family: 'JetBrains Mono'; background: var(--code-bg); padding: 12px; border-radius: 6px; border: 1px solid var(--border); color: var(--code-text); font-size: 0.85rem;}
+        .code-box { font-family: 'JetBrains Mono'; background: var(--code-bg); padding: 12px; border-radius: 6px;  color: var(--code-text); font-size: 0.85rem;}
         
         .card { 
             background: var(--surface); border: 1px solid var(--border); 
@@ -157,6 +157,7 @@
             flex-grow: 1;
             padding: 100px 20px;
             max-width: 900px;
+            min-width: 200px;
         }
 
         /* --- NAVBAR --- */
@@ -229,7 +230,8 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
         /* The boxes inside the grid demos */
          [layout] > .demo-box {
             background: var(--surface);
-            border: 1px solid var(--border);
+
+            border: 3px solid var(--border);
             border-radius: 6px;
             color: var(--text-muted);
             font-weight: 600;
@@ -310,6 +312,37 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
     .grid-container {
         max-width: 100%;
     }
+}
+
+
+
+
+
+
+
+
+/* Code Tabs */
+.code-tabs { display: flex; margin-bottom: 0; background: var(--code-bg); border: 1px solid var(--border); border-bottom: none; border-radius: 6px 6px 0 0; overflow: hidden; width: fit-content; margin-top: 15px; }
+.code-tab { 
+    padding: 8px 16px; 
+    cursor: pointer; 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+    color: var(--text-muted); 
+    background: transparent;
+    border-right: 1px solid var(--border);
+}
+.code-tab.active { background: var(--text-muted); color: #fff; }
+
+/* Hide/Show logic */
+.code-content { display: none; }
+.code-content.active { display: block; }
+
+/* Adjust pre for tabs */
+.has-tabs pre.clean { 
+    margin-top: 0; 
+    border-top-left-radius: 0; 
+    border-top: 1px solid var(--border); /* Ensure border continuity */
 }
     </style>
 
@@ -529,18 +562,47 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 &lt;/script&gt;</pre>
             </section>
 
-            <!-- BASICS -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- BASICS -->
             <section id="basics">
                 <h4>CORE CONCEPTS</h4>
                 <h2>Basics: Columns & Rows</h2>
                 <p>The library extends <code>Number.prototype</code>. <code>Grid</code> is a constant for <code>100</code>. You can chain methods from it.</p>
 
+                <!-- COLUMNS DEMO -->
                 <h3>Making Columns</h3>
                 <p>Use <code>.col(a, b, c...)</code> to split space horizontally.</p>
-                <pre class="clean">&lt;div layout="Grid.col(20, 80)"&gt;
+                
+                <div id="demo-col" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-col', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-col', 'react')">React</div>
+                    </div>
+                    <div class="code-content" data-lang="html" style="display:block">
+<pre class="clean">&lt;div layout="Grid.col(20, 80)"&gt;
   &lt;div&gt;20&lt;/div&gt;
   &lt;div&gt;80&lt;/div&gt;
 &lt;/div&gt;</pre>
+                    </div>
+                    <div class="code-content" data-lang="react" style="display:none">
+<pre class="clean">&lt;Layout layout={Grid.col(20, 80)}&gt;
+  &lt;div&gt;20&lt;/div&gt;
+  &lt;div&gt;80&lt;/div&gt;
+&lt;/Layout&gt;</pre>
+                    </div>
+                </div>
                 
                 <div class="grid-container" layout="Grid.col(20, 80).props({gap:'10px'})">
                     <div class="demo-box">20</div>
@@ -549,27 +611,60 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 
                 <p>Tip : You can make infinite columns <code>Grid.col(10, 10, 10, 10, 10, 10, 10, 10, 10, 10...)</code></p>
 
+                <!-- ROWS DEMO -->
                 <h3>Making Rows</h3>
                 <p>Use <code>.row(a, b, c...)</code> to split space vertically.</p>
-                <pre class="clean">&lt;div layout="Grid.row(30, 70)"&gt;
+                
+                <div id="demo-row" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-row', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-row', 'react')">React</div>
+                    </div>
+                    <div class="code-content" data-lang="html" style="display:block">
+<pre class="clean">&lt;div layout="Grid.row(30, 70)"&gt;
   &lt;div&gt;30&lt;/div&gt;
   &lt;div&gt;70&lt;/div&gt;
 &lt;/div&gt;</pre>
+                    </div>
+                    <div class="code-content" data-lang="react" style="display:none">
+<pre class="clean">&lt;Layout layout={Grid.row(30, 70)}&gt;
+  &lt;div&gt;30&lt;/div&gt;
+  &lt;div&gt;70&lt;/div&gt;
+&lt;/Layout&gt;</pre>
+                    </div>
+                </div>
                 
                 <div class="grid-container" layout="Grid.row(30, 70).props({gap:'10px', height:'200px'})">
                     <div class="demo-box">30</div>
                     <div class="demo-box">70</div>
                 </div>
 
+                <!-- RECURSION DEMO -->
                 <h3>Making Grid (Recursion)</h3>
                 <p>You can nest rows inside columns infinitely. Here is a 50/50 split, where the right side is split into 3 rows.</p>
                 
-                <pre class="clean">&lt;div layout="Grid.col(50, (50).row(10, 10, 30))"&gt;
+                <div id="demo-rec" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-rec', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-rec', 'react')">React</div>
+                    </div>
+                    <div class="code-content" data-lang="html" style="display:block">
+<pre class="clean">&lt;div layout="Grid.col(50, (50).row(10, 10, 30))"&gt;
   &lt;div&gt;Left&lt;/div&gt;
   &lt;div&gt;Right 1&lt;/div&gt;
   &lt;div&gt;Right 2&lt;/div&gt;
   &lt;div&gt;Right 3&lt;/div&gt;
 &lt;/div&gt;</pre>
+                    </div>
+                    <div class="code-content" data-lang="react" style="display:none">
+<pre class="clean">&lt;Layout layout={Grid.col(50, (50).row(10, 10, 30))}&gt;
+  &lt;div&gt;Left&lt;/div&gt;
+  &lt;div&gt;Right 1&lt;/div&gt;
+  &lt;div&gt;Right 2&lt;/div&gt;
+  &lt;div&gt;Right 3&lt;/div&gt;
+&lt;/Layout&gt;</pre>
+                    </div>
+                </div>
 
                 <div class="grid-container" layout="Grid.col(50, (50).row(10, 10, 30)).props({gap:'10px', height:'400px'})">
                     <div class="demo-box">Left</div>
@@ -585,7 +680,19 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                 <p>Because v1.2.0 uses native execution, you can use math directly. No manual percentages.</p>
 
                 <h3>1. Native Math</h3>
-                <pre class="clean">&lt;div layout="Grid.col(1/3, 1/3, 1/3)"&gt;</pre>
+                <div id="demo-math" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-math', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-math', 'react')">React</div>
+                    </div>
+                    <div class="code-content" data-lang="html" style="display:block">
+<pre class="clean">&lt;div layout="Grid.col(1/3, 1/3, 1/3)"&gt;</pre>
+                    </div>
+                    <div class="code-content" data-lang="react" style="display:none">
+<pre class="clean">&lt;Layout layout={Grid.col(1/3, 1/3, 1/3)}&gt;</pre>
+                    </div>
+                </div>
+
                 <div class="grid-container" layout="Grid.col(1/3, 1/3, 1/3).props({gap:'10px'})">
                     <div class="demo-box">1/3</div>
                     <div class="demo-box">1/3</div>
@@ -594,92 +701,94 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 
                 <h3>2. Variables (Golden Ratio)</h3>
                 <p>The engine provides built-in variables: <code>lg</code> (61.8) and <code>sm</code> (38.2).</p>
-                <pre class="clean">&lt;div layout="Grid.col(lg, sm)"&gt;</pre>
-
-                <h3>3. Global Functions</h3>
-                <p>You can define a layout function in your script and call it in HTML.</p>
-                <pre class="clean">&lt;script&gt;
-  window.myLayout = (gap) => Grid.col(50, 50).props({ gap });
-&lt;/script&gt;
-&lt;div layout="myLayout('20px')"&gt; ... &lt;/div&gt;</pre>
+                <div id="demo-vars" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-vars', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-vars', 'react')">React</div>
+                    </div>
+                    <div class="code-content" data-lang="html" style="display:block">
+<pre class="clean">&lt;div layout="Grid.col(lg, sm)"&gt;</pre>
+                    </div>
+                    <div class="code-content" data-lang="react" style="display:none">
+<pre class="clean">&lt;Layout layout={Grid.col(lg, sm)}&gt;</pre>
+                    </div>
+                </div>
             </section>
-
-           
 
             <!-- CUSTOMISATION -->
             <section id="custom">
                 <h2>Customisation</h2>
                 
-                <!-- 1. RATIONAL DIVISION -->
-                        <h3>Rational Division</h3>
-                        <p>To divide a number into two equal parts, we use <code>1/2</code>. To make three columns, we use <code>1/3</code>. You can mix these with fixed numbers.</p>
-                        
-                        <pre class="clean">&lt;div layout="Grid.col(1/3, 1/3, 1/3)"&gt;
+                <!-- RATIONAL DIVISION -->
+                <h3>Rational Division</h3>
+                <p>To divide a number into two equal parts, we use <code>1/2</code>.</p>
+                
+                <div id="demo-rat" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-rat', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-rat', 'react')">React</div>
+                    </div>
+                    <div class="code-content" data-lang="html" style="display:block">
+<pre class="clean">&lt;div layout="Grid.col(1/3, 1/3, 1/3)"&gt;
   &lt;div&gt;1/3&lt;/div&gt;
   &lt;div&gt;1/3&lt;/div&gt;
   &lt;div&gt;1/3&lt;/div&gt;
 &lt;/div&gt;</pre>
+                    </div>
+                    <div class="code-content" data-lang="react" style="display:none">
+<pre class="clean">&lt;Layout layout={Grid.col(1/3, 1/3, 1/3)}&gt;
+  &lt;div&gt;1/3&lt;/div&gt;
+  &lt;div&gt;1/3&lt;/div&gt;
+  &lt;div&gt;1/3&lt;/div&gt;
+&lt;/Layout&gt;</pre>
+                    </div>
+                </div>
 
-                        <div class="grid-container" layout="Grid.col(1/3, 1/3, 1/3).props({gap:'5px', height:'60px'})" style="border:none; padding:0;">
-                            <div class="demo-box">33.3%</div>
-                            <div class="demo-box">33.3%</div>
-                            <div class="demo-box">33.3%</div>
-                        </div>
-                        
-                        <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+                <div class="grid-container" layout="Grid.col(1/3, 1/3, 1/3).props({gap:'5px', height:'60px'})" style="border:none; padding:0;">
+                    <div class="demo-box">33.3%</div>
+                    <div class="demo-box">33.3%</div>
+                    <div class="demo-box">33.3%</div>
+                </div>
+                
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
 
-                        <!-- 2. RECURSIVE LOOPS -->
-                        <h3>Easy Recursive Loops</h3>
-                        <p>To make 12 equal columns manually would be tedious. Because v1.2.0 uses native JS, you can generate arrays dynamically using spread syntax!</p>
+                <!-- RECURSIVE LOOPS -->
+                <h3>Easy Recursive Loops</h3>
+                <p>To make 12 equal columns manually would be tedious. Because v1.2.0 uses native JS, you can generate arrays dynamically!</p>
 
-                        <pre class="clean">&lt;script&gt;
-  // 1. Generate array of 12 ones: [1, 1, ..., 1]
+                <div id="demo-loop" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-loop', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-loop', 'react')">React</div>
+                    </div>
+                    <div class="code-content" data-lang="html" style="display:block">
+<pre class="clean">&lt;script&gt;
   window.twelveCols = Array(12).fill(1); 
 &lt;/script&gt;
 
 &lt;div layout="Grid.col(...twelveCols)"&gt;
-  &lt;div&gt;1&lt;/div&gt; &lt;div&gt;2&lt;/div&gt; &lt;div&gt;3&lt;/div&gt; &lt;div&gt;4&lt;/div&gt;
-  &lt;div&gt;5&lt;/div&gt; &lt;div&gt;6&lt;/div&gt; &lt;div&gt;7&lt;/div&gt; &lt;div&gt;8&lt;/div&gt;
-  &lt;div&gt;9&lt;/div&gt; &lt;div&gt;10&lt;/div&gt; &lt;div&gt;11&lt;/div&gt; &lt;div&gt;12&lt;/div&gt;
+   &lt;!-- 12 Divs --&gt;
 &lt;/div&gt;</pre>
-                        
-                        <div class="grid-container" layout="Grid.col(...Array(12).fill(1)).props({gap:'2px', height:'40px'})" style="border:none; padding:0;">
-                            <div class="demo-box" style="font-size:10px">1</div><div class="demo-box" style="font-size:10px">2</div>
-                            <div class="demo-box" style="font-size:10px">3</div><div class="demo-box" style="font-size:10px">4</div>
-                            <div class="demo-box" style="font-size:10px">5</div><div class="demo-box" style="font-size:10px">6</div>
-                            <div class="demo-box" style="font-size:10px">7</div><div class="demo-box" style="font-size:10px">8</div>
-                            <div class="demo-box" style="font-size:10px">9</div><div class="demo-box" style="font-size:10px">10</div>
-                            <div class="demo-box" style="font-size:10px">11</div><div class="demo-box" style="font-size:10px">12</div>
-                        </div>
-                        
-                        <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+                    </div>
+                    <div class="code-content" data-lang="react" style="display:none">
+<pre class="clean">const twelveCols = Array(12).fill(1);
 
-                        <!-- 3. DIMENSIONS -->
-                        <h3>Controlling Dimensions</h3>
-                        <p>The number <code>Grid</code> (or 100) defines the <strong>ratio weights</strong>, not the actual pixel size. To change dimensions, apply CSS using <code>.props()</code>.</p>
-                        
-                        <pre class="clean">&lt;div layout="Grid.col(50, 50).props({ width: '50%', margin: '0 auto' })"&gt;
-  &lt;div&gt;Left&lt;/div&gt;
-  &lt;div&gt;Right&lt;/div&gt;
-&lt;/div&gt;</pre>
-                        
-                        <p><em>Result: A centered container taking up only 50% of the width.</em></p>
-                        
-                        <!-- Live Demo showing width constraint -->
-                        <!-- FIX: Used var(--wireframe) instead of #fafafa to support Dark Mode -->
-                        <div class="grid-container" 
-                             layout="Grid.col(100)" 
-                             style="border:none; padding:0; background:var(--wireframe); border:1px dashed var(--wireframe-border);">
-                             
-                             <div layout="Grid.col(50, 50).props({width: '50%', height:'60px', gap:'5px', margin: '0 auto'})" 
-                                  style="border:none; padding:0; background:transparent;">
-                                <div class="demo-box filled">50%</div>
-                                <div class="demo-box filled">50%</div>
-                            </div>
-                        </div>
-
-
-
+return (
+  &lt;Layout layout={Grid.col(...twelveCols)}&gt;
+     {/* 12 Divs */}
+  &lt;/Layout&gt;
+);</pre>
+                    </div>
+                </div>
+                
+                <div class="grid-container" layout="Grid.col(...Array(12).fill(1)).props({gap:'2px', height:'40px'})" style="border:none; padding:0;">
+                    <div class="demo-box" style="font-size:10px">1</div><div class="demo-box" style="font-size:10px">2</div>
+                    <div class="demo-box" style="font-size:10px">3</div><div class="demo-box" style="font-size:10px">4</div>
+                    <div class="demo-box" style="font-size:10px">5</div><div class="demo-box" style="font-size:10px">6</div>
+                    <div class="demo-box" style="font-size:10px">7</div><div class="demo-box" style="font-size:10px">8</div>
+                    <div class="demo-box" style="font-size:10px">9</div><div class="demo-box" style="font-size:10px">10</div>
+                    <div class="demo-box" style="font-size:10px">11</div><div class="demo-box" style="font-size:10px">12</div>
+                </div>
             </section>
 
 
@@ -704,54 +813,71 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 
 
 
-
-
-
-
-            <!-- UTILITIES -->
+<!-- UTILITIES -->
             <section id="utils">
                 <h2>Styling & Utilities</h2>
                 
+                <!-- PROPS -->
                 <h3>.props({ styles })</h3>
                 <p>Apply CSS to the grid container (like gap, padding, margins).</p>
-                <pre class="clean">Grid.col(50, 50).props({ gap: '20px', padding: '10px' })</pre>
 
+                <div id="demo-props" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-props', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-props', 'react')">React</div>
+                    </div>
+                    <div class="code-content active" data-lang="html">
+<pre class="clean">Grid.col(50, 50).props({ gap: '20px', padding: '10px' })</pre>
+                    </div>
+                    <div class="code-content" data-lang="react">
+<pre class="clean">Grid.col(50, 50).props({ gap: '20px', padding: '10px' })</pre>
+                    </div>
+                </div>
+
+                <!-- CHILD PROPS -->
                 <h3>.childProps({ styles }, [indices])</h3>
                 <p>Apply CSS to specific children. Indices are 1-based.</p>
-                <pre class="clean">Grid.col(30, 30, 30).childProps({ background: 'salmon' }, [2])</pre>
+
+                <div id="demo-childprops" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-childprops', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-childprops', 'react')">React</div>
+                    </div>
+                    <div class="code-content active" data-lang="html">
+<pre class="clean">Grid.col(33, 33, 33).childProps({ background: 'salmon' }, [2])</pre>
+                    </div>
+                    <div class="code-content" data-lang="react">
+<pre class="clean">Grid.col(33, 33, 33).childProps({ background: 'salmon' }, [2])</pre>
+                    </div>
+                </div>
                 
-                <div class="grid-container" layout="Grid.col(30, 30, 30).childProps({ background: '#f0513e', color: 'white', border:'none' }, [2]).props({gap:'10px', height:'60px'})">
+                <div class="grid-container" layout="Grid.col(33, 33, 33).childProps({ background: '#f0513e', color: 'white', border:'none' }, [2]).props({gap:'10px', height:'60px'})">
                     <div class="demo-box">1</div>
                     <div class="demo-box">2 (Styled)</div>
                     <div class="demo-box">3</div>
                 </div>
 
-                <p>Tip : You can select multiple children always.<code>.childProps({ background: 'salmon' }, [1, 3])</code> This will apply to 1st and 3rd children.</p>
+                <p>Tip : You can select multiple children always. <code>.childProps({ background: 'salmon' }, [1, 3])</code> This will apply to 1st and 3rd children.</p>
 
+                <!-- OFFSET (Interactive) -->
                 <h3>.offset([indices])</h3>
                 <p>Creates "Ghost" slots. Useful for creating gaps. In this demo, we skip the middle slot (Index 2), forcing the 2nd Box to jump to the 3rd slot.</p>
 
-                <div style="position: relative;">
+                <div style="position: relative;" class="code-wrapper">
                     <!-- Code Block -->
-                   <div class="code-wrapper">
-    <pre class="clean" id="offset-code">Grid.col(30, 30, 30)</pre>
-    <button onclick="toggleOffsetDemo()" style="position: absolute; top: 20px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
-        Toggle Effect
-    </button>
-</div>
+                    <pre class="clean" id="offset-code">Grid.col(33, 33, 33)</pre>
+                    <button onclick="toggleOffsetDemo()" style="position: absolute; top: 20px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
+                        Offset 
+                    </button>
                 </div>
-
-
                 
                 <!-- Visual Demo -->
                 <div id="offset-demo" 
                      layout="Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})" 
                      style="border:none; padding:0;">
-                    
                     <div class="demo-box">1</div>
                     <div class="demo-box" id="off-box-2">2</div>
                     <div class="demo-box" id="off-box-3">3</div>
-                    
                 </div>
 
                 <p>Tip : You can also use it directly on the element <code>Grid.col(33, (33).offset(), 33)</code></p>
@@ -759,62 +885,53 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                 <!-- Logic for Offset Toggle -->
                 <script>
                     let isOffsetMode = false;
-
                     function toggleOffsetDemo() {
                         const el = document.getElementById('offset-demo');
                         const code = document.getElementById('offset-code');
                         const box2 = document.getElementById('off-box-2');
 
                         if (!isOffsetMode) {
-                            // --- ENABLE OFFSET ---
-                            // 1. Apply Layout
                             el.setAttribute('layout', "Grid.col(33, 33, 33).offset([2]).props({gap:'5px', height:'60px'})");
                             code.innerText = "Grid.col(33, 33, 33).offset([2])";
-                            
-                            // 2. Remove Box 3 (So Box 2 is the last one)
                             const box3 = document.getElementById('off-box-3');
                             if(box3) box3.remove();
-                            
-                            // 3. Highlight Box 2 to show movement
                             box2.innerText = "3";
-                            
                             isOffsetMode = true;
                         } else {
-                            // --- DISABLE OFFSET ---
-                            // 1. Reset Layout
                             el.setAttribute('layout', "Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})");
                             code.innerText = "Grid.col(33, 33, 33)";
-                            
-                            // 2. Reset Box 2
                             box2.innerText = "2";
-                            box2.classList.remove('filled');
-                            
-                            // 3. Restore Box 3
                             if(!document.getElementById('off-box-3')) {
                                 const newBox3 = document.createElement('div');
-                                newBox3.className = 'demo-box';
-                                newBox3.id = 'off-box-3';
-                                newBox3.innerText = '3';
+                                newBox3.className = 'demo-box'; newBox3.id = 'off-box-3'; newBox3.innerText = '3';
                                 el.appendChild(newBox3);
                             }
-                            
                             isOffsetMode = false;
                         }
-
-                        // Trigger Engine Re-render
                         if(window.Engine) window.Engine.render(el);
                     }
                 </script>
+
+                <!-- SPREAD (Interactive) -->
                 <h3>.spread(['dir'], [indices])</h3>
-                <p>Expands an item across multiple tracks (Spanning). Directions: <code>t</code> (top), <code>r</code> (right), <code>b</code> (bottom), <code>l</code> (left).</p>
+              
+
+           <p>
+Expands an item across multiple tracks (Spanning). Directions: <code>t</code> (top), <code>r</code> (right), <code>b</code> (bottom), <code>l</code> (left). <br><br>
+Examples:<br> <code>.spread(['r1'], [1])</code> spans the first child to the right; <br>
+<code>.spread(['l1'], [2])</code>  spans the second child to the left; <br>
+<code>.spread(['b1'], [1, 2])</code>spans first and second child downward; <br>
+<code>.spread(['t2'], [1])</code> upward by 2. <br><br>
+The second parameter targets child indices (1-based), so <code>[1]</code> is the first child, <code>[2]</code> the second, and multiple can be set like <code>[1,3]</code>.
+</p>
+
+
                 
-                <div style="position: relative;">
-                    <!-- Code Block -->
-                    <div class="code-wrapper">
-    <pre class="clean" id="spread-code">Grid.col(33, 33, 33)</pre>
-    <button onclick="toggleSpreadDemo()" style="position: absolute; top: 20px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
-        Toggle Effect
-    </button>
+                <div style="position: relative;" class="code-wrapper">
+                    <pre class="clean" id="spread-code">Grid.col(33, 33, 33)</pre>
+                    <button onclick="toggleSpreadDemo()" style="position: absolute; top: 20px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
+                        Offset and Spread
+                    </button>
                 </div>
 
                 <!-- Visual Demo -->
@@ -826,57 +943,45 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                     <div class="demo-box" id="box-3">3</div>
                 </div>
 
-                <!-- Logic for the Toggle Button -->
+                <!-- Logic for Spread Toggle -->
                 <script>
                     let isSpreadMode = false;
-                    
                     function toggleSpreadDemo() {
                         const el = document.getElementById('spread-demo');
                         const code = document.getElementById('spread-code');
                         const box1 = document.getElementById('box-1');
                         
                         if (!isSpreadMode) {
-                            // --- ENABLE SPREAD ---
-                            // 1. Apply Layout
                             el.setAttribute('layout', "Grid.col(33, 33, 33).spread(['r1'], [1]).props({gap:'5px', height:'60px'}).offset([2])");
                             code.innerText = "Grid.col(33, 33, 33).offset([2]).spread(['r1'], [1])";
-                            
-                            // 2. Remove Box 3 (Because Box 1 now takes 2 slots)
                             const box3 = document.getElementById('box-3');
                             if(box3) box3.remove();
-
-                            // 3. Highlight Box 1
                             box1.innerText = "1 (Spanned)";
                             box1.classList.add('filled');
-                            
                             isSpreadMode = true;
                         } else {
-                            // --- DISABLE SPREAD (Reset) ---
-                            // 1. Reset Layout
                             el.setAttribute('layout', "Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})");
                             code.innerText = "Grid.col(33, 33, 33)";
-                            
-                            // 2. Reset Box 1
                             box1.innerText = "1";
                             box1.classList.remove('filled');
-
-                            // 3. Restore Box 3
                             if(!document.getElementById('box-3')) {
                                 const newBox3 = document.createElement('div');
-                                newBox3.className = 'demo-box';
-                                newBox3.id = 'box-3';
-                                newBox3.innerText = '3';
+                                newBox3.className = 'demo-box'; newBox3.id = 'box-3'; newBox3.innerText = '3';
                                 el.appendChild(newBox3);
                             }
-                            
                             isSpreadMode = false;
                         }
-
-                        // Trigger Engine Re-render
                         if(window.Engine) window.Engine.render(el);
                     }
                 </script>
             </section>
+
+
+
+
+
+
+
 
 
 
@@ -891,13 +996,13 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                 
                 <!-- UPDATED: HOLY GRAIL USING 12-COLUMN LOGIC -->
                 <h3 id="holy-grail">The "Holy Grail" (12-Column Style)</h3>
-                <p>Instead of arbitrary percentages, you can use the classic 12-column system fractions. Here, we create a layout with a Header, a 3-column Sidebar, a 9-column Content area, and a Footer.</p>
+                <p>Instead of arbitrary percentages, you can use the classic 12-column system fractions. Here, we create a layout with a Header, a 3-column Sidebar, a 9-column Content area, and a Footer. Where Footer and Header are taken 1-rows and Body 2-rows. This makes a perfect two dimensional</p>
                 
-                <pre class="clean">&lt;div layout="Grid.row(
-  2/12,                           // Header (Fixed height relative to flex)
-  (8/12).col(3/12, 5/12),         // Body: Sidebar (3/12) + Content (5/12)
-  2/12                           // Footer
-)"&gt;</pre>
+                <pre class="clean">Grid.row(
+  1/4,                           // Header 1 of 4
+  (2/4).col(3/12, 5/12),         // Body 2 of 4 with columns: Sidebar (3/12) + Content (5/12)
+  1/4                           // Footer 1 of 4
+)</pre>
                 
                 <div class="grid-container" layout="Grid.row(2/12, (8/12).col(3/12, 5/12), 2/12).props({gap:'5px', height:'250px'})">
                     <div class="demo-box filled">Header (Span 12)</div>
@@ -909,7 +1014,7 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 </section>
 <section id="mondrian">
                 <h3>Deep Recursion (Mondrian Style)</h3>
-                <pre class="clean">&lt;div layout="Grid.col(50, (50).row(50, (50).col(50, 50)))"&gt;</pre>
+                <pre class="clean">Grid.col(50, (50).row(50, (50).col(50, 50)))</pre>
                 
                 <div class="grid-container" layout="Grid.col(50, (50).row(50, (50).col(50, 50))).props({gap:'5px', height:'200px'})">
                     <div class="demo-box filled">Left</div>
@@ -925,7 +1030,7 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 
 <p>Each split rotates the layout, and the smaller section becomes the container for the next split, producing a centered spiral:</p>
 
-<pre class="clean">&lt;div layout="Grid.col(
+<pre class="clean">Grid.col(
   lg,
   sm.row(
     lg,
@@ -945,7 +1050,7 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
       , lg)
     , lg)
   )
-)"&gt;</pre>
+)</pre>
 
 
 
@@ -976,13 +1081,13 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                 <p>Creating a symmetrical 23-element layout in standard HTML requires complex nesting or manual percentage calculations. With Rowscolumns, you just mirror the layout string.</p>
                 <p><strong>Comparison:</strong> In standard CSS, you would need to calculate <code>width: 4.34%</code>, <code>width: 8.69%</code>, etc., or use complex Flexbox nesting. Here, it is one line of logic.</p>
                 
-                <pre class="clean">&lt;div layout="Grid.col( 
+                <pre class="clean">Grid.col( 
   (10).row(1,1,1,1,1,1,1,1),  // Left Wing (8 rows)
   (20).row(1,1,1),            // Inner Left (3 rows)
   40,                         // Center (1 big col)
   (20).row(1,1,1),            // Inner Right (3 rows)
   (10).row(1,1,1,1,1,1,1,1)   // Right Wing (8 rows)
-)"&gt;</pre>
+)</pre>
                 
                 <div class="grid-container" 
                      layout="Grid.col((10).row(1,1,1,1,1,1,1,1).props({gap:'2px'}), (20).row(1,1,1).props({gap:'5px'}), 40, (20).row(1,1,1).props({gap:'5px'}), (10).row(1,1,1,1,1,1,1,1).props({gap:'2px'})).props({gap:'10px'}).props({
@@ -1025,32 +1130,32 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                 <p>Handling 20+ columns in native CSS Grid often involves tedious <code>repeat()</code> syntax or manual fractional math. Rowscolumns handles the math for any number of elements instantly.</p>
                 <p>This example generates <strong>20 columns</strong> that progressively grow larger, creating a visual rhythm.</p>
                 
-                <pre class="clean">&lt;div layout="Grid.col(1, 2, 3, 4, 5, 6, 7 ... 20)"&gt;</pre>
+                <pre class="clean">Grid.col(1, 2, 3, 4, 5, 6, 7 ... 20)</pre>
                 
                 <div class="grid-container" 
                      layout="Grid.col(1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5).props({gap:'2px', height:'100px'})" 
                      style="border:none; padding:0;"
                      id="rhythm-demo">
-                     <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
-                    <div class="demo-box2"></div>
+                     <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
+                    <div class="demo-box"></div>
                 </div>
                 
 </section>
@@ -1062,14 +1167,14 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                 <p>Standard grids often feel rigid. By using a 6-column base and the <code>.spread()</code> method, elements can cross the center axis, creating dynamic, asymmetrical balance.</p>
                 <p>This layout uses <code>.offset()</code> to create negative space and <code>.spread()</code> to bridge columns.</p>
 
-                <pre class="clean">&lt;div layout="Grid.col(
+                <pre class="clean">Grid.col(
   (1).row(1,1,1,3).spread(['r1'],[3,4]),
   (1).row(2,1,3).spread(['r1'],[1]).offset([2,3]),
   (1).row(2,2,1,1).offset([1]).spread(['r1'],[1]),
   (1).row(1,1,2,2).offset([3]).spread(['r1'],[3]),
   (1).row(3,1,2).offset([3]).spread(['r1'],[2,1]),
   (1).row(3,1,1,1).offset([1,2])
-).props({gap:'5px'})"&gt;</pre>
+).props({gap:'5px'})</pre>
 
                 <div class="grid-container" 
                      style=" padding: 0; border: none; height: 400px; width: 400px; gap: 5px;"
@@ -1152,7 +1257,7 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                 
                 <h3>1. The Setup</h3>
                 <pre class="clean">import React from 'react';
-import { Layout } from 'rowscolumns/react';</pre>
+import { Layout, Grid } from 'rowscolumns/react';</pre>
 
                 <h3>2. Native Syntax (Recommended)</h3>
                 <p>Pass real JavaScript objects to the <code>layout</code> prop. No quotes needed.</p>
@@ -1229,6 +1334,31 @@ import { Layout } from 'rowscolumns/react';</pre>
                 observer.observe(section);
             });
         });
+    </script>
+
+
+    <script type="text/javascript">
+        
+
+        function switchCode(id, lang) {
+        // Find the specific container
+        const container = document.getElementById(id);
+        if (!container) return;
+
+        // Toggle Buttons
+        const tabs = container.querySelectorAll('.code-tab');
+        tabs.forEach(t => {
+            if (t.dataset.lang === lang) t.classList.add('active');
+            else t.classList.remove('active');
+        });
+
+        // Toggle Content
+        const contents = container.querySelectorAll('.code-content');
+        contents.forEach(c => {
+            if (c.dataset.lang === lang) c.style.display = 'block';
+            else c.style.display = 'none';
+        });
+    }
     </script>
 
 </body>
