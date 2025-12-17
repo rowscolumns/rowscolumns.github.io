@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rowscolumns - Recursive Logic</title>
+
+    <!-- Prism Core -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
     <style>
         /* --- THEME VARIABLES --- */
         :root {
@@ -20,7 +29,7 @@
             --text-heading: #fff; /* Specific for bold headers */
             
             /* Code Blocks (Dark Mode) */
-            --code-bg: #0d0d0d;
+            --code-bg: #000;
             --code-text: #d4d4d4;
             --code-inline-bg: #2f3340;
             --code-inline-text: #e39595;
@@ -31,6 +40,21 @@
 
             --wireframe: rgba(255, 255, 255, 0.03);
     --wireframe-border: #333;
+
+
+
+    /* SUBLIME DARK (Monokai Inspired) */
+    --code-bg: #222628ab;        /* Classic Sublime Background */
+    --code-text: #f8f8f2;      /* Off-white text */
+    
+    --token-comment: #75715e;  /* Grey */
+    --token-tag: #f92672;      /* Pink (div, script) */
+    --token-attr: #a6e22e;     /* Green (class, layout) */
+    --token-string: #e6db74;   /* Yellow ("Grid.col...") */
+    --token-keyword: #66d9ef;  /* Blue (import, const) */
+    --token-func: #66d9ef;     /* Blue (functions) */
+    --token-number: #ae81ff;   /* Purple */
+    --token-operator: #f92672; /* Pink (=, >) */
         }
 
         html.light-mode {
@@ -44,7 +68,7 @@
             --text-heading: #000;
 
             /* Code Blocks (Light Mode - distinct look) */
-            --code-bg: #f1f3f5;
+            --code-bg: #fff;
             --code-text: #333;
             --code-inline-bg: #e9ecef;
             --code-inline-text: #d63384; /* Pinkish for inline code in light mode */
@@ -55,19 +79,100 @@
 
             --wireframe: #f9f9f9;
     --wireframe-border: #e0e0e0;
+
+      /* SUBLIME LIGHT (Clean/One Light) */
+    --code-bg: #fafafa;
+    --code-text: #383a42;
+    
+    --token-comment: #a0a1a7;
+    --token-tag: #e45649;      /* Red */
+    --token-attr: #986801;     /* Brown/Gold */
+    --token-string: #50a14f;   /* Green */
+    --token-keyword: #a626a4;  /* Purple */
+    --token-func: #4078f2;     /* Blue */
+    --token-number: #986801;   /* Orange */
+    --token-operator: #0184bc; /* Cyan */
         }
+
+
+/* --- PRISM SYNTAX HIGHLIGHTING --- */
+/* --- PRISM SYNTAX HIGHLIGHTING (Sublime Style) --- */
+
+/* Base Text */
+code[class*="language-"],
+pre[class*="language-"] {
+    color: var(--code-text);
+    text-shadow: none;
+    font-size: 0.9rem;
+    text-align: left;
+    white-space: pre;
+    line-height: 1.6;
+     font-family: "Google Sans Code", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* Comments */
+.token.comment, .token.prolog, .token.doctype, .token.cdata { 
+    color: var(--token-comment); 
+    font-style: italic; 
+}
+
+/* Punctuation */
+.token.punctuation { 
+    color: var(--code-text); 
+    opacity: 0.7; 
+}
+
+/* Tags (e.g. <div>) */
+.token.tag, .token.deleted { 
+    color: var(--token-tag); 
+}
+
+/* Attribute Names (e.g. layout=) */
+.token.attr-name {
+    color: var(--token-attr);
+    font-style: italic;
+}
+
+/* Strings (e.g. "Grid.col...") */
+.token.string, .token.char, .token.attr-value { 
+    color: var(--token-string); 
+}
+
+/* Keywords (import, const, return) */
+.token.keyword, .token.property { 
+    color: var(--token-keyword); 
+}
+
+/* Functions & Class Names */
+.token.function, .token.class-name { 
+    color: var(--token-func); 
+}
+
+/* Numbers & Booleans */
+.token.number, .token.boolean { 
+    color: var(--token-number); 
+}
+
+/* Operators (=, =>) */
+.token.operator, .token.entity { 
+    color: var(--token-operator); 
+}
+
+
 
         /* --- BASE STYLES --- */
         * { box-sizing: border-box; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
-        body { background-color: var(--bg); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; }
+        body { background-color: var(--bg); color: var(--text-main); font-family: "Google Sans", sans-serif; margin: 0; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         a { text-decoration: none; color: inherit; }
 
         /* --- UI ELEMENTS --- */
-        .btn { padding: 12px 24px; border-radius: 6px; font-weight: 500; background: var(--btn-bg); color: var(--btn-text); display: inline-block; border: 1px solid transparent;}
+        .btn { padding: 12px 24px; border-radius: 45px; font-weight: 500; background: rgba(240, 81, 62, 0.2); color: var(--primary); display: inline-block; border: 1px solid transparent;}
         .btn:hover { opacity: 0.8; }
         
-        .code-box { font-family: 'JetBrains Mono'; background: var(--code-bg); padding: 12px; border-radius: 6px;  color: var(--code-text); font-size: 0.85rem;}
+        .code-box { font-family: "Google Sans Code", monospace; background: var(--code-bg); padding: 12px; border-radius: 6px;  color: var(--code-text); font-size: 0.85rem;}
         
         .card { 
             background: var(--surface); border: 1px solid var(--border); 
@@ -150,7 +255,7 @@
         }
 
         .toc-link:hover { background: var(--surface-hover); color: var(--text-main); }
-        .toc-link.active { background: rgba(240, 81, 62, 0.1); color: var(--primary); font-weight: 500;box-shadow:0 0 15px rgba(240, 81, 62, 0.1); }
+        .toc-link.active { background: rgba(240, 81, 62, 0.3); color: var(--primary); font-weight: 500;box-shadow:0 0 15px rgba(240, 81, 62, 0.3); }
 
         /* --- MAIN CONTENT --- */
         .content {
@@ -192,7 +297,7 @@ pre.clean {
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 20px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: "Google Sans Code", monospace;
     font-size: 0.9rem;
     
     /* SCROLLING */
@@ -210,7 +315,7 @@ pre.clean::-webkit-scrollbar-track { background: transparent; }
 pre.clean::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turns Red on Hover */     
         code {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: "Google Sans Code", monospace;
             background: var(--code-inline-bg);
             color: var(--code-inline-text);
             padding: 2px 6px;
@@ -239,10 +344,15 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
             min-height: 60px;
         }
 
+        [layout] > .demo-box:hover {
+            border: 1px solid var(--border);
+            box-shadow:0 0 15px var(--border);
+        }
+
         /* Highlighted demo box */
         [layout] > .demo-box.filled {
-            background: rgba(240, 81, 62, 0.1);
-            border-color: var(--primary);
+            background: var(--surface);
+            border-color: var(--border);
             color: var(--primary);
         }
         .demo-box2{
@@ -322,7 +432,14 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 
 
 /* Code Tabs */
-.code-tabs { display: flex; margin-bottom: 0; background: var(--code-bg); border: 1px solid var(--border); border-bottom: none; border-radius: 6px 6px 0 0; overflow: hidden; width: fit-content; margin-top: 15px; }
+.code-tabs { display: flex; 
+    margin-bottom: 0; 
+    background: var(--code-bg); 
+    border: 1px solid var(--border); 
+    border-bottom: none; border-radius: 
+    6px 6px 0 0; 
+    overflow: hidden; 
+    width:  fit-content; margin-top: 15px; }
 .code-tab { 
     padding: 8px 16px; 
     cursor: pointer; 
@@ -330,7 +447,7 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
     font-weight: 600; 
     color: var(--text-muted); 
     background: transparent;
-    border-right: 1px solid var(--border);
+
 }
 .code-tab.active { background: var(--text-muted); color: #fff; }
 
@@ -344,6 +461,61 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
     border-top-left-radius: 0; 
     border-top: 1px solid var(--border); /* Ensure border continuity */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- SIDEBAR CONTAINER --- */
+.sidebar {
+    width: 260px; 
+    flex-shrink: 0; 
+    position: sticky; 
+    top: 65px; /* Height of Navbar + small gap */
+    height: calc(100vh - 65px); /* Fill remaining height */
+    overflow-y: auto; /* Allow scrolling */
+    border-right: 1px solid var(--border); 
+    background: var(--bg);
+    padding-top: 30px;
+    padding-bottom: 50px;
+
+    /* --- MODERN SCROLLBAR STYLING --- */
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent; /* Hidden by default */
+    transition: scrollbar-color 0.3s;
+}
+
+/* Show scrollbar on hover (Firefox) */
+.sidebar:hover {
+    scrollbar-color: var(--border) transparent;
+}
+
+/* Chrome / Safari / Edge */
+.sidebar::-webkit-scrollbar {
+    width: 4px; /* Very thin */
+}
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.sidebar::-webkit-scrollbar-thumb {
+    background: transparent; /* Hidden by default */
+    border-radius: 4px;
+}
+.sidebar:hover::-webkit-scrollbar-thumb {
+    background: var(--border); /* Show on hover */
+}
+
     </style>
 
     <script type="module">
@@ -457,9 +629,9 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
             <a href="#intro" class="toc-link">Introduction</a>
             <a href="#install" class="toc-link">Installation</a>
 
-            <div class="toc-header">Core Concepts</div>
-            <a href="#basics" class="toc-link">Basics</a>
-            <a href="#native" class="toc-link">Native Features</a>
+            <div class="toc-header">Guide</div>
+            <a href="#basics" class="toc-link">Grid</a>
+            <a href="#native" class="toc-link">Layouting</a>
             <a href="#custom" class="toc-link">Customisation</a>
             <a href="#utils" class="toc-link">Utilities</a>
 
@@ -473,7 +645,12 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 
             <div class="toc-header">Development</div>
             <a href="#responsive" class="toc-link">Responsive</a>
-            <a href="#frameworks" class="toc-link">React</a>
+            <a href="#frameworks" class="toc-link">Multi Framework</a>
+             <a href="#styling" class="toc-link">Styling & UI</a>
+
+              <div class="toc-header">Other</div>
+            <a href="#support" class="toc-link">Support</a>
+            <a href="#about" class="toc-link">About</a>
         </nav>
 
         <!-- MAIN CONTENT -->
@@ -546,20 +723,91 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 
 
 
-            <!-- INSTALLATION -->
+           <!-- INSTALLATION -->
             <section id="install">
                 <h4>GETTING STARTED</h4>
                 <h2>Installation</h2>
-                <p>Zero dependencies. Extremely lightweight (6KB).</p>
+                <p>Rowscolumns is zero-dependency and extremely lightweight (~6KB). You can use it with a package manager or directly in the browser.</p>
                 
-                <h3>1. NPM (Recommended)</h3>
-                <pre class="clean">npm install rowscolumns</pre>
+                <h3>1. Package Manager (Recommended)</h3>
+                <p>Best for React, Vue, Next.js, Vite, and modern build pipelines.</p>
+<pre class="clean">
+npx create-vite@latest my-rc-website
+cd my-rc-website
+npm install rowscolumns</pre>
                 
-                <h3>2. CDN (Vanilla HTML)</h3>
-                <pre class="clean">&lt;script type="module"&gt;
+                
+
+                <h3>2. Vanilla HTML/CDN (No Installation required)</h3>
+                <p>To use Rowscolumns in a static HTML file, you must use <code>type="module"</code> or manually download <a href="https://github.com/abhimm5/rowcolumn/blob/main/dist/index.mjs">
+  <code>index.mjs</code> 
+</a> from the dist folder. 
+</p>
+
+                <div id="install-demo" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="cdn" onclick="switchCode('install-demo', 'cdn')">CDN (Fastest)</div>
+                        <div class="code-tab" data-lang="local" onclick="switchCode('install-demo', 'local')">Local File</div>
+                    </div>
+                    
+                    <!-- CDN Option -->
+                    <div class="code-content active" data-lang="cdn">
+<pre class="clean">&lt;!-- Import directly from UNPKG (No Installation required)--&gt;
+&lt;script type="module"&gt;
+  // 1. Import Engine
   import { Engine } from 'https://unpkg.com/rowscolumns';
+  
+  // 2. Initialize (Starts the observer)
   Engine.init();
 &lt;/script&gt;</pre>
+                    </div>
+
+                    <!-- Local Option (User Request) -->
+                    <div class="code-content" data-lang="local">
+<pre class="clean">&lt;!-- If you manually downloaded the dist folder --&gt;
+&lt;script type="module"&gt;
+  // 1. Import the Engine from your built file
+  import { Engine } from './dist/index.mjs';
+
+  // 2. Initialize the Engine
+  // (This installs the .col/.row extensions and starts the resize listener)
+  Engine.init();
+
+  console.log("RowsColumns Engine Initialized!");
+&lt;/script&gt;</pre>
+                    </div>
+                </div>
+
+                
+
+                <h3>3. Framework Imports</h3>
+                <p>If you are using a framework, import from the specific sub-package to get the correct wrapper components.</p>
+
+                <div id="install-fw" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="react-i" onclick="switchCode('install-fw', 'react-i')">React</div>
+                        <div class="code-tab" data-lang="vue-i" onclick="switchCode('install-fw', 'vue-i')">Vue 3</div>
+                        <div class="code-tab" data-lang="angular-i" onclick="switchCode('install-fw', 'angular-i')">Angular</div>
+                    </div>
+
+                    <div class="code-content active" data-lang="react-i">
+<pre class="clean">// Import Component + Logic Variables
+import { Layout, Grid, lg, sm } from 'rowscolumns/react';</pre>
+                    </div>
+
+                    <div class="code-content" data-lang="vue-i">
+<pre class="clean">// Import Component + Logic Variables
+import { Layout, Grid, lg, sm } from 'rowscolumns/vue';</pre>
+                    </div>
+
+                    <div class="code-content" data-lang="angular-i">
+<pre class="clean">// Import Standalone Component
+import { RowscolumnsComponent } from 'rowscolumns/angular';
+// Import Logic
+import { Grid, lg, sm } from 'rowscolumns';</pre>
+                    </div>
+                </div>
+
             </section>
 
 
@@ -578,8 +826,14 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 <!-- BASICS -->
             <section id="basics">
                 <h4>CORE CONCEPTS</h4>
-                <h2>Basics: Columns & Rows</h2>
-                <p>The library extends <code>Number.prototype</code>. <code>Grid</code> is a constant for <code>100</code>. You can chain methods from it.</p>
+                <h2>Grid Basics: Columns & Rows</h2>
+              <p>
+  Before creating grids, it’s important to understand how rows and columns work and the core functionality of the library.
+  The library extends <code>Number.prototype</code>, defines <code>Grid</code> as a constant set to <code>100</code>, and supports method chaining.
+  Unlike many frameworks, this library prioritises CSS Grid over Flexbox, which makes it truly two-dimensional.
+</p>
+
+
 
                 <!-- COLUMNS DEMO -->
                 <h3>Making Columns</h3>
@@ -674,21 +928,28 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                 </div>
             </section>
 
-            <!-- NATIVE FEATURES -->
-            <section id="native">
-                <h2>Native Features</h2>
-                <p>Because v1.2.0 uses native execution, you can use math directly. No manual percentages.</p>
+          
 
-                <h3>1. Native Math</h3>
+            <!-- NATIVE FEATURES / LAYOUT MODIFICATION -->
+            <section id="native">
+                <h2>Layout Modification</h2>
+                <p>
+                    With native execution in v1.2.0, layout modification becomes intuitive and math-driven. You can define column sizes using fractions, decimals, and standard CSS units directly. This allows for faster, cleaner, and more flexible layout adjustments.
+                </p>
+
+                <!-- 1. NATIVE MATH -->
+                <h3>1. Native Math (Fractions)</h3>
+                <p>Instead of calculating percentages manually, simply type fractions. This allows you to define any number of columns, beyond the usual 12 or 24.</p>
+                
                 <div id="demo-math" class="has-tabs">
                     <div class="code-tabs">
                         <div class="code-tab active" data-lang="html" onclick="switchCode('demo-math', 'html')">HTML</div>
                         <div class="code-tab" data-lang="react" onclick="switchCode('demo-math', 'react')">React</div>
                     </div>
-                    <div class="code-content" data-lang="html" style="display:block">
+                    <div class="code-content active" data-lang="html">
 <pre class="clean">&lt;div layout="Grid.col(1/3, 1/3, 1/3)"&gt;</pre>
                     </div>
-                    <div class="code-content" data-lang="react" style="display:none">
+                    <div class="code-content" data-lang="react">
 <pre class="clean">&lt;Layout layout={Grid.col(1/3, 1/3, 1/3)}&gt;</pre>
                     </div>
                 </div>
@@ -699,58 +960,187 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
                     <div class="demo-box">1/3</div>
                 </div>
 
-                <h3>2. Variables (Golden Ratio)</h3>
+
+
+                <!-- 2. CSS UNITS -->
+                <h3>2. CSS Units (Fixed Sizes)</h3>
+                <p>You can pass strings to use standard CSS units like <code>px</code>, <code>rem</code>, or <code>%</code>. These act as fixed tracks.</p>
+
+                <div id="demo-units" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-units', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-units', 'react')">React</div>
+                    </div>
+                    <div class="code-content active" data-lang="html">
+<pre class="clean">&lt;div layout="Grid.col('150px', 1, '150px')"&gt;</pre>
+                    </div>
+                    <div class="code-content" data-lang="react">
+<pre class="clean">&lt;Layout layout={Grid.col('150px', 1, '150px')}&gt;</pre>
+                    </div>
+                </div>
+
+                <div class="grid-container" layout="Grid.col('150px', 1, '150px').props({gap:'10px'})">
+                    <div class="demo-box filled" style="width:100%">150px</div>
+                    <div class="demo-box">Fluid (1fr)</div>
+                    <div class="demo-box filled" style="width:100%">150px</div>
+                </div>
+
+
+
+                <!-- 3. DECIMALS -->
+                <h3>3. Decimals</h3>
+                <p>The engine treats <code>0.5</code> exactly the same as <code>50</code> or <code>1/2</code>. It calculates the ratio based on the total sum of siblings.</p>
+
+                <div id="demo-dec" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-dec', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-dec', 'react')">React</div>
+                    </div>
+                    <div class="code-content active" data-lang="html">
+<pre class="clean">&lt;div layout="Grid.col(0.7, 0.3)"&gt;</pre>
+                    </div>
+                    <div class="code-content" data-lang="react">
+<pre class="clean">&lt;Layout layout={Grid.col(0.7, 0.3)}&gt;</pre>
+                    </div>
+                </div>
+
+                <div class="grid-container" layout="Grid.col(0.7, 0.3).props({gap:'10px'})">
+                    <div class="demo-box">0.7</div>
+                    <div class="demo-box">0.3</div>
+                </div>
+
+
+
+                <!-- 4. VARIABLES -->
+                <h3>4. Variables (Golden Ratio)</h3>
                 <p>The engine provides built-in variables: <code>lg</code> (61.8) and <code>sm</code> (38.2).</p>
+                
                 <div id="demo-vars" class="has-tabs">
                     <div class="code-tabs">
                         <div class="code-tab active" data-lang="html" onclick="switchCode('demo-vars', 'html')">HTML</div>
                         <div class="code-tab" data-lang="react" onclick="switchCode('demo-vars', 'react')">React</div>
                     </div>
-                    <div class="code-content" data-lang="html" style="display:block">
+                    <div class="code-content active" data-lang="html">
 <pre class="clean">&lt;div layout="Grid.col(lg, sm)"&gt;</pre>
                     </div>
-                    <div class="code-content" data-lang="react" style="display:none">
+                    <div class="code-content" data-lang="react">
 <pre class="clean">&lt;Layout layout={Grid.col(lg, sm)}&gt;</pre>
                     </div>
                 </div>
+
+                <div class="grid-container" layout="Grid.col(lg, sm).props({gap:'10px'})">
+                    <div class="demo-box">lg</div>
+                    <div class="demo-box">sm</div>
+                </div>
+
+
+               
+               <!-- 5. MIXED & RECURSIVE UNITS (NEW) -->
+                <h3>5. Mixed Units & Recursion</h3>
+                <p>You can mix fixed CSS strings, <code>auto</code>, and ratios. You can also apply recursion directly to string units (e.g. splitting a '200px' column into rows).</p>
+                
+                <div id="demo-mix" class="has-tabs">
+                    <div class="code-tabs">
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-mix', 'html')">HTML</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-mix', 'react')">React</div>
+                    </div>
+                    <div class="code-content active" data-lang="html">
+<pre class="clean">&lt;div layout="Grid.col(
+  ('200px').row(1,1), // Fixed col split into 2 rows
+  'auto', 
+  'auto'
+)"&gt;</pre>
+                    </div>
+                    <div class="code-content" data-lang="react">
+<pre class="clean">&lt;Layout layout={Grid.col(
+  ('200px').row(1,1), 
+  'auto', 
+  'auto'
+)}&gt;</pre>
+                    </div>
+                </div>
+
+                <div class="grid-container" layout="Grid.col(('200px').row(1,1), 'auto', 'auto').props({gap:'10px'})">
+                    <div class="demo-box filled">200px (Row 1)</div>
+                    <div class="demo-box filled">200px (Row 2)</div>
+                    <div class="demo-box">Auto</div>
+                    <div class="demo-box">Auto</div>
+                </div>
+
+
+                
+
             </section>
 
             <!-- CUSTOMISATION -->
             <section id="custom">
                 <h2>Customisation</h2>
-                
-                <!-- RATIONAL DIVISION -->
-                <h3>Rational Division</h3>
-                <p>To divide a number into two equal parts, we use <code>1/2</code>.</p>
-                
-                <div id="demo-rat" class="has-tabs">
+ 
+
+
+
+
+                <!-- 6. EXTERNAL STYLING -->
+                <h3>External Styling (Classes & IDs)</h3>
+                <p>While <code>.props()</code> is great for quick adjustments, you often want to control the <strong>container's dimensions</strong> using standard CSS classes or IDs. This keeps your layout logic separate from your sizing logic.</p>
+                <p>The framework respects all standard class names and IDs applied to the element.</p>
+
+                <div id="demo-classes" class="has-tabs">
                     <div class="code-tabs">
-                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-rat', 'html')">HTML</div>
-                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-rat', 'react')">React</div>
+                        <div class="code-tab active" data-lang="html" onclick="switchCode('demo-classes', 'html')">HTML + CSS</div>
+                        <div class="code-tab" data-lang="react" onclick="switchCode('demo-classes', 'react')">React</div>
                     </div>
-                    <div class="code-content" data-lang="html" style="display:block">
-<pre class="clean">&lt;div layout="Grid.col(1/3, 1/3, 1/3)"&gt;
-  &lt;div&gt;1/3&lt;/div&gt;
-  &lt;div&gt;1/3&lt;/div&gt;
-  &lt;div&gt;1/3&lt;/div&gt;
+                    
+                    <!-- HTML / CSS View -->
+                    <div class="code-content active" data-lang="html">
+<pre class="clean">&lt;style&gt;
+  /* Standard CSS */
+  .hero-container {
+      height: 300px;
+      width: 80%;
+      margin: 0 auto; /* Center it */
+      border: 2px solid red;
+  }
+&lt;/style&gt;
+
+&lt;!-- Apply class here --&gt;
+&lt;div class="hero-container" layout="Grid.col(50, 50)"&gt;
+   &lt;div&gt;Left&lt;/div&gt;
+   &lt;div&gt;Right&lt;/div&gt;
 &lt;/div&gt;</pre>
                     </div>
-                    <div class="code-content" data-lang="react" style="display:none">
-<pre class="clean">&lt;Layout layout={Grid.col(1/3, 1/3, 1/3)}&gt;
-  &lt;div&gt;1/3&lt;/div&gt;
-  &lt;div&gt;1/3&lt;/div&gt;
-  &lt;div&gt;1/3&lt;/div&gt;
-&lt;/Layout&gt;</pre>
+
+                    <!-- React View -->
+                    <div class="code-content" data-lang="react">
+<pre class="clean">import './App.css'; // Contains .hero-container styles
+
+export default function App() {
+  return (
+    &lt;Layout 
+      className="hero-container" 
+      layout={Grid.col(50, 50)}
+    &gt;
+       &lt;div&gt;Left&lt;/div&gt;
+       &lt;div&gt;Right&lt;/div&gt;
+    &lt;/Layout&gt;
+  );
+}</pre>
                     </div>
                 </div>
 
-                <div class="grid-container" layout="Grid.col(1/3, 1/3, 1/3).props({gap:'5px', height:'60px'})" style="border:none; padding:0;">
-                    <div class="demo-box">33.3%</div>
-                    <div class="demo-box">33.3%</div>
-                    <div class="demo-box">33.3%</div>
+                <!-- Visual Result -->
+                <!-- We simulate the class style inline here for the demo -->
+                <div class="grid-container" style="border:none; padding:0; background:transparent;">
+                    <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; margin-bottom:5px;">(The container below is restricted to 80% width and centered via CSS)</p>
+                    
+                    <div layout="Grid.col(50, 50).props({gap:'10px'})" 
+                         style="width: 80%; height: 150px; margin: 0 auto; border: 2px dashed var(--primary); padding: 10px;">
+                        <div class="demo-box filled">50%</div>
+                        <div class="demo-box filled">50%</div>
+                    </div>
                 </div>
                 
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+
 
                 <!-- RECURSIVE LOOPS -->
                 <h3>Easy Recursive Loops</h3>
@@ -781,7 +1171,7 @@ return (
                     </div>
                 </div>
                 
-                <div class="grid-container" layout="Grid.col(...Array(12).fill(1)).props({gap:'2px', height:'40px'})" style="border:none; padding:0;">
+                <div class="grid-container" layout="Grid.col(...Array(12).fill(1)).props({gap:'2px'})" style="border:none; padding:0;">
                     <div class="demo-box" style="font-size:10px">1</div><div class="demo-box" style="font-size:10px">2</div>
                     <div class="demo-box" style="font-size:10px">3</div><div class="demo-box" style="font-size:10px">4</div>
                     <div class="demo-box" style="font-size:10px">5</div><div class="demo-box" style="font-size:10px">6</div>
@@ -815,8 +1205,8 @@ return (
 
 <!-- UTILITIES -->
             <section id="utils">
-                <h2>Styling & Utilities</h2>
-                
+                <h2>Utilities Methods</h2>
+               <p> When using <code>Grid().row()</code> and <code>Grid().col()</code> recursively, layouts may not align as expected because of the declarative syntax. To handle these cases, Rowscolumns provides 4 utility methods that let you style, offset, or span grid items without breaking the layout. These methods work by applying CSS directly through JavaScript. </p>
                 <!-- PROPS -->
                 <h3>.props({ styles })</h3>
                 <p>Apply CSS to the grid container (like gap, padding, margins).</p>
@@ -844,20 +1234,20 @@ return (
                         <div class="code-tab" data-lang="react" onclick="switchCode('demo-childprops', 'react')">React</div>
                     </div>
                     <div class="code-content active" data-lang="html">
-<pre class="clean">Grid.col(33, 33, 33).childProps({ background: 'salmon' }, [2])</pre>
+<pre class="clean">Grid.col(33, 33, 33).childProps({ background: 'turquoise' }, [2])</pre>
                     </div>
                     <div class="code-content" data-lang="react">
-<pre class="clean">Grid.col(33, 33, 33).childProps({ background: 'salmon' }, [2])</pre>
+<pre class="clean">Grid.col(33, 33, 33).childProps({ background: 'turquoise' }, [2])</pre>
                     </div>
                 </div>
                 
-                <div class="grid-container" layout="Grid.col(33, 33, 33).childProps({ background: '#f0513e', color: 'white', border:'none' }, [2]).props({gap:'10px', height:'60px'})">
+                <div class="grid-container" layout="Grid.col(33, 33, 33).childProps({ background: 'turquoise', color: 'white', border:'none' }, [2]).props({gap:'10px', height:'60px'})">
                     <div class="demo-box">1</div>
                     <div class="demo-box">2 (Styled)</div>
                     <div class="demo-box">3</div>
                 </div>
 
-                <p>Tip : You can select multiple children always. <code>.childProps({ background: 'salmon' }, [1, 3])</code> This will apply to 1st and 3rd children.</p>
+                <p>Tip : You can select multiple children always. <code>.childProps({ background: 'turquoise' }, [1, 3])</code> This will apply to 1st and 3rd children.</p>
 
                 <!-- OFFSET (Interactive) -->
                 <h3>.offset([indices])</h3>
@@ -1251,30 +1641,190 @@ The second parameter targets child indices (1-based), so <code>[1]</code> is the
             </section>
 
             <!-- FRAMEWORKS -->
-            <section id="frameworks">
-                <h2>React & TypeScript</h2>
-                <p>Rowscolumns ships with a dedicated React wrapper and full TypeScript definitions.</p>
-                
-                <h3>1. The Setup</h3>
-                <pre class="clean">import React from 'react';
-import { Layout, Grid } from 'rowscolumns/react';</pre>
+            <!-- FRAMEWORKS SECTION -->
+    <section id="frameworks">
 
-                <h3>2. Native Syntax (Recommended)</h3>
-                <p>Pass real JavaScript objects to the <code>layout</code> prop. No quotes needed.</p>
-                <pre class="clean">export const App = () => {
-  const sidebar = 250; 
   
+
+            <div style="border:none !important; padding:0;">
+                <h2 style="margin-top:0;">Multi-Framework Support</h2>
+                <p>Rowscolumns provides dedicated wrappers for the modern web ecosystem. The logic remains the same, but the syntax adapts to your framework.</p>
+
+                <!-- FRAMEWORK TABS -->
+                <div id="fw-demo" class="has-tabs">
+                    <div class="code-tabs">
+                       <div class="code-tab active" data-lang="react" onclick="switchCode('fw-demo', 'react')"> 
+                        <!-- React Logo --> 
+                        <svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="-10 -10 20 20"
+     width="20"
+     height="20"
+     style="display:inline-block; vertical-align:middle; margin-right:6px;">
+  
+  <!-- center dot -->
+  <circle cx="0" cy="0" r="1.6" fill="#61DAFB"/>
+
+  <!-- atom rings -->
+  <g stroke="#61DAFB" stroke-width="1" fill="none">
+    <ellipse rx="8" ry="3"/>
+    <ellipse rx="8" ry="3" transform="rotate(60)"/>
+    <ellipse rx="8" ry="3" transform="rotate(120)"/>
+  </g>
+</svg> React </div> 
+                        <!-- Vue Tab --> <div class="code-tab" data-lang="vue" onclick="switchCode('fw-demo', 'vue')"> 
+                            <!-- Vue Logo --> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 261.76 226.69" width="20" height="20" style="vertical-align:middle; margin-right:6px;"> <path fill="#41B883" d="M0 0h60l70 121 70-121h61L131 226.69z"/> <path fill="#35495E" d="M60 0h60l11 19 11-19h60l-71 121z"/> </svg> Vue 3 </div> 
+                            <!-- Angular Tab --> <div class="code-tab" data-lang="angular" onclick="switchCode('fw-demo', 'angular')"> <!-- Angular Logo --> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 250" width="20" height="20" style="vertical-align:middle; margin-right:6px;"> <polygon fill="#DD0031" points="125,0 250,65 210,250 40,250 0,65"/> <polygon fill="#C3002F" points="125,0 250,65 210,250 125,200"/> <path fill="#FFF" d="M125 40l-60 170h30l12-35h36l12 35h30zm-12 95l12-35 12 35z"/> </svg> Angular </div>
+                    </div>
+                    <pre class="clean">npx create-vite@latest my-rc-website
+cd my-rc-website
+npm install rowscolumns</pre>
+
+                    <!-- 1. REACT CONTENT -->
+                    <div class="code-content active" data-lang="react">
+                        <h3>1. Setup</h3>
+                        <pre class="clean">import { Layout, Grid, lg, sm } from 'rowscolumns/react';</pre>
+                        
+                        <h3>2. Responsive Layout</h3>
+                        <p>Pass objects directly to props. Note that we keep the dash syntax for consistency.</p>
+                        <pre class="clean">export const App = () => {
   return (
-    &lt;Layout layout={Grid.col(sidebar, 'auto')} &gt;
-       &lt;div&gt;Fixed Sidebar&lt;/div&gt;
-       &lt;div&gt;Fluid Content&lt;/div&gt;
+    &lt;Layout 
+      // Mobile (Default)
+      layout={Grid.col(100)}
+      
+      // Tablet (768px+)
+      layout-md={Grid.col(50, 50)}
+
+      // Desktop (992px+)
+      layout-lg={Grid.col(lg, sm)}
+    &gt;
+       &lt;div&gt;Box 1&lt;/div&gt;
+       &lt;div&gt;Box 2&lt;/div&gt;
     &lt;/Layout&gt;
   );
 };</pre>
-            </section>
+                    </div>
+
+                    <!-- 2. VUE CONTENT -->
+                    <div class="code-content" data-lang="vue">
+                        <h3>1. Setup</h3>
+                        <pre class="clean">&lt;script setup&gt;
+import { Layout, Grid, lg, sm } from 'rowscolumns/vue';
+&lt;/script&gt;</pre>
+                        
+                        <h3>2. Responsive Layout</h3>
+                        <p>Use standard Vue binding <code>:</code> to pass the layout objects.</p>
+                        <pre class="clean">&lt;template&gt;
+  &lt;Layout 
+    :layout="Grid.col(100)"
+    :layout-md="Grid.col(50, 50)"
+    :layout-lg="Grid.col(lg, sm)"
+  &gt;
+     &lt;div&gt;Box 1&lt;/div&gt;
+     &lt;div&gt;Box 2&lt;/div&gt;
+  &lt;/Layout&gt;
+&lt;/template&gt;</pre>
+                    </div>
+
+                    <!-- 3. ANGULAR CONTENT -->
+                    <div class="code-content" data-lang="angular">
+                        <h3>1. Setup (Component)</h3>
+                        <p>Import the standalone component and define your grids in the class.</p>
+                        <pre class="clean">import { Component } from '@angular/core';
+import { RowscolumnsComponent } from 'rowscolumns/angular';
+import { Grid, lg, sm } from 'rowscolumns';
+
+@Component({
+  standalone: true,
+  imports: [RowscolumnsComponent],
+  templateUrl: './app.component.html'
+})
+export class AppComponent {
+  mobile = Grid.col(100);
+  tablet = Grid.col(50, 50);
+  desktop = Grid.col(lg, sm);
+}</pre>
+                        
+                        <h3>2. Template (HTML)</h3>
+                        <p>Bind the class properties to the component inputs.</p>
+                        <pre class="clean">&lt;rc-layout 
+  [layout]="mobile" 
+  [layout-md]="tablet" 
+  [layout-lg]="desktop"
+&gt;
+   &lt;div&gt;Box 1&lt;/div&gt;
+   &lt;div&gt;Box 2&lt;/div&gt;
+&lt;/rc-layout&gt;</pre>
+                    </div>
+
+                </div>
+            </div>
+            <h3>3. Run</h3>
+
+            <pre class="clean">npm run dev</pre>
+       <p>Now visit  <code><a>http://localhost:5173/</a></code> </p>
+    </section>
+
+
+    <!-- STYLING SECTION -->
+    <section id="styling">
+
+      
+
+
+            <div style="border:none !important; padding:0;">
+                <h2 style="margin-top:0;">Layout vs. Components</h2>
+                <p>Rowscolumns is strictly a <strong>Layout Engine</strong>. It decides <em>where</em> elements go, not <em>what</em> they look like.</p>
+                <p>This means it works perfectly with external CSS, CSS Modules, or UI Libraries (Bootstrap, Material, Tailwind).</p>
+
+                <h3>External CSS / Modules</h3>
+                <p>You define the structure in the attribute, and the look in your CSS file.</p>
+                
+                <pre class="clean">&lt;!-- CSS --&gt;
+&lt;style&gt;
+  .card { background: white; shadow: 0 4px 10px rgba(0,0,0,0.1); }
+  .btn  { background: blue; color: white; }
+&lt;/style&gt;
+
+&lt;!-- HTML --&gt;
+&lt;div layout="Grid.col(50, 50)"&gt;
+   &lt;div class="card"&gt;Product Info&lt;/div&gt;
+   &lt;button class="btn"&gt;Buy Now&lt;/button&gt;
+&lt;/div&gt;</pre>
+
+                
+
+                <h3>Using with UI Kits (Bootstrap / Tailwind)</h3>
+                <p>Because Rowscolumns doesn't pollute the children with layout classes, you can drop in components from other frameworks directly.</p>
+
+                <pre class="clean">&lt;div layout="Grid.col(33, 33, 33).props({gap:'20px'})"&gt;
+   
+   &lt;!-- Tailwind Card --&gt;
+   &lt;div class="bg-white rounded-lg shadow-lg p-6"&gt;
+      Tailwind Card
+   &lt;/div&gt;
+
+   &lt;!-- Bootstrap Button --&gt;
+   &lt;button class="btn btn-primary btn-lg"&gt;
+      Bootstrap Button
+   &lt;/button&gt;
+
+   &lt;!-- Material UI style --&gt;
+   &lt;div class="mui-paper elevation-3"&gt;
+      Material Component
+   &lt;/div&gt;
+
+&lt;/div&gt;</pre>
+
+    
+
+            </div>
+    
+    </section>
 
 
 <section id="support">
+    <h4>OTHERS</h4>
   <h2>Support Rows & Columns</h2>
   <p>If you find Rows & Columns useful and want to support its development, your contribution helps add new features, and improve the framework.</p>
 
@@ -1297,6 +1847,42 @@ import { Layout, Grid } from 'rowscolumns/react';</pre>
     Even if you cannot donate, sharing the project, starring it on GitHub, or contributing feedback helps a lot!
   </p>
 </section>
+<!-- ABOUT SECTION -->
+    <section id="about">
+
+
+            <div style="border:none !important; padding:0;">
+                <h2 style="margin-top:0;">About</h2>
+                <p>
+                    Rowscolumns was created to bridge the gap between <strong>Design Tools</strong> (which think in groups, frames, and auto-layout) and <strong>CSS Code</strong> (which thinks in classes and flow).
+                </p>
+                <p>
+                    By moving layout logic into a recursive mathematical structure, we keep the DOM clean and the styles separated.
+                </p>
+
+      
+
+                <h3>License</h3>
+                <p>Rowscolumns is open-source software licensed under the <strong>MIT License</strong>. You are free to use it in personal and commercial projects.</p>
+
+                <h3>Community & Contribution</h3>
+                <p>
+                    Built by <a href="https://github.com/abhimm5" target="_blank">Abhimm5</a>. 
+                    Contributions are welcome on GitHub.
+                </p>
+
+                <div style="margin-top: 30px; display: flex; gap: 15px;">
+                    <a href="https://github.com/abhimm5/rowcolumn" class="btn" style="  box-shadow: 0 0 15px rgba(240, 81, 62, 0.2)">
+                        Star on GitHub
+                    </a>
+                    <a href="https://www.npmjs.com/package/rowscolumns" class="btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main);  ">
+                        View on NPM
+                    </a>
+                </div>
+
+            </div>
+
+    </section>
 
  
 
@@ -1360,6 +1946,25 @@ import { Layout, Grid } from 'rowscolumns/react';</pre>
         });
     }
     </script>
+
+    <script>
+    // 1. Find all your existing code blocks
+    document.querySelectorAll('pre.clean').forEach(block => {
+        // 2. Wrap content in a <code> tag if not present (Prism requirement)
+        if (!block.querySelector('code')) {
+            const code = document.createElement('code');
+            code.className = 'language-jsx'; // Default to JSX/HTML
+            code.innerHTML = block.innerHTML;
+            block.innerHTML = '';
+            block.appendChild(code);
+        } else {
+            block.querySelector('code').classList.add('language-jsx');
+        }
+    });
+
+    // 3. Trigger Highlight
+    if (window.Prism) Prism.highlightAll();
+</script>
 
 </body>
 </html>
