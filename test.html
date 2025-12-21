@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rowscolumns - Recursive Logic</title>
+
+    <!-- Prism Core -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+ 
+
+    <script type="module">
+  // 1. Import Engine
+  import { Engine } from 'https://unpkg.com/rowscolumns/dist/index.mjs';
+  
+  // 2. Initialize (Starts the observer)
+  Engine.init();
+</script>
+<style type="text/css">
+     [layout] > .demo-box {
+            background: #ddd;
+
+            border: 5px solid #eee;
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+            min-height: 60px;
+        }
+</style>
+
+</head>
+<body>
+
+  
+<div layout="Grid.col({ sm: 1, md: 2,lg:4 }, {sm:(10).col('auto', 'auto', 1, 'auto').childProps({display:'none'},[2]),lg:(10).col('auto', 'auto', 1, 'auto').childProps({display:'block'},[2])}, { sm: 1, md: 2,lg:4 }).offset([1, 4, 6]).props({ gap: '5px' })">
+  <h2>My logo</h2>
+  <h4>gupt messenger</h4>
+  <button class="cta-button rounded-large">Chat</button>
+</div>
+
+
+
+<div layout="Grid.col({ sm: 1, md: 2, lg:4 }, (10).col('auto', {sm:'none',lg:'auto'}, 1, 'auto'), { sm: 1, md: 2,lg:4 }).offset([1, 4, 6]).props({ gap: '5px' })">
+  <h2>My logo</h2>
+  <h4>gupt messenger</h4>
+  <button class="cta-button rounded-large">Chat</button>
+</div>
+
+<div layout="Grid.col({ sm: 1, md: 2,lg:4 }, (10).col('auto', {sm:0,lg:'auto'}, 1, 'auto'), { sm: 1, md: 2,lg:4 }).offset([1, 4, 6]).props({ gap: '5px' })">
+  <h2>My logo</h2>
+  <h4>gupt messenger</h4>
+  <button class="cta-button rounded-large">Chat</button>
+</div>
+
+
+
+<button onclick="toggleSpanDemo()"
+        style="position: fixed; top: 20px; right: 15px;">
+  Offset and Span
+</button>
+
+<div id="span-demo"
+     layout="Grid.col(33, 33, 33).offset([2]).props({gap:'5px', height:'60px'})"
+     style="border:none; padding:0;">
+  <div class="demo-box" id="box-1">1</div>
+  <div class="demo-box" id="box-2">2</div>
+<div class="demo-box" id="box-2">3</div>
+</div>
+
+<pre id="span-code"></pre>
+
+<script>
+
+
+
+let isspanMode = false;
+let savedBox3 = null; // Store the box we remove
+
+function toggleSpanDemo() {
+    const el = document.getElementById('span-demo');
+    const code = document.getElementById('span-code');
+    const box1 = document.getElementById('box-1');
+    const box3 = document.getElementById('box-3'); // The last box
+
+    if (!isspanMode) {
+        // 1. Physically remove the 3rd box from the DOM
+        // Now DOM has: [Box 1, Box 2]
+        if (box3) {
+            savedBox3 = box3;
+            box3.remove();
+        }
+
+        /**
+         * 2. Update Layout:
+         * .span({right:1}, [1]) -> Box 1 (Child 1) grows to fill Slot 1 & 2.
+         * .offset([2]) -> Skip child #2 (The engine knows there is no div for Slot 2).
+         * RESULT: Child 2 (Box 2) is pushed into Slot 3 automatically.
+         */
+        const layoutStr = "Grid.col(33, 33, 33).span({right:1}, [1]).offset([2]).props({gap:'5px', height:'60px'})";
+        
+        el.setAttribute('layout', layoutStr);
+        code.innerText = layoutStr;
+        
+        box1.innerText = "1 (Spanned)";
+        isspanMode = true;
+    } else {
+        // 1. Restore the 3rd box
+        if (savedBox3) {
+            el.appendChild(savedBox3);
+        }
+
+        // 2. Reset Layout
+        el.setAttribute('layout', "Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})");
+        code.innerText = "Grid.col(33, 33, 33)";
+        
+        box1.innerText = "1";
+        isspanMode = false;
+    }
+
+    // 3. IMPORTANT: Tell the Engine to re-draw the changes
+    if (window.Engine) window.Engine.render(el);
+}
+
+
+                </script>
+
+
+</body>
+</html>

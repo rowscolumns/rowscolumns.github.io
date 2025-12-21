@@ -283,7 +283,6 @@ pre[class*="language-"] {
         h4 { font-size: 1rem; font-weight: 600; margin-top: 60px; margin-bottom: 15px; color: var(--primary); }
         
         p, li { color: var(--text-muted); margin-bottom: 15px; font-size: 1.05rem; }
-        p { text-align:justify; }
         strong { color: var(--text-heading); }
         
         a {  text-decoration: none; transition: 0.2s; }
@@ -337,7 +336,7 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
          [layout] > .demo-box {
             background: var(--surface);
 
-            border: 5px double var(--border);
+            border: 3px solid var(--border);
             border-radius: 6px;
             color: var(--text-muted);
             font-weight: 600;
@@ -520,12 +519,10 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
     </style>
 
     <script type="module">
-  // 1. Import Engine
-  import { Engine } from 'https://unpkg.com/rowscolumns/dist/index.mjs';
-  
-  // 2. Initialize (Starts the observer)
-  Engine.init();
-</script>
+        import { Engine, Grid, lg, sm, auto } from 'https://unpkg.com/rowscolumns@1.4.0/dist/index.mjs';
+        window.Grid = Grid; window.Engine = Engine;
+        Engine.init();
+    </script>
 
     <script>
     // 1. Run immediately to prevent flash (Restores theme on refresh)
@@ -666,7 +663,7 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
 
     <p class="lead" style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 20px;">
         <strong>Rows & Columns</strong> is a JavaScript layout engine for CSS Grid that works by <strong>placing elements directly on grid lines</strong>. 
-        This gives precise <strong>two-dimensional control</strong> over child <code>&lt;div&gt;</code> placement without extra wrapper elements.
+        This gives precise two-dimensional control over child <code>&lt;div&gt;</code> placement without extra wrapper elements.
     </p>
 
     <p style="margin-bottom: 25px;">
@@ -687,8 +684,8 @@ pre.clean::-webkit-scrollbar-thumb:hover { background: var(--primary); } /* Turn
   &lt;div class="col-8"&gt;
     &lt;!-- Wrapper needed for vertical split --&gt;
     &lt;div class="column"&gt;
-      &lt;div class="col-6"&gt;Top Content&lt;/div&gt;
-      &lt;div class="col-6"&gt;Bottom Content&lt;/div&gt;
+      &lt;div&gt;Top Content&lt;/div&gt;
+      &lt;div&gt;Bottom Content&lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
@@ -929,85 +926,6 @@ import { Grid, lg, sm } from 'rowscolumns';</pre>
                     <div class="demo-box filled">Right 2</div>
                     <div class="demo-box filled">Right 3</div>
                 </div>
-
-                 <h3> Responsive Grid </h3>
-    <p>
-        In Rowscolumns, you define the <strong>relative weight</strong> of columns rather than fixed pixel widths. This allows you to create layouts that breathe naturally as the screen grows, without ever writing a <code>margin</code> or <code>padding</code> rule.
-    </p>
-
-    <h3>Dynamic Gutter Logic</h3>
-    <p>
-        In this example, we create a layout where the center content stays stable, but the side "gutters" expand on larger screens to keep the content focused.
-    </p>
-    
-    <ul>
-        <li><strong>On Mobile (sm):</strong> The grid behaves as a <strong>12-unit system</strong> (1 + 10 + 1). The side gutters are thin, giving the main content maximum room.</li>
-        <li><strong>On Desktop (lg):</strong> The grid automatically shifts to an <strong>18-unit system</strong> (4 + 10 + 4). The content remains centered, while the side gutters grow to create a professional, wide-screen feel.</li>
-    </ul>
-
-    <div id="demo-resp" class="has-tabs">
-        <div class="code-tabs">
-            <div class="code-tab active" data-lang="html" onclick="switchCode('demo-resp', 'html')">HTML (Inline Syntax)</div>
-            <div class="code-tab" data-lang="react" onclick="switchCode('demo-resp', 'react')">React</div>
-        </div>
-
-        <!-- HTML CODE -->
-        <div class="code-content active" data-lang="html">
-<pre class="clean">&lt;!-- 
-  The side columns take 1 unit of weight on mobile 
-  and expand to 4 units on large screens. 
---&gt;
-&lt;div layout="Grid.col({ sm: 1, lg: 4 }, 10, { sm: 1, lg: 4 })"&gt;
-  &lt;div&gt;Side Gutter&lt;/div&gt;
-  &lt;div&gt;Main Content (10 Units)&lt;/div&gt;
-  &lt;div&gt;Side Gutter&lt;/div&gt;
-&lt;/div&gt;</pre>
-        </div>
-
-        <!-- REACT CODE -->
-        <div class="code-content" data-lang="react">
-<pre class="clean">&lt;Layout 
-  layout={Grid.col(
-    { sm: 1, lg: 4 }, 
-    10, 
-    { sm: 1, lg: 4 }
-  )}
-&gt;
-  &lt;div&gt;Side Gutter&lt;/div&gt;
-  &lt;div&gt;Main Content&lt;/div&gt;
-  &lt;div&gt;Side Gutter&lt;/div&gt;
-&lt;/Layout&gt;</pre>
-        </div>
-    </div>
-
-    <!-- LIVE VISUAL DEMO -->
-    <p><strong>Visual Demo:</strong> Resize your browser window to see the blue content area stay stable while the gray gutters expand.</p>
-    
-    <div class="grid-container" style="border:none; padding:0;">
-        <div layout="Grid.col({ sm: 1, lg: 4 }, 10, { sm: 1, lg: 4 }).props({ gap: '10px' })">
-            
-            <!-- Side Column -->
-            <div class="demo-box" style="border:none;" >
-                Gutter
-            </div>
-            
-            <!-- Main Content -->
-            <div class="demo-box filled" >
-                Main Content (Weight: 10)
-            </div>
-            
-            <!-- Side Column -->
-            <div class="demo-box" style="border:none;">
-                Gutter
-            </div>
-
-        </div>
-    </div>
-
-    <p style="margin-top: 20px; font-style: italic; color: #666;">
-        Tip: Because the weights are proportional, the engine automatically calculates the percentages. You don't need to worry about the total sum; just focus on the ratio between parts.
-    </p>
-                
             </section>
 
           
@@ -1254,12 +1172,12 @@ return (
                 </div>
                 
                 <div class="grid-container" layout="Grid.col(...Array(12).fill(1)).props({gap:'2px'})" style="border:none; padding:0;">
-                    <div class="demo-box" >1</div><div class="demo-box" >2</div>
-                    <div class="demo-box" >3</div><div class="demo-box" >4</div>
-                    <div class="demo-box" >5</div><div class="demo-box" >6</div>
-                    <div class="demo-box" >7</div><div class="demo-box" >8</div>
-                    <div class="demo-box" >9</div><div class="demo-box" >10</div>
-                    <div class="demo-box" >11</div><div class="demo-box" >12</div>
+                    <div class="demo-box" style="font-size:10px">1</div><div class="demo-box" style="font-size:10px">2</div>
+                    <div class="demo-box" style="font-size:10px">3</div><div class="demo-box" style="font-size:10px">4</div>
+                    <div class="demo-box" style="font-size:10px">5</div><div class="demo-box" style="font-size:10px">6</div>
+                    <div class="demo-box" style="font-size:10px">7</div><div class="demo-box" style="font-size:10px">8</div>
+                    <div class="demo-box" style="font-size:10px">9</div><div class="demo-box" style="font-size:10px">10</div>
+                    <div class="demo-box" style="font-size:10px">11</div><div class="demo-box" style="font-size:10px">12</div>
                 </div>
             </section>
 
@@ -1340,60 +1258,116 @@ return (
                 <p>Creates "Ghost" slots. Useful for creating gaps. In this demo, we skip the middle slot (Index 2), forcing the 2nd Box to jump to the 3rd slot.</p>
 
                 <div style="position: relative;" class="code-wrapper">
-            <pre class="clean">
-&lt;Layout layout={Grid.col(33, 33, 33).offset([2])}&gt;
-  &lt;div&gt;1&lt;/div&gt;
-  &lt;div&gt;2&lt;/div&gt;
-&lt;/Layout&gt;</pre>
+                    <!-- Code Block -->
+                    <pre class="clean" id="offset-code">Grid.col(33, 33, 33)</pre>
+                    <button onclick="toggleOffsetDemo()" style="position: absolute; top: 20px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
+                        Offset 
+                    </button>
                 </div>
                 
                 <!-- Visual Demo -->
                 <div id="offset-demo" 
-                     layout="Grid.col(33, 33, 33).props({gap:'5px', height:'60px'}).offset([2])" 
+                     layout="Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})" 
                      style="border:none; padding:0;">
                     <div class="demo-box">1</div>
-          
+                    <div class="demo-box" id="off-box-2">2</div>
                     <div class="demo-box" id="off-box-3">3</div>
                 </div>
 
                 <p>Tip : You can also use it directly on the element <code>Grid.col(33, (33).offset(), 33)</code></p>
 
+                <!-- Logic for Offset Toggle -->
+                <script>
+                    let isOffsetMode = false;
+                    function toggleOffsetDemo() {
+                        const el = document.getElementById('offset-demo');
+                        const code = document.getElementById('offset-code');
+                        const box2 = document.getElementById('off-box-2');
 
+                        if (!isOffsetMode) {
+                            el.setAttribute('layout', "Grid.col(33, 33, 33).offset([2]).props({gap:'5px', height:'60px'})");
+                            code.innerText = "Grid.col(33, 33, 33).offset([2])";
+                            const box3 = document.getElementById('off-box-3');
+                            if(box3) box3.remove();
+                            box2.innerText = "3";
+                            isOffsetMode = true;
+                        } else {
+                            el.setAttribute('layout', "Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})");
+                            code.innerText = "Grid.col(33, 33, 33)";
+                            box2.innerText = "2";
+                            if(!document.getElementById('off-box-3')) {
+                                const newBox3 = document.createElement('div');
+                                newBox3.className = 'demo-box'; newBox3.id = 'off-box-3'; newBox3.innerText = '3';
+                                el.appendChild(newBox3);
+                            }
+                            isOffsetMode = false;
+                        }
+                        if(window.Engine) window.Engine.render(el);
+                    }
+                </script>
 
-                <!-- span (Interactive) -->
-                <h3>.span({ direction }, [indices])</h3>
+                <!-- SPREAD (Interactive) -->
+                <h3>.spread(['dir'], [indices])</h3>
               
 
            <p>
-Expands an item across multiple tracks (Spanning). Directions: <code>top</code> (top), <code>right</code> (right), <code>bottom</code> (bottom), <code>left</code> (left). <br><br>
-Examples:<br> <code>.span({right:1}, [1])</code> spans the first child to the right; <br>
-<code>.span({left:1}, [2])</code>  spans the second child to the left; <br>
-<code>.span({bottom:1}, [1, 2])</code>spans first and second child downward; <br>
-<code>.span({top:1}, [2])</code> upward by 2. <br><br>
+Expands an item across multiple tracks (Spanning). Directions: <code>t</code> (top), <code>r</code> (right), <code>b</code> (bottom), <code>l</code> (left). <br><br>
+Examples:<br> <code>.spread(['r1'], [1])</code> spans the first child to the right; <br>
+<code>.spread(['l1'], [2])</code>  spans the second child to the left; <br>
+<code>.spread(['b1'], [1, 2])</code>spans first and second child downward; <br>
+<code>.spread(['t2'], [1])</code> upward by 2. <br><br>
 The second parameter targets child indices (1-based), so <code>[1]</code> is the first child, <code>[2]</code> the second, and multiple can be set like <code>[1,3]</code>.
 </p>
 
 
                 
                 <div style="position: relative;" class="code-wrapper">
-
-            <pre class="clean">
-&lt;Layout layout={Grid.col(33, 33, 33).offset([2]).span({right:1}, [1])}&gt;
-  &lt;div&gt;1&lt;/div&gt;
-  &lt;div&gt;2&lt;/div&gt;
-&lt;/Layout&gt;</pre>
-
+                    <pre class="clean" id="spread-code">Grid.col(33, 33, 33)</pre>
+                    <button onclick="toggleSpreadDemo()" style="position: absolute; top: 20px; right: 15px; background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
+                        Offset and Spread
+                    </button>
                 </div>
 
                 <!-- Visual Demo -->
-                <div id="span-demo" 
-                     layout="Grid.col(33, 33, 33).span({right:1}, [1]).props({gap:'5px', height:'60px'}).offset([2])" 
+                <div id="spread-demo" 
+                     layout="Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})" 
                      style="border:none; padding:0;">
                     <div class="demo-box" id="box-1">1</div>
                     <div class="demo-box" id="box-2">2</div>
-              
+                    <div class="demo-box" id="box-3">3</div>
                 </div>
 
+                <!-- Logic for Spread Toggle -->
+                <script>
+                    let isSpreadMode = false;
+                    function toggleSpreadDemo() {
+                        const el = document.getElementById('spread-demo');
+                        const code = document.getElementById('spread-code');
+                        const box1 = document.getElementById('box-1');
+                        
+                        if (!isSpreadMode) {
+                            el.setAttribute('layout', "Grid.col(33, 33, 33).spread(['r1'], [1]).props({gap:'5px', height:'60px'}).offset([2])");
+                            code.innerText = "Grid.col(33, 33, 33).offset([2]).spread(['r1'], [1])";
+                            const box3 = document.getElementById('box-3');
+                            if(box3) box3.remove();
+                            box1.innerText = "1 (Spanned)";
+                            box1.classList.add('filled');
+                            isSpreadMode = true;
+                        } else {
+                            el.setAttribute('layout', "Grid.col(33, 33, 33).props({gap:'5px', height:'60px'})");
+                            code.innerText = "Grid.col(33, 33, 33)";
+                            box1.innerText = "1";
+                            box1.classList.remove('filled');
+                            if(!document.getElementById('box-3')) {
+                                const newBox3 = document.createElement('div');
+                                newBox3.className = 'demo-box'; newBox3.id = 'box-3'; newBox3.innerText = '3';
+                                el.appendChild(newBox3);
+                            }
+                            isSpreadMode = false;
+                        }
+                        if(window.Engine) window.Engine.render(el);
+                    }
+                </script>
             </section>
 
 
@@ -1510,27 +1484,11 @@ The second parameter targets child indices (1-based), so <code>[1]</code> is the
 )</pre>
                 
                 <div class="grid-container" 
-                     layout="Grid.col(
-        /* Column 1: 8 Rows - Hide every even row on Mobile */
-        (10).row(1, {sm:none, lg:1}, 1, {sm:none, lg:1}, 1, {sm:none, lg:1}, 1, {sm:none, lg:1}).props({gap:'2px'}), 
-        
-        /* Column 2: 3 Rows - Always visible */
-        (20).row(1, 1, 1).props({gap:'5px'}), 
-        
-        /* Column 3: Center Block - Hides completely on Mobile, collapses space */
-        {sm: none, lg: 40}, 
-        
-        /* Column 4: 3 Rows - Always visible */
-        (20).row(1, 1, 1).props({gap:'5px'}), 
-        
-        /* Column 5: 8 Rows - Hide every even row on Mobile */
-        (10).row(1, {sm:none, lg:1}, 1, {sm:none, lg:1}, 1, {sm:none, lg:1}, 1, {sm:none, lg:1}).props({gap:'2px'})
-     )
-     .props({
-        gap: '5px', 
-        aspectRatio: '1 / 1', 
-        height: 'auto'
-     })" 
+                     layout="Grid.col((10).row(1,1,1,1,1,1,1,1).props({gap:'2px'}), (20).row(1,1,1).props({gap:'5px'}), 40, (20).row(1,1,1).props({gap:'5px'}), (10).row(1,1,1,1,1,1,1,1).props({gap:'2px'})).props({gap:'10px'}).props({
+                        gap: '5px', 
+                        aspectRatio: '1 / 1', 
+                        height: 'auto'
+                     })" 
                      style="border:none; padding:0;"
                      id="symmetry-demo">
                      <div class="demo-box"></div>
@@ -1600,26 +1558,26 @@ The second parameter targets child indices (1-based), so <code>[1]</code> is the
 <section id="balance">
 
 <h3>Asymmetrical Balance</h3>
-                <p>Standard grids often feel rigid. By using a 6-column base and the <code>.span()</code> method, elements can cross the center axis, creating dynamic, asymmetrical balance.</p>
-                <p>This layout uses <code>.offset()</code> to create negative space and <code>.span()</code> to bridge columns.</p>
+                <p>Standard grids often feel rigid. By using a 6-column base and the <code>.spread()</code> method, elements can cross the center axis, creating dynamic, asymmetrical balance.</p>
+                <p>This layout uses <code>.offset()</code> to create negative space and <code>.spread()</code> to bridge columns.</p>
 
                 <pre class="clean">Grid.col(
-  (1).row(1,1,1,3).span({right:1},[3,4]),
-  (1).row(2,1,3).span({right:1},[1]).offset([2,3]),
-  (1).row(2,2,1,1).offset([1]).span({right:1},[1]),
-  (1).row(1,1,2,2).offset([3]).span({right:1},[3]),
-  (1).row(3,1,2).offset([3]).span({right:1},[2,1]),
+  (1).row(1,1,1,3).spread(['r1'],[3,4]),
+  (1).row(2,1,3).spread(['r1'],[1]).offset([2,3]),
+  (1).row(2,2,1,1).offset([1]).spread(['r1'],[1]),
+  (1).row(1,1,2,2).offset([3]).spread(['r1'],[3]),
+  (1).row(3,1,2).offset([3]).spread(['r1'],[2,1]),
   (1).row(3,1,1,1).offset([1,2])
 ).props({gap:'5px'})</pre>
 
                 <div class="grid-container" 
                      style=" padding: 0; border: none; height: 400px; width: 400px; gap: 5px;"
                      layout="Grid.col(
-                     (1).row(1,1,1,3).span({right:1},[3,4]),
-                     (1).row(2,1,3).span({right:1},[1]).offset([2,3]),
-                     (1).row(2,2,1,1).offset([1]).span({right:1},[1]),
-                     (1).row(1,1,2,2).offset([3]).span({right:1},[3]),
-                     (1).row(3,1,2).offset([3]).span({right:1},[2,1]),
+                     (1).row(1,1,1,3).spread(['r1'],[3,4]),
+                     (1).row(2,1,3).spread(['r1'],[1]).offset([2,3]),
+                     (1).row(2,2,1,1).offset([1]).spread(['r1'],[1]),
+                     (1).row(1,1,2,2).offset([3]).spread(['r1'],[3]),
+                     (1).row(3,1,2).offset([3]).spread(['r1'],[2,1]),
                      (1).row(3,1,1,1).offset([1,2])
                      )
                      .props({
@@ -1661,106 +1619,30 @@ The second parameter targets child indices (1-based), so <code>[1]</code> is the
 
 
 
-<!-- RESPONSIVE -->
-<section id="responsive">
-    <h4>DEVELOPMENT</h4>
-    <h2>Responsive Design</h2>
-    <p>Rowscolumns v1.6.X introduces <strong>Inline Responsive Objects</strong>. While you can still use multiple attributes, you can now define full responsiveness within a single method using the <code>{ breakpoint: value }</code> syntax.</p>
-
-    <!-- Breakpoints Table -->
-    <table style="margin-bottom: 30px;">
-        <thead>
-            <tr><th>Attribute / Key</th><th>Breakpoint</th><th>Device</th></tr>
-        </thead>
-        <tbody>
-            <tr><td><code>xs</code> / <code>layout</code></td><td>0px</td><td>Mobile (Default)</td></tr>
-            <tr><td><code>sm</code> / <code>layout-sm</code></td><td>≥ 576px</td><td>Large Phones</td></tr>
-            <tr><td><code>md</code> / <code>layout-md</code></td><td>≥ 768px</td><td>Tablets</td></tr>
-            <tr><td><code>lg</code> / <code>layout-lg</code></td><td>≥ 992px</td><td>Laptops</td></tr>
-            <tr><td><code>xl</code> / <code>layout-xl</code></td><td>≥ 1200px</td><td>Desktops</td></tr>
-        </tbody>
-    </table>
-
-    
-
-    <h3>The 'none' Keyword</h3>
-    <p>The <code>'none'</code> keyword is a special layout value. It doesn't just hide the element; it <strong>collapses the grid track</strong> entirely so that gaps and margins disappear, making surrounding elements slide into place perfectly.</p>
-
-    <h3>Real World Example: The Navbar</h3>
-    <p>Let's build a responsive navigation bar using the new inline syntax:</p>
-    <ul>
-        <li><strong>Mobile:</strong> Logo (Left), Menu (Right). The <strong>Search Bar is hidden</strong> and its space is collapsed.</li>
-        <li><strong>Desktop:</strong> Logo, a large Search Bar in the middle, and the Menu.</li>
-    </ul>
-
-    <div id="resp-demo" class="has-tabs">
-        <div class="code-tabs">
-            <div class="code-tab active" data-lang="html" onclick="switchCode('resp-demo', 'html')">HTML (v1.6.X)</div>
-            <div class="code-tab" data-lang="react" onclick="switchCode('resp-demo', 'react')">React</div>
-        </div>
-
-        <!-- HTML CODE -->
-        <div class="code-content active" data-lang="html">
-<pre class="clean">&lt;!-- 
-  The 2nd column uses an object:
-  - sm: 'none' (Hidden, no space taken)
-  - md: 1 (Takes available space on tablets+)
---&gt;
-&lt;div layout="Grid.col(auto, { sm: 'none', md: 1 }, auto).props({ gap: '15px' })"&gt;
-   &lt;div&gt;Logo&lt;/div&gt;
-   &lt;input type="text" placeholder="Search..." /&gt;
-   &lt;button&gt;Menu&lt;/button&gt;
-&lt;/div&gt;</pre>
-        </div>
-
-        <!-- REACT CODE -->
-        <div class="code-content" data-lang="react">
-<pre class="clean">&lt;Layout 
-  // Unified logic in one attribute
-  layout={Grid.col(
-    'auto', 
-    { sm: 'none', md: 1 }, 
-    'auto'
-  ).props({ gap: '15px' })} 
-&gt;
-   &lt;div&gt;Logo&lt;/div&gt;
-   &lt;input type="text" placeholder="Search..." /&gt;
-   &lt;button&gt;Menu&lt;/button&gt;
-&lt;/Layout&gt;</pre>
-        </div>
-    </div>
-
-    <!-- LIVE DEMO -->
-    <p><strong>Resize your browser window</strong> to see the Search Bar appear and disappear without leaving "ghost" gaps!</p>
-
-    <div class="grid-container" style="border:none; padding:0;">
-        <!-- 
-           v1.6.X Logic:
-           One single layout attribute handles the entire responsive lifecycle.
-        -->
-        <div layout="Grid.col(auto, { sm: 'none', md: 1 }, auto).props({gap:'15px', alignItems:'center', padding:'15px', background:'#fafafa', border:'1px solid #ddd', borderRadius:'8px'})">
-            
-            <!-- Child 1: Logo -->
-            <div style="font-weight:900; color:#333;">LOGO</div>
-            
-            <!-- Child 2: Search (Responsively Removed via 'none') -->
-            <div style="background:#fff; border:1px solid #ccc; padding:8px 15px; border-radius:4px; color:#aaa; font-size:0.9rem;">
-                Search documentation...
-            </div>
-            
-            <!-- Child 3: Menu -->
-            <div class="btn">
-                MENU
-            </div>
-        </div>
-    </div>
-
-    <h3>Pro Tip: Responsive Multi-Weights</h3>
-    <p>You can even change the relative weights of columns dynamically:</p>
-    <pre class="clean">Grid.col({ sm: 1, md: 5, lg: 10 })</pre>
-    <p>This single column will take 1 unit of space on mobile, 5 on tablets, and 10 on large screens.</p>
-
-</section>
+            <!-- RESPONSIVE -->
+            <section id="responsive">
+                <h4>DEVELOPMENT</h4>
+                <h2>Responsive Design</h2>
+                <p>Rowscolumns uses specific attributes for breakpoints.</p>
+                <table>
+                    <thead>
+                        <tr><th>Attribute</th><th>Breakpoint</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>layout</code></td><td>Default / Mobile</td></tr>
+                        <tr><td><code>layout-sm</code></td><td>≥ 576px</td></tr>
+                        <tr><td><code>layout-md</code></td><td>≥ 768px</td></tr>
+                        <tr><td><code>layout-lg</code></td><td>≥ 992px</td></tr>
+                        <tr><td><code>layout-xl</code></td><td>≥ 1200px</td></tr>
+                    </tbody>
+                </table>
+                <br>
+                <pre class="clean">&lt;div 
+  layout="Grid.col(100)"             // Mobile: Stacked
+  layout-md="Grid.col(50, 50)"       // Tablet: 2 Cols
+  layout-xl="Grid.col(33, 33, 33)"   // Desktop: 3 Cols
+&gt;</pre>
+            </section>
 
             <!-- FRAMEWORKS -->
             <!-- FRAMEWORKS SECTION -->
@@ -2017,9 +1899,6 @@ export class AppComponent {
                     <a href="https://npmjs.com/package/rowscolumns">NPM</a>
                 </p>
             </footer>
-  
-
-
 
 
 
