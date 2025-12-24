@@ -54,8 +54,17 @@
     [layout]{
         display: grid;
         gap: 10px;
+
     }
     body {  font-family: "Google Sans", sans-serif;  }
+    [layout] >img{
+        max-width: 100%; height: auto;
+    }
+    [layout]  h3, [layout]  span { margin: 0; /* remove default margins */ }
+
+    .footer{
+        border-top: 1px solid var(--border); padding-top: 30px; text-align: center; margin-top: 30px;
+    }
   </style>
 </head>
 <body>
@@ -286,20 +295,21 @@
                    Row 4: Buttons (Split Col)
                 -->
                 <div layout="Grid.row(
-                        200, 
-                        (auto).col(1, auto), 
-                        auto, 
-                        (auto).col(1, 1)
+                        auto,
+                        (auto).col(1,1),
+                        auto,
+                        auto.col(1,1)
                      ).props({
                         gap:'15px', 
                         padding:'25px', 
                         background:'var(--surface)', 
                         border:'1px solid var(--border)', 
-                        borderRadius:'16px'
+                        borderRadius:'16px',
+                        alignItems: 'center' 
                      })">
                     
                     <!-- Child 1: Image -->
-                    <img src="https://picsum.photos/id/1012/800/800" />
+                    <img src="https://picsum.photos/id/1012/800/800" width="inherit" />
 
                     <!-- Child 2 & 3: Header Row -->
                     <h3 style="margin:0; font-size:1.4rem; color:#fff;">Neon Chair</h3>
@@ -324,7 +334,7 @@
                     </div>
                     <div class="terminal-body">
                         &lt;<span class="t">div</span> <span class="v">layout</span>="<span class="s">Grid.row(
-  200,
+  auto,
   (auto).col(1, auto),
   auto,
   (auto).col(1, 1)
@@ -350,7 +360,7 @@
        
 
         <!-- 8. FOOTER -->
-        <div style="border-top: 1px solid var(--border); padding-top: 30px; text-align: center;">
+        <div class="footer">
              <div style="font-weight: 700; margin-bottom: 10px;">Rowscolumns</div>
              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">The logical layout engine for the modern web.</p>
              <div style="font-size: 0.8rem; opacity: 0.5;">© 2025 MIT License</div>
